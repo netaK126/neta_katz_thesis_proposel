@@ -1,0 +1,59 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, portrait, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage[labelformat=simple]{subcaption}    %%Adding option to remove parenthesis
+\renewcommand{\thesubfigure}{\normalsize Figure \thefigure. (\alph{subfigure}):}
+% \usepackage{subcaption}
+% \usepackage{subcaption}
+%\usepackage{dirtytalk}
+\usepackage{cjhebrew}
+\usepackage{float}
+\usepackage{eldar_report}
+% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+% \newcommand\norm[1]{\lVert#1\rVert}
+\newcommand\normx[1]{\Vert#1\Vert}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{lifetime}
+\newcommand{\Dana}[1]{\textcolor{purple}{\bf Dana: #1}}
+\newcommand{\Julian}[1]{\textcolor{purple}{\bf Julian: #1}}
+
+
+\begin{document}
+
+%\title{Robustness of Multi-Label Neural Networks}
+%
+%\author{
+%    \textbf{Julian Mour} \\
+%    \\
+%    Advisor: Dana Drachsler Cohen\\
+%    Technion - Israel Institute of Technology
+%}
+%
+%\maketitle
+
+\input{CoverPage.tex}
+
+%\small
+\input{intro.tex}
+
+%\input{probDef.tex}
+
+%\input{OurApproach.tex}
+
+%\input{PreResults.tex}
+
+%\input{FutureRO.tex}
+
+%\input{RelatedWork.tex}
+
+%\tiny
+
+\bibliography{bibliography}
+\bibliographystyle{plain}
+
+\end{document}
