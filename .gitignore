@@ -8,3 +8,5 @@ main.pdf
 main.aux
 main.log
 main.bbl
+*.aux
+/*.aux

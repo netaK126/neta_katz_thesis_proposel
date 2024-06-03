@@ -2,7 +2,7 @@
 %! Date = 01/05/2023
 
 \section{Introduction}
-Deep neural networks have been proven to be effective as classifiers, while often being vulnerable to adversarial attacks. An adversarial attack is a malicious input designed to deceive the neural network into a wrong prediction or output. Therefore, there is a growing need for evaluation methods and algorithms to determine whether a network is robust against these attacks. Existing verification techniques such as Reluplex, ReluVal, and DeepPoly provide formal guarantees for a single network. While these methods contribute significantly to network robustness evaluation, they overlook an essential aspect: the interplay between classifiers. This gap in evaluation methods motivates our research.
+Deep neural networks have been proven to be effective as classifiers, while often being vulnerable to adversarial attacks ~\cite{INTPROP}. An adversarial attack is a malicious input designed to deceive the neural network into a wrong prediction or output. Therefore, there is a growing need for evaluation methods and algorithms to determine whether a network is robust against these attacks. Existing verification techniques such as Reluplex ~\cite{Reluplex}, ReluVal ~\cite{FORMALSEC}, and DeepPoly ~\cite{linearOverapprox} provide formal guarantees for a single network. While these methods contribute significantly to network robustness evaluation, they overlook an essential aspect: the interplay between classifiers. This gap in evaluation methods motivates our research.
 
 
 \paragraph{Robustness}
@@ -14,11 +14,13 @@ Today many classifiers aim to classify correctly the same inputs. Although there
 
 
 \paragraph{Key Idea}
-To scale the analysis, our key idea is to rely on existing methods that encode global robustness properties for classification networks, such as [INSERT MIP LINK], and extend their usage for several networks instead of a single one. We propose an algorithm that finds dependencies and constraints between layers and neurons in the classification networks, then encodes the networks and finds the lower and upper bounds of the objective property using optimization algorithms, such as Gurobi. 
+To scale the analysis, our key idea is identifying similarities between the classifiers to improve scalability.
+We propose an algorithm that finds dependencies and constraints between layers and neurons in the classification networks, then finds the lower and upper bounds of the objective property.
 
 
 \paragraph{Preliminary Results}
-In our preliminary research, we implemented a basic version of our approach. We evaluated it on classifiers that were trained on the MNIST database, whose architectures are fully connected or convolutional. More specifically, we evaluated our basic version on two classifiers that are almost identical in terms of architectures and weights, where the only difference between them is a small addition to one of the entries of the vector of the last layer of the network. Results show that by using our proposed constraints, we managed to reduce the running time of the evaluation significantly.
+In our preliminary research, we implemented a basic version of our approach. We evaluated it on classifiers that were trained on the MNIST database, whose architectures are fully connected or convolutional. More specifically, we evaluated our basic version on two classifiers that are almost identical in terms of architectures and weights, where the only difference between them is a small addition to one of the entries of the vector of the last layer of the network. Results show that by using our proposed constraints, we managed to reduce the running time of the evaluation by an average of 78\% among tested scenarios.
+
 
 \paragraph{Future Goals}
-As part of the thesis, we plan to extend this algorithm to networks that have more differences than a single neuron's weight. Moreover, our current implementation is for two classifiers alone. We would like to generalize it to N>=2 classification networks.
+As part of the thesis, we plan to extend the algorithm to handle more instances while maintaining execution run time. Particularly, the goal is for the algorithm to manage three major aspects: (1) larger input regions, (2) complex and bigger classification architectures, and (3) classifiers with multiple distinctions among each other. 
