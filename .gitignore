@@ -10,3 +10,5 @@ main.log
 main.bbl
 *.aux
 /*.aux
+
+/main.aux
