@@ -1,0 +1,482 @@
+% \NeedsTeXFormat{LaTeX2e}
+% \ProvidesPackage{lifetime}
+% %[LaTeX style package for my own purpose]
+% \usepackage{footnote}
+% % \makesavenoteenv{tabular}
+% % \makesavenoteenv{table}
+% \RequirePackage{algorithm}
+% \RequirePackage{algorithmic}
+
+% %Packages
+% \usepackage{amsmath}
+% \usepackage{bm}
+% \usepackage{bbm}
+% \usepackage{amssymb,mathabx}
+% \usepackage{amsthm,nccmath}
+% \usepackage{mathtools}
+% % \usepackage[textwidth=2.5cm]{todonotes}
+% % \setlength{\marginparwidth}{2cm}
+% % \let\marginpar\oldmarginpar
+% \usepackage{xcolor}
+% \usepackage[shortlabels]{enumitem}
+% % \usepackage{enumitem}
+% % \usepackage{graphicx}
+% % \usepackage{caption}
+
+% \usepackage{float}
+% \usepackage{booktabs}
+% % \usepackage{subfig}
+% \usepackage{mathrsfs}
+% \usepackage{eso-pic}
+% \usepackage{xspace}
+% % \usepackage{hyperref}
+% \usepackage{microtype}
+% \usepackage{graphicx}
+% \usepackage{subfigure}
+% \usepackage{multirow,multicol}
+% \usepackage{url}
+
+% % \usepackage[ruled,vlined]{algorithm2e}
+ 
+% \usepackage{array, booktabs, makecell}
+% \usepackage{siunitx, mhchem}
+% \newcommand\muL{\si{\micro\liter}}
+% \usepackage{etoolbox}% http://ctan.org/pkg/etoolbox
+% \AtBeginEnvironment{figure}{\setcounter{subfigure}{0}}
+% %commands and theorems 
+
+
+% \newtheorem{theorem}{Theorem}
+% \newtheorem{prop}{Proposition}
+% \newtheorem{corollary}{Corollary}
+% \newtheorem{lemma}{Lemma}
+% \newtheorem{sublemma}{Lemma}[lemma]
+% \newtheorem{definition}{Definition}
+% \newtheorem{example}{Example}
+% \newtheorem{condition}{Condition}
+% \newtheorem{assumption}{Assumption}
+
+% \newcommand{\RN}[1]{%
+%   \textup{\uppercase\expandafter{\romannumeral#1}}%
+% }
+% % Math operators 
+% \DeclareMathOperator*{\argmax}{arg\,max}
+% \DeclareMathOperator*{\argmin}{arg\,min}
+
+% \newenvironment{proofsketch}{%
+%   \renewcommand{\proofname}{Proof Sketch}\proof}{\endproof}
+% % \newtheoremstyle{restating}{}{}{\itshape}{}{\bfseries}{.}{.5em}{Resta#1}
+% % \theoremstyle{restating}
+
+% \usepackage{thmtools}
+% \usepackage{thm-restate}
+
+% \declaretheorem[name=Theorem]{rethm}
+% \declaretheorem[name=Proposition]{reprop}
+% \declaretheorem[name=Corollary]{recorollary}
+% \declaretheorem[name=Lemma]{relemma}
+% \declaretheorem[name=Example]{reex}
+
+% \def\calib{canonical }
+% %Paper specific notation
+% % \newcommand{\todos}[1]{\todo[color=red!20,size=\tiny]{Saurabh: #1}}
+% \newcommand{\addeq}{\addtocounter{equation}{1}\tag{\theequation}}
+% \newcommand{\abs}[1]{\left\lvert#1 \right\rvert}
+% \newcommand{\Real}{\mathbb{R}}
+% \newcommand{\Natural}{\mathbb{N}}
+% \newcommand{\Normal}{\mathcal{N}}
+% \newcommand{\Prb}[1]{\mathrm{P}\left( #1 \right)}
+% \newcommand{\Expt}[2]{\mathbb{E}_{#1}\left[#2\right]}
+% \newcommand{\Expo}[1]{\mathbb{E}\left[#1\right]}
+% \newcommand{\EE}[2]{\mathbb{E}_{#1}\left[#2\right]}
+% \newcommand{\diag}{\textrm{diag}}
+% \newcommand{\defeq}{\vcentcolon=}
+% \newcommand{\eqdef}{=\vcentcolon}
+% \DeclarePairedDelimiterX{\inp}[2]{\langle}{\rangle}{#1, #2}
+% \newcommand{\I}[1]{\mathbbm{1}\left\{#1\right\}}
+% \newcommand{\inpt}{\mathcal{X}}
+% \newcommand{\out}{\mathcal{Y}}
+% \newcommand{\ProbS}{\mathrm{P}_s}
+% \newcommand{\ProbT}{\mathrm{P}_t}
+% \newcommand{\ps}{p_s}
+% \newcommand{\pt}{p_t}
+% \newcommand{\x}{x}
+% \newcommand{\w}{w}
+% \newcommand{\vv}{v}
+% \newcommand{\uu}{u}
+% \newcommand{\f}{f}
+% \newcommand{\g}{g}
+% \newcommand{\C}{C}
+% \newcommand{\R}{\mathcal{R}}
+% \newcommand{\Ss}{\mathbb{S}}
+% \newcommand{\T}{\mathbb{T}}
+% \newcommand{\N}{\mathcal{N}}
+% \newcommand{\comp}{\mathcal{O}}
+% \newcommand{\LL}{\mathcal{L}}
+% \newcommand\inner[2]{\langle #1, #2 \rangle}
+% \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+% \DeclareMathOperator{\sign}{sign}
+% \newcommand{\smin}{\sigma_{\f, \w_{\f}}}
+% \newcommand{\shmin}{{\widehat \sigma}_{\f, \w_{\f}}}
+% \newcommand{\sfmin}{{\sigma}_{\f, \w}}
+% \newcommand{\wc}{\hat \w^c}
+% \newcommand{\fc}{\f_c}
+% \newcommand{\fh}{\hat \f}
+% \newcommand{\wh}{\widehat }
+% \newcommand{\wf}{\widehat \w_{\f}}
+% \newcommand{\CE}[1]{\mathcal{E}(#1)}
+% \newcommand{\MSE}[1]{\text{MSE}(#1)}
+% \newcommand{\nMSE}[1]{\text{MSE}_n(#1)}
+
+% \newcommand{\LOO}{\text{LOO}}
+
+% \newcommand{\error}{\calE}
+% \newcommand{\loss}{\calL}
+
+% \newcommand{\grad}{\nabla}
+
+% \newcommand{\G}{\mathcal{G}}
+% \newcommand{\tz}{\hat \theta}
+% \newcommand{\tp}{\theta}
+
+% \newcommand{\mat}[1]{{#1}}
+% \newcommand{\vect}[1]{#1}
+% \newcommand{\expect}{\mathbb{E}}
+% \newcommand{\prob}{\mathbb{P}}
+% \newcommand{\prox}[2]{\textbf{Prox}_{#1}\left\{#2\right\}}
+% \newcommand{\event}[1]{\mathscr{#1}}
+% \newcommand{\set}[1]{#1}
+% \newcommand{\diff}{\text{d}}
+% \newcommand{\difference}{\triangle}
+% \newcommand{\inputdist}{\mathcal{Z}}
+% \newcommand{\indict}[1]{\mathbb{I}\left[#1\right]}
+% \newcommand{\rotmat}{\mathbf{R}}
+% \newcommand{\normalize}[1]{\overline{#1}}
+% \newcommand{\vectorize}[1]{\text{vec}\left(#1\right)}
+
+% \newcommand{\ratt}{{\sc Ratt}}
+% \newcommand{\relu}[1]{\sigma\left(#1\right)}
+% \newcommand{\reluder}[1]{\sigma'\left(#1\right)}
+% \newcommand{\act}[1]{\sigma\left(#1\right)}
+
+% \def\R{\mathbb{R}}
+% \def\Z{\mathbb{Z}}
+% \def\cA{\mathcal{A}}
+% \def\cB{\mathcal{B}}
+% \def\cD{\mathcal{D}}
+% \def\cE{\mathcal{E}}
+% \def\cF{\mathcal{F}}
+% \def\cG{\mathcal{G}}
+% \def\cH{\mathcal{H}}
+% \def\cI{\mathcal{I}}
+% \def\cL{\mathcal{L}}
+% \def\cM{\mathcal{M}}
+% \def\cN{\mathcal{N}}
+% \def\cP{\mathcal{P}}
+% \def\cS{\mathcal{S}}
+% \def\cT{\mathcal{T}}
+% \def\cW{\mathcal{W}}
+% \def\cZ{\mathcal{Z}}
+% \def\cY{\mathcal{Y}}
+% \def\cX{\mathcal{X}}
+% \def\cR{\mathcal{R}}
+% \def\bP{\mathbf{P}}
+% \def\TV{\mathrm{TV}}
+% \def\MSE{\mathrm{MSE}}
+
+% \def\vx{\vect{x}}
+% \def\vy{\vect{y}}
+% \def\vu{\vect{u}}
+% \def\vf{\vect{f}}
+% \def\vb{\vect{b}}
+% \def\vp{\vect{p}}
+% \def\vq{\vect{q}}
+% \def\vecte{\vect{e}}
+% \def\valpha{\vect{\alpha}}
+% \def\vtheta{\vect{\theta}}
+% \def\mPhi{\mat{\Phi}}
+% \def\vphi{\vect{\phi}}
+% \def\ve{\vect{\varepsilon}}
+% \def\hy{\hat{y}}
+% \def\ty{\tilde{y}}
+% \def\tc{\tilde{c}}
+% \def\hvy{\hat{\vy}}
+% \def\tvy{\tilde{\vy}}
+% \def\mX{\mat{X}}
+% \def\mH{\mat{H}}
+% \def\mY{\mat{Y}}
+% \def\tmY{\tilde{\mY}}
+% \def\hmH{\hat{\mat{H}}}
+% \def\mZ{\mat{Z}}
+% \def\mI{\mat{I}}
+% \def\mA{\mat{A}}
+% \def\mB{\mat{B}}
+% \def\mK{\mat{K}}
+% \def\mW{\mat{W}}
+% \def\mP{\mat{P}}
+% \def\mQ{\mat{Q}}
+% \newcommand{\eps}{\varepsilon}
+
+% \newcommand{\tiln}{\widetilde{n}}
+% \newcommand{\tilp}{\widetilde{p}}
+% \newcommand{\widetildelta}{\widetilde{\delta}}
+% \newcommand{\tildelta}{\widetilde{\delta}}
+% \newcommand{\link}{\Phi}
+
+
+% \newcommand\matnorm[2]{\left|\!\left|\!\left| #1 \right|\!\right|\!\right|_{#2}}
+% \newcommand\norm[2]{\left|\!\left|#1 \right|\!\right|_{#2}}
+% \newcommand\enorm[1]{\left|\!\left|#1 \right|\!\right|}
+% \newcommand\trace[1]{\text{tr}\left(#1\right)}
+% \def\real{\mathbb{R}}
+% \def\Exp{\mathbb{E}}
+
+% % theorem type environments
+% \newtheorem{remark}{Remark}
+% \newtheorem{claim}{Claim}
+% \newtheorem{question}{Question}
+
+
+% %SpaceSaving Lists
+% \newcommand{\squishlist}{
+%   \begin{list}{$\bullet$}
+%       { \setlength{\itemsep}{0pt}      \setlength{\parsep}{1pt}
+%       \setlength{\topsep}{1pt}       \setlength{\partopsep}{0pt}
+%       \setlength{\leftmargin}{1.5em} \setlength{\labelwidth}{1em}
+%       \setlength{\labelsep}{0.5em} } }
+
+% \newcommand{\squishenum}[1]{
+%   \begin{enumerate}[label=(#1\arabic*)]
+%       { \setlength{\itemsep}{0pt}      \setlength{\parsep}{3pt}
+%       \setlength{\topsep}{3pt}       \setlength{\partopsep}{0pt}
+%       \setlength{\leftmargin}{1.5em} \setlength{\labelwidth}{1em}
+%       \setlength{\labelsep}{0.5em} } }
+
+
+% % general symbols
+% \newcommand{\RF}{\mathbb{R}}
+% \newcommand{\FF}{\mathbb{F}}
+% \newcommand{\NN}{\mathbb{N}}
+% \newcommand{\ZZ}{\mathbb{Z}}
+% \newcommand{\nn}{\nonumber} 
+% \newcommand{\paren}[1]{\left( #1 \right)}
+% \newcommand{\sqprn}[1]{\left[ #1 \right]}
+% \newcommand{\tlprn}[1]{\left\{ #1 \right\}}
+% \newcommand{\tr}[2]{\left<\left< #1 , #2 \right>\right>}
+% \newcommand{\trs}[2]{\left< #1 , #2 \right>}
+% \newcommand{\iprod}[2]{\left\langle #1 , #2 \right\rangle}
+% \newcommand{\inprod}[2]{\left\langle #1 , #2 \right\rangle}
+
+% \newcommand{\del}{\partial}
+% \newcommand{\dd}[2]{\frac{d#1}{d#2}}
+% \newcommand{\ddel}[2]{\frac{\del#1}{\del#2}}
+% \newcommand{\ddell}[2]{\frac{\del^2#1}{{\del#2}^2}}
+% \newcommand{\ddelll}[3]{\frac{\del^2#1}{{\del#2}{\del#3}}}
+% \newcommand{\beq}{\begin{eqnarray*}}
+% \newcommand{\eeq}{\end{eqnarray*}}
+% \newcommand{\beqn}{\begin{eqnarray}}
+% \newcommand{\eeqn}{\end{eqnarray}}
+% \newcommand{\ben}{\begin{enumerate}}
+% \newcommand{\een}{\end{enumerate}}
+% \newcommand{\bit}{\begin{itemize}}
+% \newcommand{\eit}{\end{itemize}}
+% \newcommand{\half}{\frac{1}{2}}
+% \newcommand{\poly}{\text{poly}}
+
+% \def \bal#1\eal{\begin{align}#1\end{align}}
+% \def \bals#1\eals{\begin{align*}#1\end{align*}}
+
+% \newcommand{\hide}[1]{}
+% \newcommand{\oo}[1]{\frac{1}{#1}}
+% \newcommand{\evalat}[2]{\left.#1\right|_{#2}}
+% \newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+% \newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+% \newcommand{\ontop}[2]{\overset{{\scriptsize #1}}{#2}}
+% \newcommand{\Perp}{\perp\!\!\!\perp}
+% \newcommand{\limsu}{\mathop{\overline{\mathrm{lim}}}}
+% \newcommand{\limin}{\mathop{\underline{\mathrm{lim}}}}
+% \newcommand{\map}{\mathop{\mathrm{map}}}
+% \newcommand{\powrs}[1]{\langle\!\langle #1 \rangle\!\rangle}
+% \newcommand{\polys}[1]{\langle #1 \rangle}
+% \newcommand{\contf}{\mathscr{C}}
+% %\newcommand{\trn}{^{{}^\intercal}} %operator transpose
+% \newcommand{\trn}{^\intercal} %operator transpose
+% %\newcommand{\trn}{^{{}^{\!\intercal}}} %operator transpose
+% \newcommand{\inv}{^{-1}} %inverse
+% % \newcommand{\unit}{\boldsymbol{1}}
+% \newcommand{\zero}{\boldsymbol{0}}
+% \newcommand{\textonTop}[2]{\stackrel{\mathrm{#1}}{#2}}
+% \newcommand{\wt}{\widetilde}
+
+% \newcommand{\pleq}{~+\!=}
+% \newcommand{\chr}{\mathrm{\bs{1}\hspace{-3pt}I}} % characteristic function
+% \newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+
+% % function names
+% \newcommand{\zeros}{\mathrm{zeros}}
+% \newcommand{\rank}{\mathrm{rank}}
+% \newcommand{\TR}{\mathrm{tr}}
+% \newcommand{\vol}{\mathrm{vol}}
+% \newcommand{\sgn}{\mathrm{sgn}}
+% \newcommand{\acos}{\mathrm{acos}}
+% \newcommand{\intr}{\mathrm{int}\,}
+% \newcommand{\extr}{\mathrm{ext}\,}
+% \newcommand{\dom}{\mathrm{dom}\,}
+% \newcommand{\conv}{\mathrm{conv}\hspace{1pt}}
+% \newcommand{\cone}{\mathrm{cone}\hspace{1pt}}
+
+
+% %probability & statistics symbols
+% \newcommand{\convd}{\overset{{\scriptsize d}}{\to}}
+% \newcommand{\convp}{\overset{{\scriptsize p}}{\to}}
+% \newcommand{\unif}{\mathrm{Uniform}}
+% \newcommand{\bern}{\mathrm{Bernoulli}}
+% \newcommand{\negbin}{\mathrm{NegBinom}}
+% \newcommand{\Binom}{\mathrm{Bin}}
+% \newcommand{\pois}{\mathrm{Poisson}}
+% %\newcommand{\ndistr}{\mathrm{Normal}}
+% \newcommand{\ndistr}{\mathrm{n}}
+% \newcommand{\Bdistr}{\mathrm{Beta}}
+% \newcommand{\Gdistr}{\mathrm{Gamma}}
+% % f(x) = \frac{1}{\beta^\alpha\Gamma(\alpha)}x^{\alpha-1}e^{-x/\beta}
+% \newcommand{\iGdistr}{\mathrm{InvGamma}} 
+% % f(x) = \frac{1}{\beta^\alpha\Gamma(\alpha)}x^{-\alpha-1}e^{-1/(\beta x)}
+% \newcommand{\MAE}{\mathrm{MAE}} 
+% \newcommand{\ARE}{\mathrm{ARE}} 
+% \newcommand{\se}{\mathrm{se}} 
+
+% %\newcommand{\eg}{\mathrm{e.g.}} 
+% %\newcommand{\st}{\mathrm{s.t.}} 
+% %\newcommand{\ie}{\mathrm{i.e.}} 
+
+% \newcommand{\calA}{\mathcal{A}}
+% \newcommand{\calB}{\mathcal{B}}
+% \newcommand{\calC}{\mathcal{C}}
+% \newcommand{\calD}{\mathcal{D}}
+% \newcommand{\calDm}{\mathcal{D}^\prime}
+% \newcommand{\calE}{\mathcal{E}}
+% \newcommand{\calF}{\mathcal{F}}
+% \newcommand{\calG}{\mathcal{G}}
+% \newcommand{\calH}{\mathcal{H}}
+% \newcommand{\calI}{\mathcal{I}}
+% \newcommand{\calJ}{\mathcal{J}}
+% \newcommand{\calK}{\mathcal{K}}
+% \newcommand{\calL}{\mathcal{L}}
+% \newcommand{\calM}{\mathcal{M}}
+% \newcommand{\calN}{\mathcal{N}}
+% \newcommand{\calO}{\mathcal{O}}
+% \newcommand{\calP}{\mathcal{P}}
+% \newcommand{\calQ}{\mathcal{Q}}
+% \newcommand{\calR}{\mathcal{R}}
+% \newcommand{\calS}{\mathcal{S}}
+% \newcommand{\calT}{\mathcal{T}}
+% \newcommand{\calU}{\mathcal{U}}
+% \newcommand{\calV}{\mathcal{V}}
+% \newcommand{\calW}{\mathcal{W}}
+% \newcommand{\calX}{\mathcal{X}}
+% \newcommand{\calY}{\mathcal{Y}}
+% \newcommand{\calZ}{\mathcal{Z}}
+% \newcommand{\tha}{\theta}
+% %\newcommand{\mexp}{\mathbb{E}}
+% %\newcommand{\mexp}[1]{\ensuremath{\text{{\bf E}$\left[#1\right]$}}}
+% \newcommand{\mexp}{\text{{\bf E}}}
+% \newcommand{\var}{\mathrm{Var}}
+% \newcommand{\cov}{\mathrm{Cov}}
+% \newcommand{\corr}{\mathrm{Cor}}
+% \newcommand{\bW}{\bs{W}}
+% \newcommand{\bw}{\bs{w}}
+% \newcommand{\bX}{\bs{X}}
+% \newcommand{\bx}{\bs{x}}
+% \newcommand{\bY}{\bs{Y}}
+% \newcommand{\bU}{\bs{U}}
+% \newcommand{\bA}{\bs{A}}
+% \newcommand{\bSigma}{\bs{\Sigma}}
+% \newcommand{\bS}{\bs{S}}
+% \newcommand{\bV}{\bs{V}}
+% \newcommand{\bI}{\bs{I}}
+% \newcommand{\by}{\bs{y}}
+% \newcommand{\bZ}{\bs{Z}}
+% \newcommand{\bz}{\bs{z}}
+% \newcommand{\Xbar}{\overline{X}}
+% \newcommand{\ev}{\mathrm{Ev}} %evidence
+% \newcommand{\pr}{\boldsymbol{\mathrm{P}}}
+% %\newcommand{\prob}{\mathrm{Pr}}
+
+
+% % embeddings
+% \newcommand{\embeds}[1]{\;\lhook\joinrel\xrightarrow{#1}\;}
+
+% %misc commands
+% \newcommand{\ds}{\displaystyle}
+% %\newcommand{\ts}{\textstyle}
+% \newcommand{\bs}{\boldsymbol}
+% \renewcommand{\th}{\ensuremath{^{\mathrm{th}}}~}
+
+
+% \makeatletter
+% \DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+% \def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+
+% \def\eg{\emph{e.g}\onedot} \def\Eg{\emph{E.g}\onedot}
+% \def\ie{\emph{i.e}\onedot} \def\Ie{\emph{I.e}\onedot}
+% \def\st{s.t\onedot} \def\St{\emph{S.t}\onedot}
+% \def\cf{\emph{c.f}\onedot} \def\Cf{\emph{C.f}\onedot}
+% \def\etc{\emph{etc}\onedot} \def\vs{\emph{vs}\onedot}
+% \def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
+% \def\iid{i.i.d}
+% \def\etal{\emph{et al}\onedot}
+% \makeatother
+
+% % Miscellaneous
+% \def\naive{na\"\i ve\xspace}
+% \def\naively{na\"\i vely\xspace}
+% \def\Naive{Na\"\i ve\xspace}
+% \def\Naively{Na\"\i vely\xspace}
+
+
+% \newcommand{\figref}[1]{Fig.~\ref{#1}}
+% \newcommand{\eqnref}[1]{(\ref{#1})}
+% \newcommand{\tabref}[1]{Table~\ref{#1}}
+% \newcommand{\secref}[1]{Sec.~\ref{#1}}
+% \newcommand{\chapref}[1]{Chapter \ref{#1}}
+% \newcommand{\thmref}[1]{Theorem~\ref{#1}}
+% \newcommand{\lemref}[1]{Lemma~\ref{#1}}
+% \newcommand{\appref}[1]{App.~\ref{#1}}
+% \newcommand{\codref}[1]{Condition~\ref{#1}}
+% \newcommand{\propref}[1]{Proposition~\ref{#1}}
+% \newcommand{\asmpref}[1]{Assumption~\ref{#1}}
+
+% %\include{mathmacro}
+% \makeatletter
+% \newcommand{\bfgreek}[1]{\bm{\@nameuse{#1}}}
+% \makeatother
+
+% \newcommand{\ind}[1]{[\hspace{-1pt}[#1]\hspace{-1pt}] }
+% \newcommand{\red}[1]{\textcolor{red}{#1}}
+
+% \newenvironment{indentpar}[1]%
+%      {\begin{list}{}%
+%              {\setlength{\leftmargin}{#1}}%
+%              \item[]%
+%      }
+% {\end{list}}
+
+% \makeatletter
+% \newcounter{problem}
+% \newenvironment{problem}[1][]{\refstepcounter{problem}\par\noindent%
+% \textbf{Problem~\theproblem: #1}}
+% %\textbf{Problem~\theproblem: #1}\rmfamily}
+% \makeatother
+
+
+% \newenvironment{hproof}{%
+%   \renewcommand{\proofname}{Proof Sketch}\proof}{\endproof}
+
+% \endinput
+
+
+
+
+
+
+
