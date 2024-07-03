@@ -4,11 +4,10 @@
 \section{Related Work}
 Our thesis is related to neural network verification, adversarial attacks against multi-label classifiers, and the relationships between one classifier to another.
 
-\subsection{Robustness Verifiers for NNs}\label{subsec:verifiers}
-Verifiers of neural networks evaluate the safety characteristics of neural networks.These verifiers use a variety of mathematical methods, including Mixed-Integer Linear Programming (MILP) ~\cite{singh2018robustness,lazarus2022mixed}, over approximation ~\cite{qin2019verification}, and abstract interpolation ~\cite{ABSTRACTINTER,INCOMPLETE1}. Verifiers can be divided into two main categories:
+\subsection{Robustness Verifiers for Neural Networks}\label{subsec:verifiers}
+Verifiers of neural networks evaluate the safety characteristics of neural networks.These verifiers use a variety of mathematical methods, including Mixed-Integer Linear Programming (MILP) ~\cite{singh2018robustness,lazarus2022mixed}, over approximation ~\cite{qin2019verification}, and abstract interpolation ~\cite{ABSTRACTINTER,INCOMPLETE1}. Verification techniques fall under different categories based on the guarantees they provide:
 \begin{itemize}
-    \item  Complete verifiers: provide a definitive answer regarding the validity of a specified attribute.
-    Complete verifiers usually have long execution time and thus do not scale to large networks.
+    \item  Complete verifiers: provide a definitive answer regarding the validity of a specified attribute. Usually, these approaches transform verification problems into constraints that can be solved using solvers like SAT ~\cite{SATAPPROACH1,SATAPPROACH2} or SMT ~\cite{NNTOBINARCONSTRAINS,PLANET,Reluplex}. Complete verifiers usually have long execution time and thus do not scale to large networks.
         In our preliminary research, we rely on a complete verifier~\cite{MIPVERIFY}.
     \item Incomplete verifiers: those verifiers often rely on approximate techniques which scale better ~\cite{INCOMPLETE1,INCOMPLETE2}, although they do not necessarily provide a definite answer and may return \emph{unknown} for a given property. 
 \end{itemize}
