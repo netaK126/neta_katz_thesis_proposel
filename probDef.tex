@@ -23,14 +23,13 @@ Intuitively, the classifier is robust for any confidence higher or equal to the 
 $\max{\delta}$ subject to $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ $C(x,c',D) \geq \delta \rightarrow C(f_P(x,\epsilon'))\leq 0$.
 
 
-\paragraph{Problem definition} Given a classifier $F: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, an image $x \in [0,1]^{n \times m}$ containing two objects: $o_t$ and $o_{nt}$ whose classification is $c_t$ and $c_{nt}$, and a weight vector $w = (w_0, w_1, \ldots, w_r)$,
-%\textrm{s.t.} $C' = \{\arg i^{th}\max_{c' \in C}{F(x)_{c'}}_{i=1}^{k} = \{c_t, c_{nt}\}$,
-the goal is to compute a sequence of epsilons $\epsilon^* = ({\epsilon_0}^*, {\epsilon_1}^*, \ldots, {\epsilon_r}^*)$ satisfying:
+\paragraph{Problem definition} Given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a perturbation $P$ and its range $I_\epsilon$ the goal is to compute the upper and lower bounds for the maximal $\delta$, where $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ satisfying:
 
 \begin{enumerate}[nosep,nolistsep]
-    \item $F$ is robust at ${N^{o_{nt}}_{\epsilon^*}}(x)$ with respect to $c_t$.
-    \item For every $\epsilon'$ expanding $\epsilon^*$, ${N^{o_{nt}}_{\epsilon'}}(x)$ is not robust with respect to $c_t$.
-    \item ${N^{o_{nt}}_{\epsilon^*}}(x)$ maximizes its size among all layered neighborhoods meeting (1) and (2).
+    \item $C_{F_1}(x,c',D) \geq \delta$
+    \item $C_{F_2}(x,c',D) \geq 0$
+    \item $C_{F_1}(f_P(x,\epsilon'))\leq 0$
+    \item $C_{F_2}(f_P(x,\epsilon'))\leq 0$
 \end{enumerate}
 
 %\begin{gather*}
