@@ -16,23 +16,23 @@ $\forall{x}\forall{\epsilon'}\in{I_\epsilon}$  argmax($D(x)$) = argmax($f_P(x,\e
 However, this property is problematic because some inputs $x$ are too close to the classifier's decision boundaries and violate this property ~\cite{DECISIONBOUND}, and as a result we are not able to satisfy it for non-trivial classifier. Thus, this study focuses on inputs whose networks' confidence in the classification is high enough ~\cite{VHAGAR}:
 
 Given a classifier $D$, an input $x$ and a class $c'\in{C}$, the class confidence of $D$ in $c'$ is:
-$C(x,c',D)=D(x)_{c'}-max_{c''\ne c'}(D(x)_{c''})$.\\
+$\mathcal{C}(x,c',D)=D(x)_{c'}-max_{c''\ne c'}(D(x)_{c''})$.\\
 For a single network, ~\cite{VHAGAR} defined the property $\delta-Global Robustness$ as follows:\\
 Given a classifier $D$, an input $x$ and a class $c'\in{C}$, a perturbation $P$, a range $I_\epsilon$ and a class confidence $\delta>0$, the classifier $D$ is $\delta$-globally robust for $c'$ under $(P,I_\epsilon)$ if:\\
-$\forall{x}\forall{\epsilon'}\in{I_\epsilon}$ $C(x,c',D) \geq \delta \rightarrow$ argmax($D(x)$) = argmax($f_P(x,\epsilon')$).
+$\forall{x}\forall{\epsilon'}\in{I_\epsilon}$ $\mathcal{C}(x,c',D) \geq \delta \rightarrow$ argmax($D(x)$) = argmax($f_P(x,\epsilon')$).
 
 Intuitively, the classifier is robust for any confidence higher or equal to the minimal $delta$. However, this definition cannot be solved via MIP solvers. Therefore, we need to adjust the definition to MIP solvers and consider the dual problem: computing the maximal globally robust bound. This way we would look for the maximal $\delta$ that violates the constraint. Overall, for a single classifier the property we would like to evaluate is:
 
-$\max{\delta}$ subject to $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ $C(x,c',D) \geq \delta \rightarrow C(f_P(x,\epsilon'))\leq 0$.
+$\max{\delta}$ subject to $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ $\mathcal{C}(x,c',D) \geq \delta \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',D)\leq 0$.
 
 
-\paragraph{Problem definition} Given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$ with similar architecture, a perturbation $P$ and its range $I_\epsilon$ the goal is to compute the upper and lower bounds for the maximal $\delta$, where $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ satisfying:
+\paragraph{Problem definition} Given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$ with similar architecture, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$ the goal is to compute the upper and lower bounds for the maximal $\delta$, where $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ satisfying:
 
 \begin{enumerate}[nosep,nolistsep]
-    \item $C_{F_1}(x,c',D) \geq \delta$
-    \item $C_{F_2}(x,c',D) \geq 0$
-    \item $C_{F_1}(f_P(x,\epsilon'))\leq 0$
-    \item $C_{F_2}(f_P(x,\epsilon'))\leq 0$
+    \item $\mathcal{C}_{F_1}(x,c',D) \geq \delta$
+    \item $\mathcal{C}_{F_2}(x,c',D) > 0$
+    \item $\mathcal{C}_{F_1}(f_P(x,\epsilon'),c',D)\leq 0$
+    \item $\mathcal{C}_{F_2}(f_P(x,\epsilon'),c',D)\leq 0$
 \end{enumerate}
 
 %\begin{gather*}
