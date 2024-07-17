@@ -23,7 +23,7 @@ Intuitively, the classifier is robust for any confidence higher or equal to the 
 $\max{\delta}$ subject to $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ $C(x,c',D) \geq \delta \rightarrow C(f_P(x,\epsilon'))\leq 0$.
 
 
-\paragraph{Problem definition} Given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a perturbation $P$ and its range $I_\epsilon$ the goal is to compute the upper and lower bounds for the maximal $\delta$, where $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ satisfying:
+\paragraph{Problem definition} Given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$ with similar architecture, a perturbation $P$ and its range $I_\epsilon$ the goal is to compute the upper and lower bounds for the maximal $\delta$, where $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ satisfying:
 
 \begin{enumerate}[nosep,nolistsep]
     \item $C_{F_1}(x,c',D) \geq \delta$
