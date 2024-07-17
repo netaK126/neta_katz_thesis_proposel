@@ -10,7 +10,7 @@ $D: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$.
 This research would focus on two multi-label classifiers of the same task, with similar architectures.
 
 
-\paragraph{Global Robustness of a sSingle Network}
+\paragraph{Global Robustness of a Single Network}
 Given a perturbation $P$ and its range $I_\epsilon$, a naive approach for global robustness is:
 $\forall{x}\forall{\epsilon'}\in{I_\epsilon}$  argmax($D(x)$) = argmax($f_P(x,\epsilon')$).
 However, this property is problematic because some inputs $x$ are too close to the classifier's decision boundaries and violate this property ~\cite{DECISIONBOUND}, and as a result we are not able to satisfy it for non-trivial classifier. Thus, this study focuses on inputs whose networks' confidence in the classification is high enough ~\cite{VHAGAR}:
