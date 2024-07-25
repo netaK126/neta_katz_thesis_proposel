@@ -5,7 +5,7 @@
 We evaluated our preliminary approach on the MNIST dataset, consisting of images showing a singular digit.
 The classifier's goal is to return the correct classification of a given digit. Specifically we checked the the robustness of class $c=0$.
 
-We evaluated our algorithm against three different scenarios using three different models: a fully connected network 3X10, and two convolutional neural networks with different number of iterations during training. For each model, noted as $D$, we defined encoded our problem definition using MIPVerify ~\cite{MIPVERIFY}, where $F_1$ is $D$ and $F_2$ is also $D$ with a slight change in a singular weight in the last layer on $D$. MIPVerify returns the bounds for the confidence and the time it took to solve. The timeout was set to 50800 seconds. We compared between two approaches for each model:
+We evaluated our algorithm against three different scenarios using three different models: a fully connected network 3X10, and two convolutional neural networks with different number of iterations during training. For each model, noted as $D$, we defined encoded our problem definition using MIPVerify ~\cite{MIPVERIFY}, where $F_1$ is $D$ and $F_2$ is also $D$ with a slight change in a singular weight in the last layer on $D$. MIPVerify returns the bounds for the confidence and the time it took to solve. The timeout was set to 50800 seconds (14 hours, 6 min, and 40 seconds). We compared between two approaches for each model:
 \begin{itemize}
     \item Solving the confidence bounds without the proposed constraints, noted as "Baseline".
     \item Solving the confidence bounds using the proposed constraints, noted as "Our approach".
