@@ -41,18 +41,57 @@ Although the results show the improvement in salability of our approach, it is o
 		\toprule
 		& \makecell{ } & \makecell{Brightness[0.1] \\ Weight addition[0.1]} & \makecell{Brightness[0.1] \\ Weight addition[0.05]} & \makecell{Brightness [0.05] \\ Weight addition[0.1]} & \makecell{Brightness [0.05] \\ Weight addition[0.05]}\\
 		\midrule			
-		\multirow{2}{*}{Main Row} & upper bound  & Sub-row 1 & Sub-row 1 & Sub-row 1 & Sub-row 1\\
-                              & lower bound & Sub-row 2 & Sub-row 2 & Sub-row 2 & Sub-row 2\\
+		\multirow{2}{*}{Base approach} & upper bound  & 3.2722 & 3.2994 &  1.7895 & 1.7895\\
+                              & lower bound & 3.2722 & 3.2722 &  1.7895 & 1.7895\\
 		\midrule
-		\multirow{2}{*}{Main Row} & upper bound  & Sub-row 1 & Sub-row 1 & Sub-row 1 & Sub-row 1\\
-                              & lower bound & Sub-row 2 & Sub-row 2 & Sub-row 2 & Sub-row 2\\						
+		\multirow{2}{*}{Our approach} & upper bound  & 3.3 & 3.3015 & 1.8033 & 1.7895\\
+                              & lower bound & 3.2722 & 3.2722 & 1.7895 & 1.7895\\						
 		\bottomrule
 	\end{tabular}
 }
 \caption{The lower and upper bounds for 3X10 architecture 
-		\label{tabLabel}}
+		\label{table_3_x_10}}
 \end{table}
 
+
+\begin{table}[H]
+	\centering
+    \resizebox{\textwidth}{!}{
+	\begin{tabular}{@{\extracolsep{\fill}}llllll@{}}
+		\toprule
+		& \makecell{ } & \makecell{Brightness[0.1] \\ Weight addition[0.1]} & \makecell{Brightness[0.1] \\ Weight addition[0.05]} & \makecell{Brightness [0.05] \\ Weight addition[0.1]} & \makecell{Brightness [0.05] \\ Weight addition[0.05]}\\
+		\midrule			
+		\multirow{2}{*}{Base approach} & upper bound  & 19.3926 & 17.7957 & 15.4492 & 19.27\\
+                              & lower bound & 15.0126 & 15.0126 &  12.1794 & 12.1907\\
+		\midrule
+		\multirow{2}{*}{Our approach} & upper bound  & 15.1626 & 15.1534 & 12.5868 & 12.5894\\
+                              & lower bound & 15.0126 & 15.0126 &  12.4649 & 12.4649\\					
+		\bottomrule
+	\end{tabular}
+}
+\caption{The lower and upper bounds for CNN architecture with 20 iteration during training process.
+		\label{table_cnn0_1}}
+\end{table}
+
+
+\begin{table}[H]
+	\centering
+    \resizebox{\textwidth}{!}{
+	\begin{tabular}{@{\extracolsep{\fill}}llllll@{}}
+		\toprule
+		& \makecell{ } & \makecell{Brightness[0.1] \\ Weight addition[0.1]} & \makecell{Brightness[0.1] \\ Weight addition[0.05]} & \makecell{Brightness [0.05] \\ Weight addition[0.1]} & \makecell{Brightness [0.05] \\ Weight addition[0.05]}\\
+		\midrule			
+		\multirow{2}{*}{Base approach} & upper bound  & 15.7748 & ?? & ?? & ??\\
+                              & lower bound & 14.1773 & ?? & ?? & ??\\
+		\midrule
+		\multirow{2}{*}{Our approach} & upper bound & 14.29 & ?? & ?? & ??\\
+                              & lower bound & 14.1537 & ?? & ?? & ??\\				
+		\bottomrule
+	\end{tabular}
+}
+\caption{The lower and upper bounds for CNN architecture with 19 iteration during training process.
+		\label{table_cnn0_2}}
+\end{table}
 % NETA - image of database + explain: "hey we did good - but not good enough". 
 
 % bounds in table
