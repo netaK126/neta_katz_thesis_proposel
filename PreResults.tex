@@ -36,20 +36,21 @@ Although the results show the improvement in salability of our approach, it is o
 
 \begin{table}[H]
 	\centering
-	\caption{The lower and upper bounds for 3X10 architecture 
-		\label{tabLabel}}
-	\begin{tabular}{@{\extracolsep{\fill}}lllll@{}}
+    \resizebox{\textwidth}{!}{
+	\begin{tabular}{@{\extracolsep{\fill}}llllll@{}}
 		\toprule
-		& \makecell{Brightness[0.1] \\ Weight addition[0.1]} & \makecell{Brightness[0.1] \\ Weight addition[0.05]} & \makecell{Brightness [0.05] \\ Weight addition[0.1]} & \makecell{Brightness [0.05] \\ Weight addition[0.05]}\\
+		& \makecell{ } & \makecell{Brightness[0.1] \\ Weight addition[0.1]} & \makecell{Brightness[0.1] \\ Weight addition[0.05]} & \makecell{Brightness [0.05] \\ Weight addition[0.1]} & \makecell{Brightness [0.05] \\ Weight addition[0.05]}\\
 		\midrule			
-		a&1& 100& 2& 2\\
+		\multirow{2}{*}{Main Row} & upper bound  & Sub-row 1 & Sub-row 1 & Sub-row 1 & Sub-row 1\\
+                              & lower bound & Sub-row 2 & Sub-row 2 & Sub-row 2 & Sub-row 2\\
 		\midrule
-		\multirow{2}{*}{Main Row} & Sub-row 1 & Sub-row 1 & Sub-row 1 \\
-                              & Sub-row 2 & Sub-row 2 & Sub-row 2 \\
-		\midrule
-		c&5& 9.8& 6& 2\\							
+		\multirow{2}{*}{Main Row} & upper bound  & Sub-row 1 & Sub-row 1 & Sub-row 1 & Sub-row 1\\
+                              & lower bound & Sub-row 2 & Sub-row 2 & Sub-row 2 & Sub-row 2\\						
 		\bottomrule
 	\end{tabular}
+}
+\caption{The lower and upper bounds for 3X10 architecture 
+		\label{tabLabel}}
 \end{table}
 
 % NETA - image of database + explain: "hey we did good - but not good enough". 
