@@ -5,7 +5,7 @@
 \citation{INTPROP}
 \citation{Reluplex}
 \citation{FORMALSEC}
-\citation{linearOverapprox}
+\citation{ABSTRACTINTER}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Robustness}{1}{section*.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Robustness of Several Classifiers}{1}{section*.2}\protected@file@percent }
@@ -19,6 +19,12 @@
 \citation{NNTOBINARCONSTRAINS,PLANET,Reluplex}
 \citation{MIPVERIFY}
 \citation{INCOMPLETE1,INCOMPLETE2}
+\citation{Reluplex,EFCIENTGLOBALROBU}
+\citation{MEASURENNROBCON,GLOBALPROPERTY}
+\citation{ROBUSTFROMDATASET}
+\citation{ANOTHERGLOBALPROPERTY}
+\citation{RETHINKLIP}
+\citation{GROMA}
 \citation{GLOBALROBUSNN}
 \citation{Reluplex,EFCIENTGLOBALROBU}
 \citation{VHAGAR}
@@ -26,90 +32,78 @@
 \citation{RELUDIFF}
 \citation{NEURODIFF}
 \citation{DIFFRNN}
+\citation{QEBVERIF}
+\citation{CFXROBUSTNESS}
 \citation{CFXROBUSTNESS}
 \citation{PREDICTIVEMULTIPICITY}
-\citation{QEBVERIF}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Robustness Verifiers for Neural Networks}{2}{subsection.2.1}\protected@file@percent }
 \newlabel{subsec:verifiers}{{2.1}{2}{Robustness Verifiers for Neural Networks}{subsection.2.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Robustness Property}{2}{subsection.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Differential Specifications of Similar Classifiers}{2}{subsection.2.3}\protected@file@percent }
+\citation{DECISIONBOUND}
+\citation{VHAGAR}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Problem Definition}{3}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Multi-label classifier}{3}{section*.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Robust neighborhood}{3}{section*.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Layers}{3}{section*.8}\protected@file@percent }
-\newlabel{par:layeredneighborhood}{{3}{3}{A layered neighborhood}{section*.9}{}}
-\@writefile{toc}{\contentsline {paragraph}{A layered neighborhood}{3}{section*.9}\protected@file@percent }
-\citation{MARVEL}
+\@writefile{toc}{\contentsline {paragraph}{Perturbation}{3}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Global Robustness of a Single Network}{3}{section*.8}\protected@file@percent }
 \citation{MIPVERIFY}
-\@writefile{toc}{\contentsline {paragraph}{Problem definition}{4}{section*.10}\protected@file@percent }
+\citation{MIPVERIFY}
+\@writefile{toc}{\contentsline {paragraph}{Problem definition}{4}{section*.9}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4}Our Approach}{4}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{The verifier}{4}{section*.11}\protected@file@percent }
-\citation{MARVEL}
-\citation{MARVEL}
-\citation{VANILLAGRADIENT}
-\citation{L0}
-\citation{PGD}
-\@writefile{toc}{\contentsline {paragraph}{The optimizer}{5}{section*.12}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{The CEGIS component}{5}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Encoding The Problem Definition}{4}{subsection.4.1}\protected@file@percent }
+\citation{MIPVERIFY}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Pruning the search space}{5}{subsection.4.2}\protected@file@percent }
+\newlabel{PRUNESUBSECTION}{{4.2}{5}{Pruning the search space}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Anytime Optimizer}{5}{subsection.4.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}Preliminary Results}{5}{section.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces A Double-MNIST sample.}}{6}{figure.caption.14}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces The networks used for this experience. }}{5}{table.caption.10}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:double-mnist-sample}{{1}{6}{A Double-MNIST sample}{figure.caption.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The classifiers' architecture.}}{6}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:arch_labeled}{{2}{6}{The classifiers' architecture}{figure.caption.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The average size of the synthesized neighborhoods.}}{6}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:neighborhoods_average_size}{{3}{6}{The average size of the synthesized neighborhoods}{figure.caption.15}{}}
-\newlabel{sub-fig:No defense FW}{{4\normalsize  Figure 4. (a):}{7}{fixed weights}{figure.caption.16}{}}
-\newlabel{sub@sub-fig:No defense FW}{{\normalsize  Figure 4. (a):}{7}{fixed weights}{figure.caption.16}{}}
-\newlabel{sub-fig:No defense SW}{{4\normalsize  Figure 4. (b):}{7}{sensitivity weights}{figure.caption.16}{}}
-\newlabel{sub@sub-fig:No defense SW}{{\normalsize  Figure 4. (b):}{7}{sensitivity weights}{figure.caption.16}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces No Defense}}{7}{figure.caption.16}\protected@file@percent }
-\newlabel{fig:No defense}{{4}{7}{No Defense}{figure.caption.16}{}}
-\newlabel{sub-fig:L0 defense FW}{{5\normalsize  Figure 5. (a):}{7}{fixed weights}{figure.caption.17}{}}
-\newlabel{sub@sub-fig:L0 defense FW}{{\normalsize  Figure 5. (a):}{7}{fixed weights}{figure.caption.17}{}}
-\newlabel{sub-fig:L0 defense SW}{{5\normalsize  Figure 5. (b):}{7}{sensitivity weights}{figure.caption.17}{}}
-\newlabel{sub@sub-fig:L0 defense SW}{{\normalsize  Figure 5. (b):}{7}{sensitivity weights}{figure.caption.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces $L_0$ Defense}}{7}{figure.caption.17}\protected@file@percent }
-\newlabel{fig:L0 defense}{{5}{7}{$L_0$ Defense}{figure.caption.17}{}}
-\newlabel{sub-fig:LInf defense FW}{{6\normalsize  Figure 6. (a):}{7}{fixed weights}{figure.caption.18}{}}
-\newlabel{sub@sub-fig:LInf defense FW}{{\normalsize  Figure 6. (a):}{7}{fixed weights}{figure.caption.18}{}}
-\newlabel{sub-fig:LInf defense SW}{{6\normalsize  Figure 6. (b):}{7}{sensitivity weights}{figure.caption.18}{}}
-\newlabel{sub@sub-fig:LInf defense SW}{{\normalsize  Figure 6. (b):}{7}{sensitivity weights}{figure.caption.18}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces $L_{\infty }$ Defense}}{7}{figure.caption.18}\protected@file@percent }
-\newlabel{fig:LInf defense}{{6}{7}{$L_{\infty }$ Defense}{figure.caption.18}{}}
-\citation{MARVEL}
+\newlabel{table_architectures}{{1}{5}{The networks used for this experience}{table.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The execution time of the baseline against our approach, when the model type is a fully connected network 3x10 .}}{6}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:3_x_10}{{1}{6}{The execution time of the baseline against our approach, when the model type is a fully connected network 3x10 }{figure.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The execution time of the baseline against our approach, when the model type is a convolutional neural network, trained using 20 iterations .}}{6}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:cnn0_1}{{2}{6}{The execution time of the baseline against our approach, when the model type is a convolutional neural network, trained using 20 iterations }{figure.caption.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces The lower and upper bounds for 3X10 architecture }}{6}{table.caption.14}\protected@file@percent }
+\newlabel{table_3_x_10}{{2}{6}{The lower and upper bounds for 3X10 architecture}{table.caption.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces The lower and upper bounds for CNN architecture with 20 iteration during training process. }}{6}{table.caption.15}\protected@file@percent }
+\newlabel{table_cnn0_1}{{3}{6}{The lower and upper bounds for CNN architecture with 20 iteration during training process}{table.caption.15}{}}
 \bibdata{bibliography}
-\bibcite{PGD}{{1}{}{{}}{{}}}
-\bibcite{VHAGAR}{{2}{}{{}}{{}}}
+\bibcite{VHAGAR}{{1}{}{{}}{{}}}
+\bibcite{RETHINKLIP}{{2}{}{{}}{{}}}
 \bibcite{RELUDIFF}{{3}{}{{}}{{}}}
 \bibcite{NEURODIFF}{{4}{}{{}}{{}}}
 \bibcite{PREDICTIVEMULTIPICITY}{{5}{}{{}}{{}}}
 \bibcite{INTPROP}{{6}{}{{}}{{}}}
-\bibcite{PLANET}{{7}{}{{}}{{}}}
-\bibcite{CFXROBUSTNESS}{{8}{}{{}}{{}}}
-\bibcite{ABSTRACTINTER}{{9}{}{{}}{{}}}
-\bibcite{INCOMPLETE2}{{10}{}{{}}{{}}}
-\bibcite{MARVEL}{{11}{}{{}}{{}}}
+\bibcite{ROBUSTFROMDATASET}{{7}{}{{}}{{}}}
+\bibcite{PLANET}{{8}{}{{}}{{}}}
+\bibcite{CFXROBUSTNESS}{{9}{}{{}}{{}}}
+\bibcite{ABSTRACTINTER}{{10}{}{{}}{{}}}
+\bibcite{INCOMPLETE2}{{11}{}{{}}{{}}}
 \bibcite{Reluplex}{{12}{}{{}}{{}}}
 \bibcite{DEEPXPLORE}{{13}{}{{}}{{}}}
 \bibcite{GLOBALROBUSNN}{{14}{}{{}}{{}}}
 \bibcite{lazarus2022mixed}{{15}{}{{}}{{}}}
-\bibcite{SATAPPROACH1}{{16}{}{{}}{{}}}
-\bibcite{SATAPPROACH2}{{17}{}{{}}{{}}}
-\bibcite{NNTOBINARCONSTRAINS}{{18}{}{{}}{{}}}
-\bibcite{qin2019verification}{{19}{}{{}}{{}}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Future Research Objectives}{8}{section.6}\protected@file@percent }
-\bibcite{DIFFRNN}{{20}{}{{}}{{}}}
-\bibcite{FORMALSEC}{{21}{}{{}}{{}}}
-\bibcite{VANILLAGRADIENT}{{22}{}{{}}{{}}}
-\bibcite{linearOverapprox}{{23}{}{{}}{{}}}
-\bibcite{singh2018robustness}{{24}{}{{}}{{}}}
-\bibcite{L0}{{25}{}{{}}{{}}}
-\bibcite{INCOMPLETE1}{{26}{}{{}}{{}}}
-\bibcite{MIPVERIFY}{{27}{}{{}}{{}}}
-\bibcite{QEBVERIF}{{28}{}{{}}{{}}}
-\bibcite{EFCIENTGLOBALROBU}{{29}{}{{}}{{}}}
+\bibcite{DECISIONBOUND}{{16}{}{{}}{{}}}
+\bibcite{SATAPPROACH1}{{17}{}{{}}{{}}}
+\bibcite{SATAPPROACH2}{{18}{}{{}}{{}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The execution time of the baseline against our approach, when the model type is a convolutional neural network, trained using 19 iterations .}}{7}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:cnn0_2}{{3}{7}{The execution time of the baseline against our approach, when the model type is a convolutional neural network, trained using 19 iterations }{figure.caption.13}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces The lower and upper bounds for CNN architecture with 19 iteration during training process. }}{7}{table.caption.16}\protected@file@percent }
+\newlabel{table_cnn0_2}{{4}{7}{The lower and upper bounds for CNN architecture with 19 iteration during training process}{table.caption.16}{}}
+\bibcite{GROMA}{{19}{}{{}}{{}}}
+\bibcite{GLOBALPROPERTY}{{20}{}{{}}{{}}}
+\bibcite{MEASURENNROBCON}{{21}{}{{}}{{}}}
+\bibcite{NNTOBINARCONSTRAINS}{{22}{}{{}}{{}}}
+\bibcite{qin2019verification}{{23}{}{{}}{{}}}
+\bibcite{DIFFRNN}{{24}{}{{}}{{}}}
+\bibcite{FORMALSEC}{{25}{}{{}}{{}}}
+\bibcite{singh2018robustness}{{26}{}{{}}{{}}}
+\bibcite{INCOMPLETE1}{{27}{}{{}}{{}}}
+\bibcite{MIPVERIFY}{{28}{}{{}}{{}}}
+\bibcite{ANOTHERGLOBALPROPERTY}{{29}{}{{}}{{}}}
+\bibcite{QEBVERIF}{{30}{}{{}}{{}}}
+\bibcite{EFCIENTGLOBALROBU}{{31}{}{{}}{{}}}
 \bibstyle{plain}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
-\gdef \@abspage@last{10}
+\gdef \@abspage@last{9}

@@ -12,18 +12,19 @@ In this thesis, we will design an algorithm that would evaluate the affect of a 
 As shown in Preliminary Results section, our approach manages to significantly improve execution times while maintaining accuracy of the algorithm.
 
 \subsection{Encoding The Problem Definition}
-We encode the problem definition as a MIP problem and them we submit it to a MIP solver. The encoding includes each network's computation twice: for the class confidence of $x$ and for the class confidence of the perturbation $f_P(x,\epsilon)$. The computation is expressed as ~\cite{MIPVERIFY} proposes. Moreover we encode constraints $\phi_{dep}$ capturing dependencies over the networks’ neurons (further described in~\ref{PRUNESUBSECTION}).
+We encode the problem definition as a MIP problem and them we submit it to a MIP solver. The encoding includes each network's computation twice: for the class confidence of $x$ and for the class confidence of the perturbation $f_P(x,\epsilon)$. The computation is expressed as ~\cite{MIPVERIFY} proposes. Moreover we encode constraints $\phi_{dep}$ capturing dependencies over the networks’ neurons (further described in~\ref{PRUNESUBSECTION}). For simplicity, we assume the networks have similar architecture. Each internal neuron has two real valued variables $z_{m,k}$  for ReLU computation and $\hat{z}_{m,k}=b_{m,k}+\sum_{k'=1}^{k_{m-1}} w_{m,k,k'}\cdot{z{m-1,k'}}$. For ReLU computation we use boolean variable $a_{m,k}$ and two real values lower and upper bound $l_{m,k},u_{m,k}$ such that $u_{m,k}\geq{\hat{z}}\geq{l_{m,k}}$.
 The encoding of the problem definition goes as follows:
 $$max{\delta_{c'}} subject to:$$
-$$ \epsilon'\in{I_\epsilon}; \phi_{dep}; \forall{F}\in{\{F_1,F_2\}}\forall{c''}\neq{c'}: z^{F}_{L,c'}-z^{F}_{L,c''}\geq\delta_{c'}; \forall{F}\in{\{F_1,F_2\}}\exists{c''}\neq{c'}: z^{F^p}_{L,c''}-z^{F^p}_{L,c'}>0$$
-$$\forall{m,k}\forall{F}\in{\{F_1,F_2\}}: \hat{z}^F_{m,k}=b_{m,k}+\sum_{k'=1}^{k_{m-1}} w_{m,k,k'}\cdot{z^F_{m-1,k'}}; \hat{z}^{F^p}_{m,k}=b_{m,k}+\sum_{k'=1}^{k_{m-1}} w_{m,k,k'}\cdot{z^{F^p}_{m-1,k'}}$$
+$$ \epsilon'\in{I_\epsilon}; \phi_{dep}; \forall{F}\in{\{F_1,F_2\}}; \forall{c''}\neq{c'}: z^{F}_{L,c'}-z^{F}_{L,c''}\geq\delta_{c'}; \forall{F}\in{\{F_1,F_2\}}\exists{c''}\neq{c'}: z^{F^p}_{L,c''}-z^{F^p}_{L,c'}>0$$
+$$\forall{m,k}: \hat{z}^F_{m,k}=b_{m,k}+\sum_{k'=1}^{k_{m-1}} w^F_{m,k,k'}\cdot{z^F_{m-1,k'}}; \hat{z}^{F^p}_{m,k}=b_{m,k}+\sum_{k'=1}^{k_{m-1}} w^F_{m,k,k'}\cdot{z^{F^p}_{m-1,k'}}$$
 $$z^F_{m,k}\geq0; z^{F^p}_{m,k}\geq0; z^F_{m,k}\geq{\hat{z}^F_{m,k}}; z^{F^p}_{m,k}\geq{\hat{z}^{F^p}_{m,k}}$$
 $$a^F_{m,k},a^{F^p}_{m,k}\in{\{0,1\}}: u^F_{m,k}\cdot{a^F_{m,k}}\geq{z^F_{m,k}}; u^{F^p}_{m,k}\cdot{a^{F^p}_{m,k}}\geq{z^{F^p}_{m,k}}$$
-
+$$\hat{z}^F_{m,k}-l^F_{m,k}(1-a^F_{m,k})\geq{z^F_{m,k}}; \hat{z}^{F^p}_{m,k}-l^{F^p}_{m,k}(1-a^{F^p}_{m,k})\geq{z^{F^p}_{m,k}}$$
 
 
 \subsection{Pruning the search space}\label{PRUNESUBSECTION}
-???
+We prune the search space by using constraints between the different network. Specifically, we use 
+
 
 \subsection{Anytime Optimizer}
 To reduce the execution time of the algorithm, we employ anytime optimization technique using Gurobi. To find the optimal solution to our problem definition, Gurobi defines two bounds: an upper bound $\delta_u\geq\delta$ (initialized by a large value) and a lower bound $\delta\geq\delta_l$. It then iteratively decreases $\delta_u$ until reaching a value that violates the constraints of the optimization problem. For the lower bound, Gurobi looks for feasible solutions for the optimization problem. These parallel updated continue until $\delta_u=\delta_l$. At anytime we can terminate the process and detect $\delta\in[\delta_l,\delta_u]$. 
