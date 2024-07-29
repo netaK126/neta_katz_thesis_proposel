@@ -5,23 +5,8 @@
 \section{Future Research Objectives}
 In light of the preliminary work, we aim to further explore our ideas in the following directions:
 \begin{itemize}
-    \item Reduce the number of queries to the MILP verifier, and generally reduce the execution time:
-    A main challenge in our current algorithm is the computation of the weakest points.
-    This idea has been adapted from~\cite{MARVEL}, focusing on single label classifiers.
-    In this setting, this computation involves at most $|C|$ queries per iteration to the MILP solver.
-    In our setting, it involves  $|C|^2$ queries per iteration.
-    This leads to a very high execution time.
-    To reduce the number of queries, we plan to use incomplete verifiers (see Section~\ref{subsec:verifiers}) in some queries, 
-    which are faster.
-    We plan to also reduce the number of queries from $|C|^2$ via mathematical considerations.
-%    \Dana{complete}.
-    \item Increase the size of the robust neighborhoods: The size of the returned neighborhood depends on the optimizer and the CEGIS component.
-    To increase the size, we aim to develop optimal cutting weights that minimally shrink a non-robust neighborhood to make it robust.
-    We plan to also investigate ways to identify layers that can expand more at the expense of others, with the goal of increasing the neighborhood size.
-%    \Dana{complete}
-     %This can be affected by many factors (e.g.\ the shrinking method used in the algorithm) - we will explore each of these factors and look for the best methods to achieve this goal.
-\item Consider more complex datasets: In our preliminary research, we focus on the Double-MNIST dataset. In our research, we plan to consider more complex datasets, e.g., ones showing road images. 
-    \item Infer explanations: Our algorithm finds a relation between two objects in a given image and a given multi-label classifier.
-    We aim to generalize the relations to infer explanations on the robustness level of a multi-label classifier. The explanations can tell us how much and where we can perturb an image without affecting the classification of the target object. 
-%    These can vary between different classifiers as well, which will also help us understand which type of multi-label networks are most vulnerable to perturbations in different locations in their inputs.
+    \item Generalizing to networks who differentiate in several weights' values. Currently our approach was only examine on two networks, with a single difference in one of the values on the last layer. Examining our algorithm over networks that have more differences between them can simulate a realistic situation and we can draw better conclusions and improvements.
+    \item Applying our algorithm to networks trained on databases other than MNIST.
+    \item Finding more constraints between the networks. As the preliminary results section presented, pruning the search space using constraints between the networks, significantly reduces the execution time. Therefore, we hypothesize that expanding the pruning of the search space could further decrease execution times.
+    \item Identifying optimization hints. These are partial assignments to the MIP’s variables. It is used for guiding towards the optimal solution. It reduces execution times and enhances the scalability of the system.
 \end{itemize}
