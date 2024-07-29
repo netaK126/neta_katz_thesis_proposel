@@ -23,8 +23,23 @@ $$\hat{z}^F_{m,k}-l^F_{m,k}(1-a^F_{m,k})\geq{z^F_{m,k}}; \hat{z}^{F^p}_{m,k}-l^{
 
 
 \subsection{Pruning the search space}\label{PRUNESUBSECTION}
-We prune the search space by using constraints between the different network. Specifically, we use 
+We prune the search space by using constraints between the different network. Specifically, we extend the constraints ~\cite{VHAGAR} proposes. The goal is to identify neurons, with ReLU activation function, from the $F_1, F_2, F^p_1$ and $F^p_2$: 
+$z^{F_1}_{m,k},z^{F_2}_{m,k}$ from the input networks' and from the perturbation networks': $z^{F^p_1}_{m,k}, z^{F^p_2}_{m,k}$, such that each pair of those four neurons (marked as $z_1,z_2$) satisfy equality or inequality $z_1\bowtie z_2$ where $\bowtie\in{\{=,>,<,\le,\ge\}}$. To determine the value of $\bowtie$ we solve the maximization problem:
+$$ u_{z_1,z_2}=max{\{z_1-z_2\}} $$
+$$ l_{z_1,z_2}=min{\{z_1-z_2\}} $$
+The values of $u_{z_1,z_2}$ and $l_{z_1,z_2}$ determine the relation between $z_1$ and $z_2$ and their match $a_1,a_2$ boolean variables:
+\begin{itemize}
+    \item If $u_{z_1,z_2}=l_{z_1,z_2}=0$ then $z_1=z_2$ and $a_1=a_2$.
+    \item if $l_{z_1,z_2}\bowtie{0}$ then $z_1\bowtie{z_2}$ and $a_1\ge{a_2}$ where $\bowtie\in{\{\ge,>\}}$
+    \item if $u_{z_1,z_2}\bowtie{0}$ then $z_1\bowtie{z_2}$ and $a_1\le{a_2}$ where $\bowtie\in{\{\le,<\}}$
+\end{itemize}
+Although solving this optimization problem is beneficial for relation detection between all four networks, it also worsen the complexity. Therefore we would like to solve this optimization problem only when necessary. Therefore, we focus on corresponding neurons (i.e., if $z_1=z^F_{m,k}$ and $z_2=z^{\hat{F}}_{m',k'}$ where $F,\hat{F}\in{\{F_1,F_2,F^p_1,F^p_2\}}$ and $F_1\neq{F_2}$ then $m=m'$ and $k=k'$). We first check the concrete bounds: without the loss of generality, if the lower bound of $z_1$ is greater than the upper bound of $z_2$ then $z_1>z_2$. Otherwise, we solve the optimization problem for corresponding neurons. Another way to avoid solving the optimization problem is using dependency prorogation. We extend the proposed prorogation ~\cite{VHAGAR} for our algorithm. Given neurons $z_1=z^F_{m,k}$ and $z_2=z^{\hat{F}}_{m',k'}$ where $F,\hat{F}\in{\{F_1,F_2,F^p_1,F^p_2\}}$, $F_1\neq{F_2}$, not necessarily with ReLU activation function, we define the dependency prorogation as follows:
 
+\begin{itemize}
+    \item if $\forall{i} (w_{m,k,k_i}\cdot{z^F_{m-1,k_i}}=w_{m,k',k_i}\cdot{z^{\hat{F}}_{m-1,k'_i}})$ then $z^F_{m,k}=z^{\hat{F}}_{m',k'}$ and $a^F_{m,k}=a^{\hat{F}}_{m',k'}$
+    \item if $\forall{i} (w_{m,k,k_i}\cdot{z^F_{m-1,k_i}}\ge{w_{m,k',k_i}\cdot{z^{\hat{F}}_{m-1,k'_i}}})$ then $z^F_{m,k}\ge{z^{\hat{F}}_{m',k'}}$ and $a^F_{m,k}\ge{a^{\hat{F}}_{m',k'}}$
+    \item if $\forall{i} (w_{m,k,k_i}\cdot{z^F_{m-1,k_i}}\le{w_{m,k',k_i}\cdot{z^{\hat{F}}_{m-1,k'_i}}})$ then $z^F_{m,k}\le{z^{\hat{F}}_{m',k'}}$ and $a^F_{m,k}\le{a^{\hat{F}}_{m',k'}}$
+\end{itemize}
 
 \subsection{Anytime Optimizer}
 To reduce the execution time of the algorithm, we employ anytime optimization technique using Gurobi. To find the optimal solution to our problem definition, Gurobi defines two bounds: an upper bound $\delta_u\geq\delta$ (initialized by a large value) and a lower bound $\delta\geq\delta_l$. It then iteratively decreases $\delta_u$ until reaching a value that violates the constraints of the optimization problem. For the lower bound, Gurobi looks for feasible solutions for the optimization problem. These parallel updated continue until $\delta_u=\delta_l$. At anytime we can terminate the process and detect $\delta\in[\delta_l,\delta_u]$. 
