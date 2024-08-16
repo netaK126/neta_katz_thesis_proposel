@@ -2,14 +2,15 @@
 %! Date = 01/05/2023
 
 \section{Preliminary Results}
-We evaluated our preliminary approach on the MNIST dataset, consisting of images showing a singular digit.
-The classifier's goal is to return the correct classification of a given digit. Specifically we checked the the robustness of class $c=0$.
+In this section, we describe our preliminary results.
+We evaluate our approach on classifiers for the MNIST dataset, consisting of images showing a single digit.
+The classifier's goal is to return the digit shown in the image. In our experiments, we focus on the global robustness property for the class $c=0$ and \Dana{add two more classes}.
 
-We evaluated our algorithm against three different scenarios using three different models: a fully connected network 3X10, and two convolutional neural networks with different number of iterations during training, detailed in table~\ref{table_architectures}. For each model, noted as $D$, we defined encoded our problem definition using MIPVerify ~\cite{MIPVERIFY}, where $F_1$ is $D$ and $F_2$ is also $D$ with a slight change in a singular weight in the last layer on $D$. MIPVerify returns the bounds for the confidence and the time it took to solve. The timeout was set to 50800 seconds (14 hours, 6 min, and 40 seconds). We compared between two approaches for each model:
-\begin{itemize}
-    \item Solving the confidence bounds without the proposed constraints, noted as "Baseline".
-    \item Solving the confidence bounds using the proposed constraints, noted as "Our approach".
-\end{itemize}
+We consider two network architectures: 
+a fully connected network consisting of three layers, ten neurons in each, denoted \texttt{3x10}, and a convolutional neural network. 
+We consider two variations of the convolutional networks, where one is trained with one more iteration. \ref{table_architectures} describes our models. For each model $D$, we define $D_1$ as $D$ and $D_2$ as $D$ with a slight change in a single weight in the last layer on $D$\Dana{which weight? what is the difference in the value?}. We provide the MILP solver a timeout of 50800 seconds (14 hours, 6 min, and 40 seconds)\Dana{too specific timeout, how did you choose it? also super long, two hours is not enough?}. We run the naive approach (without any constraints), called \emph{Baseline}, and our approach (with dependency constraints):
+\Dana{what is the perturbation?}
+Like~\cite{VHAGAR}, our algorithm is anytime, namely it computes lower and upper bounds on the desired class confidence $\delta_c$.
 
 \begin{table}[H]
     \centering
@@ -28,8 +29,8 @@ We evaluated our algorithm against three different scenarios using three differe
         \label{table_architectures}}
 \end{table}
 
-Figure~\ref{fig:3_x_10}, figure~\ref{fig:cnn0_1} and figure~\ref{fig:cnn0_2} show the gaps in the execution time for the 3X10, CNN1, and CNN2 respectively.
-The preliminary results show a significant improvement of 82\% in average, across all examined models, in execution time when applying the second approach. 
+Figure~\ref{fig:3_x_10}, Figure~\ref{fig:cnn0_1} and Figure~\ref{fig:cnn0_2} show the gaps in the execution time for the 3X10, CNN1, and CNN2 respectively.
+Results show that our approach significant reduces the execution time, on average by 82\%. 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.95\textwidth]{3x10.png}
@@ -40,7 +41,7 @@ The preliminary results show a significant improvement of 82\% in average, acros
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.95\textwidth]{cnn0_1.png}
-  \caption{The execution time of the baseline against our approach, when the model type is a convolutional neural network, trained using 20 iterations .}
+  \caption{The execution time of the baseline against our approach, when the model type is a convolutional neural network, trained using 20 iterations\Dana{shortened it, call it for example conv-20}.}
   \label{fig:cnn0_1}
 \end{figure}
 
@@ -51,8 +52,9 @@ The preliminary results show a significant improvement of 82\% in average, acros
   \label{fig:cnn0_2}
 \end{figure}
 
-
-Table~\ref{table_3_x_10} shows that the bounds are slightly tighter when using the base approach, however it is negligible. Table~\ref{table_cnn0_1} and Table~\ref{table_cnn0_2} show better results when using our approach. This is due to timeout. the base approach is much slower, and does not manage to find tighter bound for more complex architectures before reaching timeout. Therefore, our approach enhances scalability and its accuracy is similar to the base approach for the tested scenario of two almost identical networks, besides a singular weight. Our goal is to further extend this improvement to other scenarios as well. 
+We next report the lower and upper bounds on $\delta_c$, computed within the timeout.
+Table~\ref{table_3_x_10} shows the bounds for the \texttt{3x10} network. It shows that both approach obtain comparable bounds, with the baseline obtaining slightly tighter bounds. Table~\ref{table_cnn0_1} and Table~\ref{table_cnn0_2} show the results for the convolutional networks. Results show that our approach enables to improve tighter bounds by\Dana{complete}\%. %This is due to timeout. the base approach is much slower, and does not manage to find tighter bound for more complex architectures before reaching timeout. 
+Namely, preliminary results show that our approach enhances scalability and consequently its accuracy. %is similar to the base approach for the tested scenario of two almost identical networks, besides a singular weight. Our goal is to further extend this improvement to other scenarios as well. 
 
 \begin{table}[H]
 	\centering
