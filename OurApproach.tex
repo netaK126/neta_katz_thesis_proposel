@@ -3,7 +3,7 @@
 
 \section{Our Approach}
 In this section, we introduce our current approach for solving our problem.
-Many verification algorithms for neural networks leverage constraint solving, in particular MILP solvers\Dana{add citations, see Vhagar's paper}. 
+Many verification algorithms for neural networks leverage constraint solving, in particular MILP solvers ~\cite{VHAGAR,CFXROBUSTNESS,QEBVERIF,MIPVERIFY}.%\Dana{add citations, see Vhagar's paper}. 
 %In this thesis, we will design an algorithm that would evaluate the affect of a perturbation on class confidence of two multi-label classifiers with the same architecture, for a given class $c'$. 
 By building on these techniques, we can encode our problem as MILP. However, this approach is highly inscalable both because it reasons about a global property and because it analyzes two networks.
 %A naive algorithm simply encodes the two architectures into MILP verifier ~\cite{MIPVERIFY}. This shall be addressed as 'Base Approach'. Although this algorithm grantees accuracy, it is lack of scalability, and causes long execution times. 
@@ -39,10 +39,10 @@ $$\hat{z}^F_{m,k}-l^F_{m,k}(1-a^F_{m,k})\geq{z^F_{m,k}}; \hat{z}^{F^p}_{m,k}-l^{
 \subsection{Identifying Dependencies for Pruning the Search Space}\label{PRUNESUBSECTION}
 We next describe the dependencies we integrate to reduce the problem's complexity.
 %We prune the search space by using constraints between the different network. Specifically, we extend the constraints ~\cite{VHAGAR} proposes. 
-Similarly to~\cite{VHAGAR}, our dependencies aim at identifying pairs of neurons over the networks $F_1, F_2, F^p_1$\Dana{you didn't define $F^p_1$, and $F^p_2$} and $F^p_2$: 
+Similarly to~\cite{VHAGAR}, our dependencies aim at identifying pairs of neurons over the networks $F_1, F_2, F^p_1$ and $F^p_2$, where $F^p_1$ and $F^p_2$ are similiar to $F_1,F_2$ with respect to the perturbed input: %\Dana{you didn't define $F^p_1$, and $F^p_2$}
 $z^{F_1}_{m,k},z^{F_2}_{m,k}$ from the input networks' and from the perturbation networks': $z^{F^p_1}_{m,k}, z^{F^p_2}_{m,k}$, such that each pair of those four neurons (marked as $z_1,z_2$\Dana{why mark them differently?}) satisfy equality or inequality $z_1\bowtie z_2$ where $\bowtie\in{\{=,>,<,\le,\ge\}}$. 
 
-A naive approach to determine all dependencies is to consider every pair of networks and every relation $\bowtie$ and solve the maximization problem\Dana{and minimization?}:
+A naive approach to determine all dependencies is to consider every pair of networks and every relation $\bowtie$ and solve the optimization problem: %\Dana{and minimization?}:
 $$ u_{z_1,z_2}=\max{\{z_1-z_2\}} $$
 $$ l_{z_1,z_2}=\min{\{z_1-z_2\}} $$
 The values of $u_{z_1,z_2}$ and $l_{z_1,z_2}$ determine the relation between $z_1$ and $z_2$ and their match $a_1,a_2$ boolean variables:
