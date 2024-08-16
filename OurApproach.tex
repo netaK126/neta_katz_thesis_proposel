@@ -63,6 +63,6 @@ Therefore, we focus on corresponding neurons (i.e., if $z_1=z^F_{m,k}$ and $z_2=
     \item if $\forall{i} (w_{m,k,k_i}\cdot{z^F_{m-1,k_i}}\le{w_{m,k',k_i}\cdot{z^{\hat{F}}_{m-1,k'_i}}})$ then $z^F_{m,k}\le{z^{\hat{F}}_{m',k'}}$ and $a^F_{m,k}\le{a^{\hat{F}}_{m',k'}}$
 \end{itemize}
 
-\subsection{Anytime Optimizer}
-\Dana{is this identical to Vhagar? if yes, omit, otherwise describe the new part}
-To reduce the execution time of the algorithm, we employ anytime optimization technique using Gurobi. To find the optimal solution to our problem definition, Gurobi defines two bounds: an upper bound $\delta_u\geq\delta$ (initialized by a large value) and a lower bound $\delta\geq\delta_l$. It then iteratively decreases $\delta_u$ until reaching a value that violates the constraints of the optimization problem. For the lower bound, Gurobi looks for feasible solutions for the optimization problem. These parallel updated continue until $\delta_u=\delta_l$. At anytime we can terminate the process and detect $\delta\in[\delta_l,\delta_u]$. 
+%\subsection{Anytime Optimizer}
+%\Dana{is this identical to Vhagar? if yes, omit, otherwise describe the new part}
+%To reduce the execution time of the algorithm, we employ anytime optimization technique using Gurobi. To find the optimal solution to our problem definition, Gurobi defines two bounds: an upper bound $\delta_u\geq\delta$ (initialized by a large value) and a lower bound $\delta\geq\delta_l$. It then iteratively decreases $\delta_u$ until reaching a value that violates the constraints of the optimization problem. For the lower bound, Gurobi looks for feasible solutions for the optimization problem. These parallel updated continue until $\delta_u=\delta_l$. At anytime we can terminate the process and detect $\delta\in[\delta_l,\delta_u]$. 

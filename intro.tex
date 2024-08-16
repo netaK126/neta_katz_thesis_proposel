@@ -3,19 +3,25 @@
 
 \section{Introduction}
 Deep neural networks have been proven successful in various applications, in particular as image classifiers.
-To make them reliable, many verifiers have been developed to verify various kinds of properties, such as adhering to constraints~\cite{Reluplex}\Dana{add 2 more citations} or being locally robust to attacks~\cite{Reluplex,ABSTRACTINTER}\Dana{add one more citations}. 
+To make them reliable, many verifiers have been developed to verify various kinds of properties, such as adhering to constraints~\cite{Reluplex,COMPLETE,PLANET} %\Dana{add 2 more citations} 
+or being locally robust to attacks~\cite{Reluplex,ABSTRACTINTER,NEURIPS2021_fac7fead,COMPLETE}.%\Dana{add one more citations}. 
 %Existing verifiers take non-negligible time. %and often verify local properties, which do not generalize to any input. 
-However, similarly to classical software, neural networks are often evolving to increase their accuracy or extend their function to new kinds of inputs\Dana{find citations}. 
+However, similarly to classical software, neural networks are often evolving to increase their accuracy or extend their function to new kinds of inputs ~\cite{SURVEY_ROBUSTNESS,INTPROP}. %\Dana{find citations}
 While it is possible to run from scratch the existing verifiers, this introduces high overhead.
-This gave rise to incremental verification \Dana{add citations}.  
+This gave rise to incremental verification ~\cite{IVAN,INC_SEMIDEFINIT,INC_SMOOTH}.%\Dana{add citations}.  
 However, to date all existing approaches focus on local properties, which do not enable to fully understand the differences of the two networks.
 
 \paragraph{Goal: Differential analysis of neural networks}
-Differential analysis focuses on determining the differences of two similar programs\Dana{add 4-5 citations}. 
+Differential analysis focuses on determining the differences of two similar programs ~\cite{RELUDIFF,NEURODIFF,DIFFRNN,QEBVERIF,CFXROBUSTNESS}
+%\Dana{add 4-5 citations}.
 In this thesis, we propose to design an algorithm for computing the differential analysis for neural networks.
 The main challenge in differential analysis is that it requires to reason about \emph{any} input, 
-making this problem highly complex. Further, although there are many verifiers for neural networks, the vast majority focuses on local properties\Dana{add 6-7 citations}, and thus cannot be extended to our global property.
-While there are global robustness verifiers for neural networks\Dana{add all citations}, they all focus on analyzing a single network. 
+making this problem highly complex. Further, although there are many verifiers for neural networks, the vast majority focuses on local properties ~\cite{Reluplex,ABSTRACTINTER,NEURIPS2021_fac7fead,COMPLETE,CROWN}
+%\Dana{add 6-7 citations}
+, and thus cannot be extended to our global property.
+While there are global robustness verifiers for neural networks ~\cite{Reluplex,ANOTHERGLOBALPROPERTY,MEASURENNROBCON,GLOBALPROPERTY}
+%\Dana{add all citations}
+they all focus on analyzing a single network. 
 Extending them to analyze the differences of two networks is highly challenging as the complexity, which is already high, is doubled.
 
 %\paragraph{Robustness}
@@ -31,11 +37,12 @@ Our main idea is to leverage the similarity of the networks to reduce the analys
 The challenge is to automatically identify these similarities and capture them via linear constraints that approximate the true similarities as close as possible.
 
 \paragraph{Preliminary results}
-We extended a global robustness verifier for a single network\Dana{add citation}
+We extended a global robustness verifier for a single network ~\cite{VHAGAR,MEASURENNROBCON,GLOBALPROPERTY}
+%\Dana{add citation}
 to reason about the similarity of two very similar networks (differing in a single weight in the last layer).
 %We evaluated it on classifiers that were trained on the MNIST database, whose architectures are fully connected or convolutional. More specifically, we evaluated our basic version on two classifiers that are almost identical in terms of architectures and weights, where the only difference between them is a small addition to one of the entries of the vector of the last layer of the network.
 Experimental results show that by integrating the similarity constraints, the running time of the verifier reduces on average by 82\%.
 
 
 \paragraph{Future goals}
-The main goal of this thesis is to extend our algorithm to support a wider range of differences of networks and automatically extract similarity constraints. We further plan to extend our algorithm to analyze the differences of the networks with respect to different properties (e.g., robustness to different kinds of perturbations). Lastly, we aim to make our analysis as scalable as possible.
+The main goal of this thesis is to extend our algorithm to support a wider range of differences of networks and automatically extract similarity constraints. We further plan to extend our algorithm to analyze the differences of the networks with respect to different properties (e.g., robustness to different kinds of perturbations). Lastly, we aim to make our analysis as scalable as possible. 

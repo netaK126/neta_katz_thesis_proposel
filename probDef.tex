@@ -5,9 +5,9 @@
 In this section, we define the problem we address.
 
 \paragraph{Image classifiers}
-An image classifier $D$ maps a two-dimensional image $x\in \mathbb{R}^{n \times m}$ to a score vector over the possible set of classes $C=\{1,\ldots,c\}$, that is:
-$D: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$.
-Given an input $x$, the classification $D$ assigns to $x$ is the class with the maximal score: $class(N(x))=argmax(N(x))$.
+An image classifier $F$ maps a two-dimensional image $x\in \mathbb{R}^{n \times m}$ to a score vector over the possible set of classes $C=\{1,\ldots,c\}$, that is:
+$F: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$.
+Given an input $x$, the classification $F$ assigns to $x$ is the class with the maximal score: $class(N(x))=argmax(N(x))$.
 
 \paragraph{Perturbation}
 Give an input $x$ and a perturbation vector $\epsilon'=(\epsilon_1,...,\epsilon_k)\in{\mathbb{R}}^{|k|}$, a perturbation is a function $f_P(x,\epsilon')$ defining how the input $x$ is perturbed. The perturbation vector $\epsilon'$ is confined in a given range $I_\epsilon$, denoted as $\epsilon'\in I_\epsilon$, where $I_\epsilon$ is a series of intervals, each bounding the possible values of each perturbation vector's entry: $\forall{k}$ $(\epsilon')_k\in (I_\epsilon)_k$.
@@ -17,22 +17,22 @@ In this thesis, we follow the global robustness property defined by~\cite{DECISI
 %Given a perturbation $P$ and its range $I_\epsilon$, a naive approach for global robustness is:
 %$\forall{x}\forall{\epsilon'}\in{I_\epsilon}$  argmax($D(x)$) = argmax($f_P(x,\epsilon')$).
 %However, this property is problematic because some inputs $x$ are too close to the classifier's decision boundaries and violate this property ~\cite{DECISIONBOUND}. As a result it is impossible to satisfy it for non-trivial classifier. Thus, this study focuses on inputs whose networks' confidence in the classification is high enough ~\cite{VHAGAR}:\\
-This property focuses on the minimal \emph{class confidence} $\delta$ of a network $D$, for a given class $c'$, such that \emph{every} input that the network classifies with a confidence over $\delta$ is robust with respect to a perturbation $P$. We next define it formally.
-Given a classifier $D$, an input $x$ and a class $c'\in{C}$, the class confidence of $D$ in $c'$ is:
-$$\mathcal{C}(x,c',D)=D(x)_{c'}-max_{c''\ne c'}(D(x)_{c''})$$
+This property focuses on the minimal \emph{class confidence} $\delta$ of a network $F$, for a given class $c'$, such that \emph{every} input that the network classifies with a confidence over $\delta$ is robust with respect to a perturbation $P$. We next define it formally.
+Given a classifier $F$, an input $x$ and a class $c'\in{C}$, the class confidence of $F$ in $c'$ is:
+$$\mathcal{C}(x,c',F)=F(x)_{c'}-max_{c''\ne c'}(F(x)_{c''})$$
 %For a single network, we define the property $\delta-Global Robustness$ as follows:\\
-Given a classifier $D$, an input $x$, a class $c'\in{C}$, a perturbation $P$, a range $I_\epsilon$ and a class confidence $\delta>0$, the classifier $D$ is $\delta$-globally robust for $c'$ under $(P,I_\epsilon)$ if:\\
-$$\forall{x}\forall{\epsilon'}\in{I_\epsilon}:    \mathcal{C}(x,c',D) \geq \delta \rightarrow argmax(D(x)) = argmax(f_P(x,\epsilon')) $$
+Given a classifier $F$, an input $x$, a class $c'\in{C}$, a perturbation $P$, a range $I_\epsilon$ and a class confidence $\delta>0$, the classifier $F$ is $\delta$-globally robust for $c'$ under $(P,I_\epsilon)$ if:\\
+$$\forall{x}\forall{\epsilon'}\in{I_\epsilon}:    \mathcal{C}(x,c',F) \geq \delta \rightarrow argmax(F(x)) = argmax(f_P(x,\epsilon')) $$
 Intuitively, the classifier is robust with respect to $P$ for any input classified with confidence higher or equal to the minimal $\delta$. In practice, it is easier to compute the dual bound, i.e., the maximal globally non-robust bound. That is, the maximal class confidence $\delta$ that violates the constraint:
-$$\max{\delta}, \texttt{ subject to }. \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c',D) \geq \delta \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',D)\leq 0$$
+$$\max{\delta}, \texttt{ subject to }. \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c',F) \geq \delta \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',F)\leq 0$$
 
 \paragraph{Problem definition} 
 In this thesis, we extend this property for computing the differences of two (similar) classifiers. Formally,
-Given two classifiers $D_1,D_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to compute the maximal class confidence $\delta$, where there $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ satisfying:\Dana{please explain in words this definition}
-
+Given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to compute the maximal class confidence $\delta$, where there $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ satisfying:%\Dana{please explain in words this definition}
 \begin{enumerate}[nosep,nolistsep]
-    \item $\mathcal{C}_{F_1}(x,c',D) \geq \delta$\Dana{what is D? should it be $D_1$?}
-    \item $\mathcal{C}_{F_2}(x,c',D) > 0$
-    \item $\mathcal{C}_{F_1}(f_P(x,\epsilon'),c',D)\leq 0$
-    \item $\mathcal{C}_{F_2}(f_P(x,\epsilon'),c',D)\leq 0$
+    \item $\mathcal{C}(x,c',F_1) \geq \delta$ %\Dana{what is D? should it be $D_1$?} NETA - You are right. there was a mistake. I fixed it.
+    \item $\mathcal{C}(x,c',F_2) > 0$
+    \item $\mathcal{C}(f_P(x,\epsilon'),c',F_1)\leq 0$
+    \item $\mathcal{C}(f_P(x,\epsilon'),c',F_2)\leq 0$
 \end{enumerate} 
+In simple terms, the class confidence score of $F_1$ for class $c'$ is maximized so that $F_2$ also classifies $x$ as $c'$, while both classifiers $F_1$ and $F_2$ fail to classify the perturbed input $f_P(x,\epsilon')$. 
