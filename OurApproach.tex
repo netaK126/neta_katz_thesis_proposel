@@ -2,19 +2,33 @@
 %! Date = 01/05/2023
 
 \section{Our Approach}
+In this section, we introduce our current approach for solving our problem.
+Many verification algorithms for neural networks leverage constraint solving, in particular MILP solvers\Dana{add citations, see Vhagar's paper}. 
+%In this thesis, we will design an algorithm that would evaluate the affect of a perturbation on class confidence of two multi-label classifiers with the same architecture, for a given class $c'$. 
+By building on these techniques, we can encode our problem as MILP. However, this approach is highly inscalable both because it reasons about a global property and because it analyzes two networks.
+%A naive algorithm simply encodes the two architectures into MILP verifier ~\cite{MIPVERIFY}. This shall be addressed as 'Base Approach'. Although this algorithm grantees accuracy, it is lack of scalability, and causes long execution times. 
+To scale, our algorithm identifies and integrates dependencies between the networks, whose computations are very similar. 
+We next describe the MILP encoding and then our current approach for computing the dependencies.
+%Therefore, our goal is to enhance the scalability and cut the execution time. Our approach consists 3 main stages:
+%\begin{itemize}
+%    \item Encoding into MIP verifier the problem definition.
+ %   \item Pruning the search space by computing dependencies stemming from the perturbation or the networks' computations
+ %   \item Finding the upper and lower bounds using anytime optimization called Gurobi.
+%\end{itemize}
+%As shown in Preliminary Results section, our approach manages to significantly improve execution times while maintaining accuracy of the algorithm.
 
-In this thesis, we will design an algorithm that would evaluate the affect of a perturbation on class confidence of two multi-label classifiers with the same architecture, for a given class $c'$. A naive algorithm simply encodes the two architectures into MILP verifier ~\cite{MIPVERIFY}. This shall be addressed as 'Base Approach'. Although this algorithm grantees accuracy, it is lack of scalability, and causes long execution times. Therefore, our goal is to enhance the scalability and cut the execution time. Our approach consists 3 main stages:
-\begin{itemize}
-    \item Encoding into MIP verifier the problem definition.
-    \item Pruning the search space by computing dependencies stemming from the perturbation or the networks' computations
-    \item Finding the upper and lower bounds using anytime optimization called Gurobi.
-\end{itemize}
-As shown in Preliminary Results section, our approach manages to significantly improve execution times while maintaining accuracy of the algorithm.
+\subsection{MILP Encoding}
+%We encode the problem definition as a MIP problem and them we submit it to a MIP solver. 
+Our MILP encoding extends the encoding by~\cite{VHAGAR}, for reasoning about a global robustness property for a single network.
+This encoding includes each network's computation twice: for capturing the class confidence of $x$ and for capturing the class confidence of the perturbed input $f_P(x,\epsilon)$. This encoding also incorporates dependencies between the computation of $x$ and its perturbed input, within $\phi_{dep}$. We extend this encoding for our setting by introducing this encoding for each of the networks and integrating their dependencies stemming from their similarity.
+%For simplicity, we assume the networks have similar architecture. 
 
-\subsection{Encoding The Problem Definition}
-We encode the problem definition as a MIP problem and them we submit it to a MIP solver. The encoding includes each network's computation twice: for the class confidence of $x$ and for the class confidence of the perturbation $f_P(x,\epsilon)$. The computation is expressed as ~\cite{MIPVERIFY} proposes. Moreover we encode constraints $\phi_{dep}$ capturing dependencies over the networks’ neurons (further described in~\ref{PRUNESUBSECTION}). For simplicity, we assume the networks have similar architecture. Each internal neuron has two real valued variables $z_{m,k}$  for ReLU computation and $\hat{z}_{m,k}=b_{m,k}+\sum_{k'=1}^{k_{m-1}} w_{m,k,k'}\cdot{z{m-1,k'}}$. For ReLU computation we use boolean variable $a_{m,k}$ and two real values lower and upper bound $l_{m,k},u_{m,k}$ such that $u_{m,k}\geq{\hat{z}}\geq{l_{m,k}}$.
-The encoding of the problem definition goes as follows:
-$$max{\delta_{c'}} subject to:$$
+In the encoding of~\cite{VHAGAR}, following the encoding proposed by~\cite{MIPVERIFY}, each internal neuron has two real valued variables $\hat{z}_{m,k}$, for the affine computation, and ${z}_{m,k}$ for the ReLU's computation. Since ReLU is a non-linear function, this encoding relies on a boolean variable $a_{m,k}$ and two real values lower and upper bound $l_{m,k},u_{m,k}$, bounding the values of the input to the ReLU: $u_{m,k}\geq{\hat{z}}\geq{l_{m,k}}$.
+We introduce this encoding for each of our networks $D_1$ and $D_2$.
+\Dana{in the encoding you cannot say $\forall F\in F_1,F_2$, you need to write it twice. Also change it to $D_1$ and $D_2$}.
+\Dana{please also explain in the text the difference: in one network you have $>\delta$ and the other is $>0$}
+
+$$\max{\delta_{c'}} \text{ subject to:}$$
 $$ \epsilon'\in{I_\epsilon}; \phi_{dep}; \forall{F}\in{\{F_1,F_2\}}; \forall{c''}\neq{c'}: z^{F}_{L,c'}-z^{F}_{L,c''}\geq\delta_{c'}; \forall{F}\in{\{F_1,F_2\}}\exists{c''}\neq{c'}: z^{F^p}_{L,c''}-z^{F^p}_{L,c'}>0$$
 $$\forall{m,k}: \hat{z}^F_{m,k}=b_{m,k}+\sum_{k'=1}^{k_{m-1}} w^F_{m,k,k'}\cdot{z^F_{m-1,k'}}; \hat{z}^{F^p}_{m,k}=b_{m,k}+\sum_{k'=1}^{k_{m-1}} w^F_{m,k,k'}\cdot{z^{F^p}_{m-1,k'}}$$
 $$z^F_{m,k}\geq0; z^{F^p}_{m,k}\geq0; z^F_{m,k}\geq{\hat{z}^F_{m,k}}; z^{F^p}_{m,k}\geq{\hat{z}^{F^p}_{m,k}}$$
@@ -22,18 +36,26 @@ $$a^F_{m,k},a^{F^p}_{m,k}\in{\{0,1\}}: u^F_{m,k}\cdot{a^F_{m,k}}\geq{z^F_{m,k}};
 $$\hat{z}^F_{m,k}-l^F_{m,k}(1-a^F_{m,k})\geq{z^F_{m,k}}; \hat{z}^{F^p}_{m,k}-l^{F^p}_{m,k}(1-a^{F^p}_{m,k})\geq{z^{F^p}_{m,k}}$$
 
 
-\subsection{Pruning the search space}\label{PRUNESUBSECTION}
-We prune the search space by using constraints between the different network. Specifically, we extend the constraints ~\cite{VHAGAR} proposes. The goal is to identify neurons, with ReLU activation function, from the $F_1, F_2, F^p_1$ and $F^p_2$: 
-$z^{F_1}_{m,k},z^{F_2}_{m,k}$ from the input networks' and from the perturbation networks': $z^{F^p_1}_{m,k}, z^{F^p_2}_{m,k}$, such that each pair of those four neurons (marked as $z_1,z_2$) satisfy equality or inequality $z_1\bowtie z_2$ where $\bowtie\in{\{=,>,<,\le,\ge\}}$. To determine the value of $\bowtie$ we solve the maximization problem:
-$$ u_{z_1,z_2}=max{\{z_1-z_2\}} $$
-$$ l_{z_1,z_2}=min{\{z_1-z_2\}} $$
+\subsection{Identifying Dependencies for Pruning the Search Space}\label{PRUNESUBSECTION}
+We next describe the dependencies we integrate to reduce the problem's complexity.
+%We prune the search space by using constraints between the different network. Specifically, we extend the constraints ~\cite{VHAGAR} proposes. 
+Similarly to~\cite{VHAGAR}, our dependencies aim at identifying pairs of neurons over the networks $F_1, F_2, F^p_1$\Dana{you didn't define $F^p_1$, and $F^p_2$} and $F^p_2$: 
+$z^{F_1}_{m,k},z^{F_2}_{m,k}$ from the input networks' and from the perturbation networks': $z^{F^p_1}_{m,k}, z^{F^p_2}_{m,k}$, such that each pair of those four neurons (marked as $z_1,z_2$\Dana{why mark them differently?}) satisfy equality or inequality $z_1\bowtie z_2$ where $\bowtie\in{\{=,>,<,\le,\ge\}}$. 
+
+A naive approach to determine all dependencies is to consider every pair of networks and every relation $\bowtie$ and solve the maximization problem\Dana{and minimization?}:
+$$ u_{z_1,z_2}=\max{\{z_1-z_2\}} $$
+$$ l_{z_1,z_2}=\min{\{z_1-z_2\}} $$
 The values of $u_{z_1,z_2}$ and $l_{z_1,z_2}$ determine the relation between $z_1$ and $z_2$ and their match $a_1,a_2$ boolean variables:
 \begin{itemize}
     \item If $u_{z_1,z_2}=l_{z_1,z_2}=0$ then $z_1=z_2$ and $a_1=a_2$.
     \item if $l_{z_1,z_2}\bowtie{0}$ then $z_1\bowtie{z_2}$ and $a_1\ge{a_2}$ where $\bowtie\in{\{\ge,>\}}$
     \item if $u_{z_1,z_2}\bowtie{0}$ then $z_1\bowtie{z_2}$ and $a_1\le{a_2}$ where $\bowtie\in{\{\le,<\}}$
 \end{itemize}
-Although solving this optimization problem is beneficial for relation detection between all four networks, it also worsen the complexity. Therefore we would like to solve this optimization problem only when necessary. Therefore, we focus on corresponding neurons (i.e., if $z_1=z^F_{m,k}$ and $z_2=z^{\hat{F}}_{m',k'}$ where $F,\hat{F}\in{\{F_1,F_2,F^p_1,F^p_2\}}$ and $F_1\neq{F_2}$ then $m=m'$ and $k=k'$). We first check the concrete bounds: without the loss of generality, if the lower bound of $z_1$ is greater than the upper bound of $z_2$ then $z_1>z_2$. Otherwise, we solve the optimization problem for corresponding neurons. Another way to avoid solving the optimization problem is using dependency prorogation. We extend the proposed prorogation ~\cite{VHAGAR} for our algorithm. Given neurons $z_1=z^F_{m,k}$ and $z_2=z^{\hat{F}}_{m',k'}$ where $F,\hat{F}\in{\{F_1,F_2,F^p_1,F^p_2\}}$, $F_1\neq{F_2}$, not necessarily with ReLU activation function, we define the dependency prorogation as follows:
+However, the complexity of solving all these optimization problems is very high.
+%Although solving this optimization problem is beneficial for relation detection between all four networks, it also worsen the complexity. 
+\Dana{is this above identical to Vhagar? If yes, no need to repeat, just say we follow this approach. What is missing is the dependencies that are unique to this research. Please add them.}
+Instead, we propose to identify constraints without solving this optimization and solve it only for specific neurons, where we suspect they adhere to some dependency constraint. 
+Therefore, we focus on corresponding neurons (i.e., if $z_1=z^F_{m,k}$ and $z_2=z^{\hat{F}}_{m',k'}$ where $F,\hat{F}\in{\{F_1,F_2,F^p_1,F^p_2\}}$ and $F_1\neq{F_2}$ then $m=m'$ and $k=k'$). We first check the concrete bounds: without the loss of generality, if the lower bound of $z_1$ is greater than the upper bound of $z_2$ then $z_1>z_2$. Otherwise, we solve the optimization problem for corresponding neurons. Another way to avoid solving the optimization problem is using dependency prorogation. We extend the proposed prorogation ~\cite{VHAGAR} for our algorithm. Given neurons $z_1=z^F_{m,k}$ and $z_2=z^{\hat{F}}_{m',k'}$ where $F,\hat{F}\in{\{F_1,F_2,F^p_1,F^p_2\}}$, $F_1\neq{F_2}$, not necessarily with ReLU activation function, we define the dependency prorogation as follows:
 
 \begin{itemize}
     \item if $\forall{i} (w_{m,k,k_i}\cdot{z^F_{m-1,k_i}}=w_{m,k',k_i}\cdot{z^{\hat{F}}_{m-1,k'_i}})$ then $z^F_{m,k}=z^{\hat{F}}_{m',k'}$ and $a^F_{m,k}=a^{\hat{F}}_{m',k'}$
@@ -42,4 +64,5 @@ Although solving this optimization problem is beneficial for relation detection 
 \end{itemize}
 
 \subsection{Anytime Optimizer}
+\Dana{is this identical to Vhagar? if yes, omit, otherwise describe the new part}
 To reduce the execution time of the algorithm, we employ anytime optimization technique using Gurobi. To find the optimal solution to our problem definition, Gurobi defines two bounds: an upper bound $\delta_u\geq\delta$ (initialized by a large value) and a lower bound $\delta\geq\delta_l$. It then iteratively decreases $\delta_u$ until reaching a value that violates the constraints of the optimization problem. For the lower bound, Gurobi looks for feasible solutions for the optimization problem. These parallel updated continue until $\delta_u=\delta_l$. At anytime we can terminate the process and detect $\delta\in[\delta_l,\delta_u]$. 
