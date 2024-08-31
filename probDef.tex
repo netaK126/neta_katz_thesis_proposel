@@ -27,12 +27,19 @@ Intuitively, the classifier is robust with respect to $P$ for any input classifi
 $$\max{\delta}, \texttt{ subject to }. \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c',F) \geq \delta \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',F)\leq 0$$
 
 \paragraph{Problem definition} 
-In this thesis, we extend this property for computing the differences of two (similar) classifiers. Formally,
-Given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to compute the maximal class confidence $\delta$, where there $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ satisfying:%\Dana{please explain in words this definition}
+In this thesis, we extend this property for computing the differences of two (similar) classifiers. 
+Formally, given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to compute the minimal class confidence $\delta$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ satisfies:
 \begin{enumerate}[nosep,nolistsep]
     \item $\mathcal{C}(x,c',F_1) \geq \delta$ %\Dana{what is D? should it be $D_1$?} NETA - You are right. there was a mistake. I fixed it.
+    \item $\mathcal{C}(x,c',F_2) > 0$
+    \item $\mathcal{C}(f_P(x,\epsilon'),c',F_1)> 0$
+    \item $\mathcal{C}(f_P(x,\epsilon'),c',F_2> 0$
+\end{enumerate} 
+To put it simply, we aim for the minimal confidence score of classifier $F_1$ for class $c'$ such that another classifier $F_2$ also predicts the input $x$ as belonging to class $c'$, and both $F_1$ and $F_2$ predict correctly the perturbed input $(f_P(x,\epsilon')$ as $c'$. However, solving this problem is difficult. therefore we solve the easier dual problem, i.e.,  the maximal class confidence $\delta'$, where there $\exists{x}\exists{\epsilon'}\in{I_\epsilon}$ satisfying:%\Dana{please explain in words this definition}
+\begin{enumerate}[nosep,nolistsep]
+    \item $\mathcal{C}(x,c',F_1) \geq \delta'$ %\Dana{what is D? should it be $D_1$?} NETA - You are right. there was a mistake. I fixed it.
     \item $\mathcal{C}(x,c',F_2) > 0$
     \item $\mathcal{C}(f_P(x,\epsilon'),c',F_1)\leq 0$
     \item $\mathcal{C}(f_P(x,\epsilon'),c',F_2)\leq 0$
 \end{enumerate} 
-In simple terms, the class confidence score of $F_1$ for class $c'$ is maximized so that $F_2$ also classifies $x$ as $c'$, while both classifiers $F_1$ and $F_2$ fail to classify the perturbed input $f_P(x,\epsilon')$. 
+The goal is to maximize the confidence score of classifier $F_1$ for a specific class $c'$ such that classifier $F_2$ also predicts the input $x$ as belonging to class $c'$. At the same time, classifiers $F_1$ and $F_2$ are unable to correctly classify the input $(f_P(x,\epsilon')$, where $(f_P(x,\epsilon')$ represents $x$ after it has been altered by some perturbation $\epsilon'$. In simple terms, the objective is to simultaneously align the outputs of the two classifiers on the original input while disrupting their ability to correctly classify the perturbed version. 
