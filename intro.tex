@@ -3,26 +3,14 @@
 
 \section{Introduction}
 Deep neural networks have been proven successful in various applications, in particular as image classifiers.
-To make them reliable, many verifiers have been developed to verify various kinds of properties, such as adhering to constraints~\cite{Reluplex,COMPLETE,PLANET} %\Dana{add 2 more citations} 
-or being locally robust to attacks~\cite{Reluplex,ABSTRACTINTER,NEURIPS2021_fac7fead,COMPLETE}.%\Dana{add one more citations}. 
-%Existing verifiers take non-negligible time. %and often verify local properties, which do not generalize to any input. 
-However, similarly to classical software, neural networks are often evolving to increase their accuracy or extend their function to new kinds of inputs ~\cite{SURVEY_ROBUSTNESS,INTPROP}. %\Dana{find citations}
-While it is possible to run from scratch the existing verifiers, this introduces high overhead.
-This gave rise to incremental verification ~\cite{IVAN,INC_SEMIDEFINIT,INC_SMOOTH}.%\Dana{add citations}.  
-However, to date all existing approaches focus on local properties, which do not enable to fully understand the differences of the two networks.
+To make them reliable, many verifiers have been developed to verify various kinds of properties, such as adhering to constraints~\cite{Reluplex,COMPLETE,PLANET} or being locally robust to attacks ~\cite{Reluplex,ABSTRACTINTER,NEURIPS2021_fac7fead,COMPLETE}. However, similarly to classical software, neural networks are often evolving to increase their accuracy or extend their function to new kinds of inputs ~\cite{SURVEY_ROBUSTNESS,INTPROP}. While it is possible to run from scratch the existing verifiers, this introduces high overhead. This gave rise to incremental verification ~\cite{IVAN,INC_SEMIDEFINIT,INC_SMOOTH}. Still, to date all existing approaches focus on local properties, which do not enable to fully understand the differences of the two networks.
 
 \paragraph{Goal: Differential analysis of neural networks}
 Differential analysis focuses on determining the differences of two similar programs ~\cite{RELUDIFF,NEURODIFF,DIFFRNN,QEBVERIF,CFXROBUSTNESS}
-%\Dana{add 4-5 citations}.
 In this thesis, we propose to design an algorithm for computing the differential analysis for neural networks.
 The main challenge in differential analysis is that it requires to reason about \emph{any} input, 
 making this problem highly complex. Further, although there are many verifiers for neural networks, the vast majority focuses on local properties ~\cite{Reluplex,ABSTRACTINTER,NEURIPS2021_fac7fead,COMPLETE,CROWN}
-%\Dana{add 6-7 citations}
-, and thus cannot be extended to our global property.
-While there are global robustness verifiers for neural networks ~\cite{Reluplex,ANOTHERGLOBALPROPERTY,MEASURENNROBCON,GLOBALPROPERTY}
-%\Dana{add all citations}
-they all focus on analyzing a single network. 
-Extending them to analyze the differences of two networks is highly challenging as the complexity, which is already high, is doubled.
+, and thus cannot be extended to our global property. While there are global robustness verifiers for neural networks ~\cite{Reluplex,ANOTHERGLOBALPROPERTY,MEASURENNROBCON,GLOBALPROPERTY} they all focus on analyzing a single network. Extending them to analyze the differences of two networks is highly challenging as the complexity, which is already high, is doubled.
 
 %\paragraph{Robustness}
 %Part of the challenge is defining what is robustness in the notion of multiple neural networks. For a single classifier (neural network) a popular property for understanding its robustness is local robustness. At a high level, we can say that by given a classifier, an input, and a perturbation limit, the classifier is locally robust if perturbing the input up to the perturbation limit does not change the network’s classification. The set of perturbed inputs is called the input’s neighborhood. However, local robustness is limited to reasoning about a single neighborhood at a time. Therefore, this approach can be problematic when evaluating a large number of inputs and neighborhoods. Specifically, when we want to examine all possible inputs and their neighborhoods, it becomes impractical. As a result, there is a growing need to reason about a network’s robustness over all possible inputs, known as global robustness. This means that no matter where you are in the input space, the network should exhibit stable behavior and avoid drastic changes due to minor input perturbations. Global robustness is more challenging to evaluate, compared to local robustness, due to the complexity of the property. 
@@ -33,13 +21,10 @@ Extending them to analyze the differences of two networks is highly challenging 
 
 
 \paragraph{Key idea}
-Our main idea is to leverage the similarity of the networks to reduce the analysis complexity. In particular, our idea is to express the dependencies as linear constraints in order to reduce the analysis complexity to be as low as the complexity of analyzing the global robustness of a single network.
-The challenge is to automatically identify these similarities and capture them via linear constraints that approximate the true similarities as close as possible.
+Our main idea is to leverage the similarity of the networks to reduce the analysis complexity. In particular, our idea is to express the dependencies as linear constraints in order to reduce the analysis complexity to be as low as the complexity of analyzing the global robustness of a single network. The challenge is to automatically identify these similarities and capture them via linear constraints that approximate the true similarities as close as possible.
 
 \paragraph{Preliminary results}
-We extended a global robustness verifier for a single network ~\cite{VHAGAR,MEASURENNROBCON,GLOBALPROPERTY}
-%\Dana{add citation}
-to reason about the similarity of two very similar networks (differing in a single weight in the last layer).
+We extended a global robustness verifier for a single network ~\cite{VHAGAR,MEASURENNROBCON,GLOBALPROPERTY} to reason about the similarity of two very similar networks (differing in a single weight in the last layer). 
 %We evaluated it on classifiers that were trained on the MNIST database, whose architectures are fully connected or convolutional. More specifically, we evaluated our basic version on two classifiers that are almost identical in terms of architectures and weights, where the only difference between them is a small addition to one of the entries of the vector of the last layer of the network.
 Experimental results show that by integrating the similarity constraints, the running time of the verifier reduces on average by 82\%.
 
