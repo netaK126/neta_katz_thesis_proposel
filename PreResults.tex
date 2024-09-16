@@ -4,13 +4,18 @@
 \section{Preliminary Results}
 In this section, we describe our preliminary results.
 We evaluate our approach on classifiers for the MNIST dataset, consisting of images showing a single digit.
-The classifier's goal is to return the digit shown in the image. In our experiments, we focus on the global robustness property for the class $c=0$ and \Dana{add two more classes}.
+The classifier's goal is to return the digit shown in the image. In our experiments, we focus on the global robustness property for the class $c=0,1,2$ and.
 
 We consider two network architectures: 
 a fully connected network consisting of three layers, ten neurons in each, denoted \texttt{3x10}, and a convolutional neural network. 
-We consider two variations of the convolutional networks, where one is trained with one more iteration. \ref{table_architectures} describes our models. For each model $D$, we define $D_1$ as $D$ and $D_2$ as $D$ with a slight change in a single weight in the last layer on $D$\Dana{which weight? what is the difference in the value?}. We provide the MILP solver a timeout of 50800 seconds (14 hours, 6 min, and 40 seconds)\Dana{too specific timeout, how did you choose it? also super long, two hours is not enough?}. We run the naive approach (without any constraints), called \emph{Baseline}, and our approach (with dependency constraints):
-\Dana{what is the perturbation?}
-Like~\cite{VHAGAR}, our algorithm is anytime, namely it computes lower and upper bounds on the desired class confidence $\delta_c$.
+\ref{table_architectures} describes our models. For each model $F$, we define $F_1$ as $F$ and $F_2$ as $F$ with a slight change in a single weight in the last layer on $F$. Specifically we add a small addition to the weight between neuron $1$ in layer $L-1$ to neuron $3$ in layer $L$. We evaluate the algorithm across different weight additions. 
+Furthermore we compare between 3 different approaches to show the scalability of our approach:
+\begin{itemize}
+    \item Baseline: the naive approach.
+    \item VHAGaR extension.
+    \item Our approach.
+\end{itemize} 
+We provide the MILP solver a timeout of 40800 seconds.
 
 \begin{table}[H]
     \centering
@@ -19,15 +24,17 @@ Like~\cite{VHAGAR}, our algorithm is anytime, namely it computes lower and upper
         \toprule
         \makecell{Dataset} & \makecell{Name} & \makecell{Architecture}  & \makecell{Iterations during training} \\
         \midrule            
-        \multirow{3}{*}{MNIST} & 3 x 10 & 3 fully-connected layers & 20 \\
+        \multirow{2}{*}{MNIST} & 3 x 10 & 3 fully-connected layers & 20 \\
                                & CNN1 & 2 convolutional (stride 4) and 2 fully-connected layers & 20 \\
-                               & CNN2 & 2 convolutional (stride 4) and 2 fully-connected layers & 19 \\
+                               %& CNN2 & 2 convolutional (stride 4) and 2 fully-connected layers & 19 \\
         \bottomrule
     \end{tabular}
     }
     \caption{The networks used for this experience.
         \label{table_architectures}}
 \end{table}
+
+The examined perturbation is called brightness, where for a given $\epsilon$  %\Dana{what is the perturbation?}
 
 Figure~\ref{fig:3_x_10}, Figure~\ref{fig:cnn0_1} and Figure~\ref{fig:cnn0_2} show the gaps in the execution time for the 3X10, CNN1, and CNN2 respectively.
 Results show that our approach significant reduces the execution time, on average by 82\%. 
