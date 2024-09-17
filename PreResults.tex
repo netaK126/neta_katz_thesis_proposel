@@ -8,7 +8,7 @@ The classifier's goal is to return the digit shown in the image. In our experime
 
 We consider two network architectures: 
 a fully connected network consisting of three layers, ten neurons in each, denoted \texttt{3x10}, and a convolutional neural network. 
-\ref{table_architectures} describes our models. For each model $F$, we define $F_1$ as $F$ and $F_2$ as $F$ with a slight change in a single weight in the last layer on $F$. Specifically we add a small addition to the weight between neuron $1$ in layer $L-1$ to neuron $3$ in layer $L$. We evaluate the algorithm across different weight additions. 
+Table \ref{table_architectures} describes our models. For each model $F$, we define $F_1$ as $F$ and $F_2$ as $F$ with a slight change in a single weight in the last layer on $F$. Specifically we add a small addition to the weight between neuron $1$ in layer $L-1$ to neuron $3$ in layer $L$. We evaluate the algorithm across different weight additions. 
 Furthermore we compare between 3 different approaches to show the scalability of our approach:
 \begin{itemize}
     \item Baseline: the naive approach.
@@ -25,7 +25,7 @@ We provide the MILP solver a timeout of 40800 seconds.
         \makecell{Dataset} & \makecell{Name} & \makecell{Architecture}  & \makecell{Iterations during training} \\
         \midrule            
         \multirow{2}{*}{MNIST} & 3 x 10 & 3 fully-connected layers & 20 \\
-                               & CNN1 & 2 convolutional (stride 4) and 2 fully-connected layers & 20 \\
+                               & CNN & 2 convolutional (stride 4) and 2 fully-connected layers & 20 \\
                                %& CNN2 & 2 convolutional (stride 4) and 2 fully-connected layers & 19 \\
         \bottomrule
     \end{tabular}
@@ -34,74 +34,73 @@ We provide the MILP solver a timeout of 40800 seconds.
         \label{table_architectures}}
 \end{table}
 
-The examined perturbation is called brightness, where for a given $\epsilon$  %\Dana{what is the perturbation?}
+The examined perturbation is called $L_\infty([0,\epsilon])$, where for a given $\epsilon\in{(0,1]}$, and the input is perturbed by changing the value of each pixel up by $|\epsilon|$.
 
-Figure~\ref{fig:3_x_10}, Figure~\ref{fig:cnn0_1} and Figure~\ref{fig:cnn0_2} show the gaps in the execution time for the 3X10, CNN1, and CNN2 respectively.
-Results show that our approach significant reduces the execution time, on average by 82\%. 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.95\textwidth]{3x10.png}
-  \caption{The execution time of the baseline against our approach, when the model type is a fully connected network 3x10 .}
-  \label{fig:3_x_10}
-\end{figure}
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.95\textwidth]{cnn0_1.png}
-  \caption{The execution time of the baseline against our approach, when the model type is a convolutional neural network, trained using 20 iterations\Dana{shortened it, call it for example conv-20}.}
-  \label{fig:cnn0_1}
-\end{figure}
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.95\textwidth]{cnn0_2.png}
-  \caption{The execution time of the baseline against our approach, when the model type is a convolutional neural network, trained using 19 iterations .}
-  \label{fig:cnn0_2}
-\end{figure}
-
-We next report the lower and upper bounds on $\delta_c$, computed within the timeout.
-Table~\ref{table_3_x_10} shows the bounds for the \texttt{3x10} network. It shows that both approach obtain comparable bounds, with the baseline obtaining slightly tighter bounds. Table~\ref{table_cnn0_1} and Table~\ref{table_cnn0_2} show the results for the convolutional networks. Results show that our approach enables to improve tighter bounds by\Dana{complete}\%. %This is due to timeout. the base approach is much slower, and does not manage to find tighter bound for more complex architectures before reaching timeout. 
-Namely, preliminary results show that our approach enhances scalability and consequently its accuracy. %is similar to the base approach for the tested scenario of two almost identical networks, besides a singular weight. Our goal is to further extend this improvement to other scenarios as well. 
+Tables ~\ref{table_3_x_10,table_cnn0_1} show the results of all three approaches in the execution time for the 3X10 and CNN respectively.
+Results show that our approach significant the execution time up to \Neta{FILL IN} compared to the baseline, and up to \Neta{FILL IN} compared to the VHAGaR Extension, while maintaining the accuracy of $\delta_c$ upper and lower bounds. In some cases, our bounds are tighter due to early stopping of the two other approaches due to timeout, by \Neta{FILL IN}
+Namely, preliminary results show that our approach enhances scalability and consequently its accuracy.
 
 \begin{table}[H]
-	\centering
-    \resizebox{\textwidth}{!}{
-	\begin{tabular}{@{\extracolsep{\fill}}llllll@{}}
-		\toprule
-		& \makecell{ } & \makecell{Brightness[0.1] \\ Weight addition[0.1]} & \makecell{Brightness[0.1] \\ Weight addition[0.05]} & \makecell{Brightness [0.05] \\ Weight addition[0.1]} & \makecell{Brightness [0.05] \\ Weight addition[0.05]}\\
-		\midrule			
-		\multirow{2}{*}{Base approach} & upper bound  & 3.27 & 3.3 &  1.79 & 1.79\\
-                              & lower bound & 3.27 & 3.27 &  1.79 & 1.79\\
-		\midrule
-		\multirow{2}{*}{Our approach} & upper bound  & 3.3 & 3.3 & 1.8 & 1.79\\
-                              & lower bound & 3.27 & 3.27 & 1.79 & 1.79\\						
-		\bottomrule
-	\end{tabular}
-}
+  \centering
+  \resizebox{\textwidth}{!}{
+  \begin{tabular}{@{\extracolsep{\fill}}cccccccccccccc@{}}
+    \toprule
+    \multirow{3}{*}{} & \multirow{3}{*}{Class} & \multicolumn{3}{c}{$L_\infty$[0.1]} & \multicolumn{3}{c}{$L_\infty$[0.1]} & \multicolumn{3}{c}{$L_\infty$ [0.05]} & \multicolumn{3}{c}{$L_\infty$ [0.05]}\\
+    & & \multicolumn{3}{c}{Weight addition[0.1]} & \multicolumn{3}{c}{Weight addition[0.05]} & \multicolumn{3}{c}{Weight addition[0.1]} & \multicolumn{3}{c}{Weight addition[0.05]}\\
+    \cmidrule(lr){3-14}
+    & & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} \\
+    \midrule
+    \multirow{3}{*}{Baseline}  & Class 0 & 114.2 & 17.18 & 17.04 & 120.13 & 17.18 & 17.04 & 201.41 & 10.34 & 10.25 & 223.3 & 10.3 & 10.2 \\
+ & Class 1 & 71.76 & 16.09 & 16.09 & 132.22 & 16.09 & 16.09 & 585.05 & 8.21 & 8.13 & 906.67 & 8.21 & 8.13 \\
+ & Class 2 & 111.22 & 19.13 & 18.97 & 121.79 & 19.13 & 18.97 & 356.76 & 9.61 & 9.52 & 370.38 & 9.52 & 9.52 \\
+\cmidrule{2-14}
+\multirow{3}{*}{VHAGaR Extension}  & Class 0 & 59.6 & 17.13 & 17.13 & 80.77 & 17.27 & 17.13 & 134.84 & 10.34 & 10.25 & 145.57 & 10.34 & 10.25 \\
+ & Class 1 & 91.07 & 16.09 & 16.09 & 78.65 & 16.24 & 16.09 & 316.54 & 8.22 & 8.14 & 257.23 & 8.22 & 8.14 \\
+ & Class 2 & 75.28 & 19.18 & 19.02 & 73.86 & 19.18 & 19.02 & 221.37 & 9.6 & 9.52 & 215.08 & 9.6 & 9.52 \\
+\cmidrule{2-14}
+\multirow{3}{*}{Our approach}  & Class 0 & 60.97 & 17.27 & 17.13 & 75.63 & 17.28 & 17.13 & 118.74 & 10.28 & 10.18 & 133.44 & 10.32 & 10.24 \\
+ & Class 1 & 61.69 & 16.23 & 16.09 & 62.43 & 16.21 & 16.06 & 267.57 & 8.21 & 8.14 & 244.15 & 8.21 & 8.14 \\
+ & Class 2 & 63.14 & 19.14 & 18.97 & 65.87 & 19.2 & 19.02 & 160.3 & 9.6 & 9.52 & 148.26 & 9.61 & 9.52 \\
+    \bottomrule
+  \end{tabular}
+  }
+
 \caption{The lower and upper bounds for 3X10 architecture 
 		\label{table_3_x_10}}
 \end{table}
 
 
 \begin{table}[H]
-	\centering
-    \resizebox{\textwidth}{!}{
-	\begin{tabular}{@{\extracolsep{\fill}}llllll@{}}
-		\toprule
-		& \makecell{ } & \makecell{Brightness[0.1] \\ Weight addition[0.1]} & \makecell{Brightness[0.1] \\ Weight addition[0.05]} & \makecell{Brightness [0.05] \\ Weight addition[0.1]} & \makecell{Brightness [0.05] \\ Weight addition[0.05]}\\
-		\midrule			
-		\multirow{2}{*}{Base approach} & upper bound  & 19.39 & 17.79 & 15.45 & 19.27\\
-                              & lower bound & 15.01 & 15.01 &  12.18 & 12.19\\
-		\midrule
-		\multirow{2}{*}{Our approach} & upper bound  & 15.16 & 15.15 & 12.59 & 12.59\\
-                              & lower bound & 15.01 & 15.01 &  12.46 & 12.46\\					
-		\bottomrule
-	\end{tabular}
-}
+  \centering
+  \resizebox{\textwidth}{!}{
+  \begin{tabular}{@{\extracolsep{\fill}}cccccccccccccc@{}}
+    \toprule
+    \multirow{3}{*}{} & \multirow{3}{*}{Class} & \multicolumn{3}{c}{$L_\infty$[0.1]} & \multicolumn{3}{c}{$L_\infty$[0.1]} & \multicolumn{3}{c}{$L_\infty$ [0.08]} & \multicolumn{3}{c}{$L_\infty$ [0.08]}\\
+    & & \multicolumn{3}{c}{Weight addition[0.1]} & \multicolumn{3}{c}{Weight addition[0.05]} & \multicolumn{3}{c}{Weight addition[0.1]} & \multicolumn{3}{c}{Weight addition[0.05]}\\
+    \cmidrule(lr){3-14}
+    & & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} \\
+    \midrule
+    \multirow{3}{*}{Baseline}  & Class 0 & 59.82 & 29.07 & 29.01 & 36.88 & 29.07 & 28.97 & 155.33 & 29.06 & 28.84 & 49.59 & 29.07 & 28.94 \\
+ & Class 1 & 5344.62 & 71.22 & 70.51 & 3264.78 & 71.2 & 70.5 & 40800.15 & 58.87 & 57.38 & 40800.07 & 59.1 & 57.38 \\
+ & Class 2 & 40.66 & 22.46 & 22.46 & 12.88 & 22.46 & 22.46 & 25.16 & 22.46 & 22.45 & 14.32 & 22.46 & 22.43 \\
+\cmidrule{2-14}
+\multirow{3}{*}{VHAGaR Extension}  & Class 0 & 10.57 & 29.07 & 28.97 & 13.37 & 29.07 & 29.01 & 18.47 & 29.07 & 28.84 & 48.59 & 29.07 & 28.93 \\
+ & Class 1 & 224.86 & 71.19 & 70.51 & 464.66 & 71.18 & 70.49 & 24136.86 & 57.95 & 57.38 & 23504.24 & 57.95 & 57.38 \\
+ & Class 2 & 7.02 & 22.46 & 22.46 & 6.41 & 22.46 & 22.46 & 5.82 & 22.46 & 22.46 & 6.38 & 22.46 & 22.31 \\
+\cmidrule{2-14}
+\multirow{3}{*}{Our approach}  & Class 0 & 13.45 & 29.07 & 29.02 & 15.63 & 29.07 & 29.02 & 11.07 & 29.07 & 28.93 & 10.72 & 29.07 & 28.94 \\
+ & Class 1 & 213.35 & 71.17 & 70.47 & 230.26 & 71.18 & 70.49 & 10800.09 & 58.09 & 57.38 & 10800.08 & 57.98 & 57.38 \\
+ & Class 2 & 3.08 & 22.46 & 22.29 & 3.56 & 22.46 & 22.46 & 3.5 & 22.46 & 22.27 & 3.59 & 22.46 & 22.4 \\
+    \bottomrule
+  \end{tabular}
+  }
 \caption{The lower and upper bounds for CNN architecture with 20 iteration during training process.
 		\label{table_cnn0_1}}
 \end{table}
 
+\end{document}
+
+\begin{comment}
 
 \begin{table}[H]
 	\centering
@@ -121,6 +120,10 @@ Namely, preliminary results show that our approach enhances scalability and cons
 \caption{The lower and upper bounds for CNN architecture with 19 iteration during training process.
 		\label{table_cnn0_2}}
 \end{table}
+
+\end{comment}
+
+
 % NETA - image of database + explain: "hey we did good - but not good enough". 
 
 % bounds in table
