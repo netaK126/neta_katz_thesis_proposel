@@ -26,7 +26,6 @@ We provide the MILP solver a timeout of 40800 seconds.
         \midrule            
         \multirow{2}{*}{MNIST} & 3 x 10 & 3 fully-connected layers & 20 \\
                                & CNN & 2 convolutional (stride 4) and 2 fully-connected layers & 20 \\
-                               %& CNN2 & 2 convolutional (stride 4) and 2 fully-connected layers & 19 \\
         \bottomrule
     \end{tabular}
     }
@@ -36,8 +35,10 @@ We provide the MILP solver a timeout of 40800 seconds.
 
 The examined perturbation is called $L_\infty([0,\epsilon])$, where for a given $\epsilon\in{(0,1]}$, and the input is perturbed by changing the value of each pixel up by $|\epsilon|$.
 
-Tables ~\ref{table_3_x_10,table_cnn0_1} show the results of all three approaches in the execution time for the 3X10 and CNN respectively.
-Results show that our approach significant the execution time up to \Neta{FILL IN} compared to the baseline, and up to \Neta{FILL IN} compared to the VHAGaR Extension, while maintaining the accuracy of $\delta_c$ upper and lower bounds. In some cases, our bounds are tighter due to early stopping of the two other approaches due to timeout, by \Neta{FILL IN}
+Tables ~\ref{table_3_x_10},~\ref{table_cnn0_1} show the results of all three approaches in the execution time for the 3X10 and CNN respectively.
+Results show that our approach approximately reduce the execution time up to $57\%$ compared to the baseline, and up to $17\%$ compared to the VHAGaR Extension for 3X10 architecture. 
+For CNN, our approach approximately reduces the execution time up to $78\%$ compared to the baseline, and approximately up to $54\%$ compared to the VHAGaR Extension
+In addition our approach maintains the accuracy of $\delta_c$ upper and lower bounds. In some cases, our bounds are tighter due to early stopping of the two other approaches due to timeout. For example, when the architecture is CNN and $\epsilon=0.08$, and the weight addition is $0.05$, our approach manage to find bounds which are tighter in $0.02\% $ compared to the Baseline.
 Namely, preliminary results show that our approach enhances scalability and consequently its accuracy.
 
 \begin{table}[H]
@@ -51,7 +52,7 @@ Namely, preliminary results show that our approach enhances scalability and cons
     & & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} \\
     \midrule
     \multirow{3}{*}{Baseline}  & Class 0 & 114.2 & 17.18 & 17.04 & 120.13 & 17.18 & 17.04 & 201.41 & 10.34 & 10.25 & 223.3 & 10.3 & 10.2 \\
- & Class 1 & 71.76 & 16.09 & 16.09 & 132.22 & 16.09 & 16.09 & 585.05 & 8.21 & 8.13 & 906.67 & 8.21 & 8.13 \\
+ & Class 1 & 182.68 & 16.09 & 16.09 & 132.22 & 16.09 & 16.09 & 585.05 & 8.21 & 8.13 & 906.67 & 8.21 & 8.13 \\
  & Class 2 & 111.22 & 19.13 & 18.97 & 121.79 & 19.13 & 18.97 & 356.76 & 9.61 & 9.52 & 370.38 & 9.52 & 9.52 \\
 \cmidrule{2-14}
 \multirow{3}{*}{VHAGaR Extension}  & Class 0 & 59.6 & 17.13 & 17.13 & 80.77 & 17.27 & 17.13 & 134.84 & 10.34 & 10.25 & 145.57 & 10.34 & 10.25 \\
@@ -94,7 +95,7 @@ Namely, preliminary results show that our approach enhances scalability and cons
     \bottomrule
   \end{tabular}
   }
-\caption{The lower and upper bounds for CNN architecture with 20 iteration during training process.
+\caption{The lower and upper bounds for CNN architecture.
 		\label{table_cnn0_1}}
 \end{table}
 
