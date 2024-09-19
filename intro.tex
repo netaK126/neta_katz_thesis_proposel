@@ -26,7 +26,7 @@ Our main idea is to leverage the similarity of the networks to reduce the comple
 \paragraph{Preliminary results}
 We extended a global robustness verifier for a single network ~\cite{VHAGAR} to reason about the similarity of two very similar networks (differing in a single weight in the last layer). 
 %We evaluated it on classifiers that were trained on the MNIST database, whose architectures are fully connected or convolutional. More specifically, we evaluated our basic version on two classifiers that are almost identical in terms of architectures and weights, where the only difference between them is a small addition to one of the entries of the vector of the last layer of the network.
-Experimental results show that by integrating the similarity constraints, the running time of the verifier reduces on average by 82\%.
+Experimental results indicate that integrating similarity constraints reduces the verifier’s running time by an average of 58.43\% for the perturbation we examine, compared to the naive approach (as explained in the section ‘Our Approach’).
 
 
 \paragraph{Future goals}

@@ -35,12 +35,14 @@ If the MILP solver reaches the timeout, it returns a lower and upper bounds $\de
 \end{comment}
 For the perturbation, we focus on the $L_\infty$ perturbation, where given a perturbation amount $\epsilon$, the input can be perturbed by changing the value of each pixel up by $\pm\epsilon$. In our experiments, $\epsilon\in\{0.05,0.08,0.1\}$.
 
+
 Tables~\ref{table_3_x_10} and \ref{table_cnn0_1} show the results for the 3x10 network and the CNN network, respectively.
 The tables show the lower and upper bounds and the execution time in seconds, for all approaches.
 For the 3x10 network, our approach reduces the execution time by up to $57\%$ compared to the naive approach and by up to $17\%$ compared to VHAGaR's extension.
 For the CNN, our approach reduces the execution time by up to $78\%$ compared to the naive approach and by up to $54\%$ compared to the VHAGaR's extension.
 In addition, the lower and upper bounds computed by our approach are equally tight or tighter compared to both baselines. %maintains the accuracy of $\delta_c$ upper and lower bounds. In some cases, our bounds are tighter due to early stopping of the two other approaches due to timeout. For example, when the architecture is CNN and $\epsilon=0.08$, and the weight addition is $0.05$, our approach manage to find bounds which are tighter in $0.02\% $ compared to the Baseline.
 %Namely, preliminary results show that our approach enhances scalability and consequently its accuracy.
+
 
 \begin{table}[H]
   \centering
@@ -87,11 +89,11 @@ In addition, the lower and upper bounds computed by our approach are equally tig
  & Class 2 & 40.66 & 22.46 & 22.46 & 12.88 & 22.46 & 22.46 & 25.16 & 22.46 & 22.45 & 14.32 & 22.46 & 22.43 \\
 \cmidrule{2-14}
 \multirow{3}{*}{VHAGaR's extension}  & Class 0 & 10.57 & 29.07 & 28.97 & 13.37 & 29.07 & 29.01 & 18.47 & 29.07 & 28.84 & 48.59 & 29.07 & 28.93 \\
- & Class 1 & 224.86 & 71.19 & 70.51 & 464.66 & 71.18 & 70.49 & 24136.86 & 57.95 & 57.38 & 23504.24 & 57.95 & 57.38 \\
+ & Class 1 & 224.86 & 71.19 & 70.51 & 464.66 & 71.18 & 70.49 & 35958.83 & 57.95 & 57.38 & 23504.24 & 57.95 & 57.38 \\
  & Class 2 & 7.02 & 22.46 & 22.46 & 6.41 & 22.46 & 22.46 & 5.82 & 22.46 & 22.46 & 6.38 & 22.46 & 22.31 \\
 \cmidrule{2-14}
 \multirow{3}{*}{Our approach}  & Class 0 & 13.45 & 29.07 & 29.02 & 15.63 & 29.07 & 29.02 & 11.07 & 29.07 & 28.93 & 10.72 & 29.07 & 28.94 \\
- & Class 1 & 213.35 & 71.17 & 70.47 & 230.26 & 71.18 & 70.49 & 10800.09 & 58.09 & 57.38 & 13322.12 & 57.95 & 57.38 \\
+ & Class 1 & 213.35 & 71.17 & 70.47 & 230.26 & 71.18 & 70.49 & 23799.32 & 57.95 & 57.38 & 13322.12 & 57.95 & 57.38 \\
  & Class 2 & 3.08 & 22.46 & 22.29 & 3.56 & 22.46 & 22.46 & 3.5 & 22.46 & 22.27 & 3.59 & 22.46 & 22.4 \\
     \bottomrule
   \end{tabular}
