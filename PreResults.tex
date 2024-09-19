@@ -4,19 +4,19 @@
 \section{Preliminary Results}
 In this section, we describe our preliminary results.
 We evaluate our approach on classifiers for the MNIST dataset, consisting of images showing a single digit.
-The classifier's goal is to return the digit shown in the image. In our experiments, we focus on the global robustness property for the class $c=0,1,2$ and.
-
+The classifier's goal is to return the digit shown in the image. In our experiments, we focus on three classes: $c=0,1,2$.
 We consider two network architectures: 
-a fully connected network consisting of three layers, ten neurons in each, denoted \texttt{3x10}, and a convolutional neural network. 
-Table \ref{table_architectures} describes our models. For each model $F$, we define $F_1$ as $F$ and $F_2$ as $F$ with a slight change in a single weight in the last layer on $F$. Specifically we add a small addition to the weight between neuron $1$ in layer $L-1$ to neuron $3$ in layer $L$. We evaluate the algorithm across different weight additions. 
-Furthermore we compare between 3 different approaches to show the scalability of our approach:
-\begin{itemize}
-    \item Baseline: the naive approach.
-    \item VHAGaR extension.
-    \item Our approach.
-\end{itemize} 
+a fully connected network consisting of three layers, ten neurons in each, denoted \texttt{3x10}, and a convolutional neural network, 
+consisting of two convolutional (stride 4) and two fully-connected layers. Both classifiers were trained for 20 iterations.
+%Table \ref{table_architectures} describes our models. 
+For each model $F$, we define $F_1$ as $F$ and $F_2$ as $F$ with a slight change in a single weight in the last layer on $F$. Specifically, the weight of the second\Dana{fix} neuron in the last layer is different by $w'$, where $w'$ is $0.1$ or $0.05$ in our experiments.
+ %e add \Dana{put number} to the weight between neuron $1$ in layer $L-1$ to neuron $3$ in layer $L$. 
+ %We evaluate the algorithm across different weight additions. 
+We compare the naive approach, Vhagar's extension, and our approach.
+%Furthermore we compare between 3 different approaches to show the scalability of our approach:
 We provide the MILP solver a timeout of 40800 seconds (11 hours and 20 minutes).
-
+If the MILP solver reaches the timeout, it returns a lower and upper bounds $\delta^L$ and $\delta^U$ on the maximal globally non-robust bound $\delta$. For simplicity's sake, we always report these bounds (where if the MILP solver completes before the timeout, $\delta^l=\delta^u$).
+\begin{comment}
 \begin{table}[H]
     \centering
     \resizebox{\textwidth}{!}{
@@ -32,14 +32,15 @@ We provide the MILP solver a timeout of 40800 seconds (11 hours and 20 minutes).
     \caption{The networks used for this experience.
         \label{table_architectures}}
 \end{table}
+\end{comment}
+For the perturbation, we focus on the $L_\infty$ perturbation, where given a perturbation amount $\epsilon$, the input can be perturbed by changing the value of each pixel up by $\pm\epsilon$. In our experiments, $\epsilon\in\{0.05,0.08,0.1\}$.
 
-The examined perturbation is called $L_\infty([0,\epsilon])$, where for a given $\epsilon\in{(0,1]}$, and the input is perturbed by changing the value of each pixel up by $|\epsilon|$.
-
-Tables ~\ref{table_3_x_10},~\ref{table_cnn0_1} show the results of all three approaches in the execution time for the 3X10 and CNN respectively.
-Results show that our approach approximately reduce the execution time up to $57\%$ compared to the baseline, and up to $17\%$ compared to the VHAGaR Extension for 3X10 architecture. 
-For CNN, our approach approximately reduces the execution time up to $78\%$ compared to the baseline, and approximately up to $54\%$ compared to the VHAGaR Extension
-In addition our approach maintains the accuracy of $\delta_c$ upper and lower bounds. In some cases, our bounds are tighter due to early stopping of the two other approaches due to timeout. For example, when the architecture is CNN and $\epsilon=0.08$, and the weight addition is $0.05$, our approach manage to find bounds which are tighter in $0.02\% $ compared to the Baseline.
-Namely, preliminary results show that our approach enhances scalability and consequently its accuracy.
+Tables~\ref{table_3_x_10} and \ref{table_cnn0_1} show the results for the 3x10 network and the CNN network, respectively.
+The tables show the lower and upper bounds and the execution time in seconds, for all approaches.
+For the 3x10 network, our approach reduces the execution time by up to $57\%$ compared to the naive approach and by up to $17\%$ compared to VHAGaR's extension.
+For the CNN, our approach reduces the execution time by up to $78\%$ compared to the naive approach and by up to $54\%$ compared to the VHAGaR's extension.
+In addition, the lower and upper bounds computed by our approach are equally tight or tighter compared to both baselines. %maintains the accuracy of $\delta_c$ upper and lower bounds. In some cases, our bounds are tighter due to early stopping of the two other approaches due to timeout. For example, when the architecture is CNN and $\epsilon=0.08$, and the weight addition is $0.05$, our approach manage to find bounds which are tighter in $0.02\% $ compared to the Baseline.
+%Namely, preliminary results show that our approach enhances scalability and consequently its accuracy.
 
 \begin{table}[H]
   \centering
@@ -51,11 +52,11 @@ Namely, preliminary results show that our approach enhances scalability and cons
     \cmidrule(lr){3-14}
     & & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} \\
     \midrule
-    \multirow{3}{*}{Baseline}  & Class 0 & 114.2 & 17.18 & 17.04 & 120.13 & 17.18 & 17.04 & 201.41 & 10.34 & 10.25 & 223.3 & 10.3 & 10.2 \\
+    \multirow{3}{*}{Naive}  & Class 0 & 114.2 & 17.18 & 17.04 & 120.13 & 17.18 & 17.04 & 201.41 & 10.34 & 10.25 & 223.3 & 10.3 & 10.2 \\
  & Class 1 & 182.68 & 16.09 & 16.09 & 132.22 & 16.09 & 16.09 & 585.05 & 8.21 & 8.13 & 906.67 & 8.21 & 8.13 \\
  & Class 2 & 111.22 & 19.13 & 18.97 & 121.79 & 19.13 & 18.97 & 356.76 & 9.61 & 9.52 & 370.38 & 9.52 & 9.52 \\
 \cmidrule{2-14}
-\multirow{3}{*}{VHAGaR Extension}  & Class 0 & 59.6 & 17.13 & 17.13 & 80.77 & 17.27 & 17.13 & 134.84 & 10.34 & 10.25 & 145.57 & 10.34 & 10.25 \\
+\multirow{3}{*}{VHAGaR's extension}  & Class 0 & 59.6 & 17.13 & 17.13 & 80.77 & 17.27 & 17.13 & 134.84 & 10.34 & 10.25 & 145.57 & 10.34 & 10.25 \\
  & Class 1 & 91.07 & 16.09 & 16.09 & 78.65 & 16.24 & 16.09 & 316.54 & 8.22 & 8.14 & 257.23 & 8.22 & 8.14 \\
  & Class 2 & 75.28 & 19.18 & 19.02 & 73.86 & 19.18 & 19.02 & 221.37 & 9.6 & 9.52 & 215.08 & 9.6 & 9.52 \\
 \cmidrule{2-14}
@@ -66,7 +67,7 @@ Namely, preliminary results show that our approach enhances scalability and cons
   \end{tabular}
   }
 
-\caption{The lower and upper bounds for 3X10 architecture 
+\caption{Comparison of our approach to the baselines for 3X10 network. 
 		\label{table_3_x_10}}
 \end{table}
 
@@ -81,11 +82,11 @@ Namely, preliminary results show that our approach enhances scalability and cons
     \cmidrule(lr){3-14}
     & & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} & \makecell{time} & \makecell{$\delta_U$} & \makecell{$\delta_L$} \\
     \midrule
-    \multirow{3}{*}{Baseline}  & Class 0 & 59.82 & 29.07 & 29.01 & 36.88 & 29.07 & 28.97 & 155.33 & 29.06 & 28.84 & 49.59 & 29.07 & 28.94 \\
+    \multirow{3}{*}{Naive}  & Class 0 & 59.82 & 29.07 & 29.01 & 36.88 & 29.07 & 28.97 & 155.33 & 29.06 & 28.84 & 49.59 & 29.07 & 28.94 \\
  & Class 1 & 5344.62 & 71.22 & 70.51 & 3264.78 & 71.2 & 70.5 & 40800.15 & 58.87 & 57.38 & 40800.07 & 59.1 & 57.38 \\
  & Class 2 & 40.66 & 22.46 & 22.46 & 12.88 & 22.46 & 22.46 & 25.16 & 22.46 & 22.45 & 14.32 & 22.46 & 22.43 \\
 \cmidrule{2-14}
-\multirow{3}{*}{VHAGaR Extension}  & Class 0 & 10.57 & 29.07 & 28.97 & 13.37 & 29.07 & 29.01 & 18.47 & 29.07 & 28.84 & 48.59 & 29.07 & 28.93 \\
+\multirow{3}{*}{VHAGaR's extension}  & Class 0 & 10.57 & 29.07 & 28.97 & 13.37 & 29.07 & 29.01 & 18.47 & 29.07 & 28.84 & 48.59 & 29.07 & 28.93 \\
  & Class 1 & 224.86 & 71.19 & 70.51 & 464.66 & 71.18 & 70.49 & 24136.86 & 57.95 & 57.38 & 23504.24 & 57.95 & 57.38 \\
  & Class 2 & 7.02 & 22.46 & 22.46 & 6.41 & 22.46 & 22.46 & 5.82 & 22.46 & 22.46 & 6.38 & 22.46 & 22.31 \\
 \cmidrule{2-14}
@@ -95,7 +96,7 @@ Namely, preliminary results show that our approach enhances scalability and cons
     \bottomrule
   \end{tabular}
   }
-\caption{The lower and upper bounds for CNN architecture.
+\caption{Comparison of our approach to the baselines for the CNN network.
 		\label{table_cnn0_1}}
 \end{table}
 

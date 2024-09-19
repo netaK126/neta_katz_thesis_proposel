@@ -6,12 +6,7 @@ In this section, we introduce our current approach for solving our problem.
 Many verification algorithms for neural networks leverage constraint solving, in particular MILP solvers ~\cite{VHAGAR,CFXROBUSTNESS,QEBVERIF,MIPVERIFY}.
 By building on these techniques, we can encode our problem as MILP. 
 However, this approach is highly inscalable both because it reasons about a global property and because it analyzes two networks.
-To scale, our algorithm focuses on two almost identical networks: $F_1$ and $F_2$ have the same architecture with a slight change in a single weight in the last layer. We present three different ways to solve the problem:
-\begin{itemize}
-    \item Baseline: the naive approach.
-    \item VHAGaR extension.
-    \item Our approach.
-\end{itemize}
+To scale, our algorithm focuses on two almost identical networks: $F_1$ and $F_2$ have the same architecture with a slight change in a single weight in the last layer. We next describe the naive approach to solve our problem. Then, we describe an extension of Vhagar~\cite{VHAGAR}, which we build on in this thesis, to solve the problem. Lastly, we present our approach, which also integrates similarity constraints over the networks.
  
 
 %Therefore, our goal is to enhance the scalability and cut the execution time. Our approach consists 3 main stages:
@@ -22,19 +17,33 @@ To scale, our algorithm focuses on two almost identical networks: $F_1$ and $F_2
 %\end{itemize}
 %As shown in Preliminary Results section, our approach manages to significantly improve execution times while maintaining accuracy of the algorithm.
 
-\subsection{Baseline}
-We encode the problem definition as a MIP problem and them we submit it to a MIP solver ~\cite{MIPVERIFY}.
-Each internal neuron of a network has two 
-To solve our problem we encode each network's computation twice: for capturing the class confidence of $x$ and for capturing the class confidence of the perturbed input $f_P(x,\epsilon)$. In this encoding each internal neuron $k$ in layer $l$ has two real valued variables $\hat{z}_{m,k}$, for the affine computation, and ${z}_{m,k}$ for the ReLU's computation. Since ReLU is a non-linear function, this encoding relies on a boolean variable $a_{m,k}$ and two real values lower and upper bound $l_{m,k},u_{m,k}$, bounding the values of the input to the ReLU: $u_{m,k}\geq{\hat{z}}\geq{l_{m,k}}$. Using MILP encoding, we encode the problem definition into the MIP solver and use Gurobi as an optimizer.
-Overall, this approach includes 4 networks with similar architecture with many variables.
+\subsection{Naive Approach and Vhagar}
+The naive approach encodes our problem as a MIP, by building on the encoding of~\cite{MIPVERIFY}.
+MIPVerify~\cite{MIPVERIFY} focuses on verifying the local robustness of a network in a given neighborhood.  
+At high-level, this encoding associates each neuron two variables, one for the affine computation and another one for the ReLU computation. Since ReLU is a non-linear function, the ReLU computation is encoded by relying on a boolean variable and four constraints.
+%Each internal neuron of a network has two \Dana{missing end of the sentence.}
+As shown in Vhagar~\cite{VHAGAR}, this encoding can be extended to reason about global robustness. The extension relies on having two copies of the network, one propagating the input and the other one propagating the perturbed input. 
+While this encoding can be submitted to a MIP solver, it is highly ineffective since the complexity is exponential in two times the number of neurons. This follows since generally the complexity of a MIP is exponential in the number of boolean variables.
+ 
+The above MIP can be extended to encode our problem. %The extension relies on the described encoding for each of network. 
+The extended MIP is defined over 
+the two networks that take the same input $x$ (denoted $F_1$ and $F_2$) and 
+two copies of these networks that take the perturbed input 
+$f_P(x,\epsilon)$ (denoted $F^p_1$ and $F^p_2$). For a network $F$, we denote by $z^F_{m,k}$ the value of the neuron at layer $m$ at index $k$ given an input $x$, and we denote by $z^{F^p}_{m,k}$ the value of this neuron, given the perturbed input $f_P(x,\epsilon)$.
+%We then add all the dependencies computed by Vhagar for $F_1$ and $F_2$ (separately). 
+We call this MIP the naive approach since the complexity is exponential in four times the number of ReLU neurons.
+%To solve our problem we encode each network's computation twice: for capturing the class confidence of $x$ and for capturing the class confidence of the perturbed input $f_P(x,\epsilon)$. In this encoding each internal neuron $k$ in layer $l$ has two real valued variables $\hat{z}_{m,k}$, for the affine computation, and ${z}_{m,k}$ for the ReLU's computation. Since ReLU is a non-linear function, this encoding relies on a boolean variable $a_{m,k}$ and two real values lower and upper bound $l_{m,k},u_{m,k}$, bounding the values of the input to the ReLU: $u_{m,k}\geq{\hat{z}}\geq{l_{m,k}}$. Using MILP encoding, we encode the problem definition into the MIP solver and use Gurobi as an optimizer.
+%Overall, this approach includes 4 networks with similar architecture with many variables.
 
-\subsection{VHAGaR Extension}
-VHAGaR ~\cite{VHAGAR} also encodes a single network twice into the MIP solver: one for input $x$ and another one for input $f_P(x,\epsilon)$, while incorporating dependencies between the computation of $x$ and the computation of its perturbed input to scale the algorithm.
-We extend this encoding for our setting by introducing this encoding for each of the networks and integrating their dependencies stemming from their similarity. VHGaR captures the depandencies between the intermediate neurons of the networks and set constraints between them before starting the optimization process. This approach extends VHAGaR when having two networks with the same architecture ($F_1$ and $F_2$) for input $x$ and for input $f_P(x,\epsilon)$ ($F^p_1$ and $F^p_2$). For network $F$, layer $m$ and neuron $k$ we noted the neuron's variables $z^F_{m,k}$ for input $x$ and $z^{F^p}_{m,k}$ for input $f_P(x,\epsilon)$.
-
+%\subsection{VHAGaR Extension}
+%VHAGaR~\cite{VHAGAR} analyzes the global robustness of a single network. It builds on the encoding of two networks: for the input and for the perturbed input. 
+To scale solving the above MIP, Vhagar's relies on two ideas: (1)~incorporating dependencies between the computation of $x$ and the computation of its perturbed input and (2)~providing lower bounds via numerical optimization.
+These ideas easily transfer to our problem and can scale the previous MIP extension. 
+However, the complexity is still very high, since the number of analyzed networks is four.  
+%This approach can be extended to our problem by using this encoding twice, one for each of our networks. %and integrating their dependencies stemming from their similarity\Dana{isn't it our approach?}. %VHGaR captures the dependencies  between the intermediate neurons of the networks and set constraints between them before starting the optimization process. 
 %\Dana{in the encoding you cannot say $\forall F\in F_1,F_2$, you need to write it twice. Also change it to $D_1$ and $D_2$}.
 %\Dana{please also explain in the text the difference: in one network you have $>\delta$ and the other is $>0$}
-
+\begin{comment}
 $$\max{\delta_{c'}} \text{ subject to:}$$
 $$ \epsilon'\in{I_\epsilon}; \phi_{dep}; \forall{c''}\neq{c'}: z^{F_1}_{L,c'}-z^{F_1}_{L,c''}\geq\delta_{c'}; \exists{c''}\neq{c'}: z^{F_1^p}_{L,c''}-z^{F_1^p}_{L,c'}>0$$
 $$\forall{c''}\neq{c'}: z^{F_2}_{L,c'}-z^{F_2}_{L,c''}\geq{0}; \exists{c''}\neq{c'}: z^{F_2^p}_{L,c''}-z^{F_2^p}_{L,c'}>0$$
@@ -85,22 +94,38 @@ Therefore, we focus on corresponding neurons (i.e., if $z_1=z^F_{m,k}$ and $z_2=
 \end{comment}
 
 \subsection{Our Approach}
-While VHAGaR captured the dependencies between networks, it does not attempt to reduce the number of variables for the optimization process. Reducing the number of optimization variables simplifies the encoding, and cause the solving time to decrease. In the problem settings, many computations are repetitive. Our approach leverages this quantity to avoid unnecessary variables. 
-Furthermore, our approach aim to prune the search space before encoding the problem, by examining the differences between the class score of $c'$ when computing for input $x$ and the class score when computing for input $f_P(x,\epsilon)$, for the networks $F_1$ and $F_2$. 
+We propose several ideas to scale the analysis of the previous MIP. 
+First, since the complexity of a MIP is governed
+ by the number booleans, we aim to reduce them. In particular, instead of introducing a boolean for each ReLU neuron, we leverage the network similarity and introduce one boolean for respective neutrons, whenever their computation is identical.
+%While VHAGaR captured the dependencies between networks, it does not attempt to reduce the number of variables for the optimization process. Reducing the number of optimization variables simplifies the encoding, and cause the solving time to decrease. In the problem settings, many computations are repetitive. Our approach leverages this quantity to avoid unnecessary variables. 
+Second, similarly to Vhagar, we employ numerical optimization to obtain a lower bound on the maximal non-robust global bound, in order to prune the search space. % before encoding the problem, by examining the differences between the class score of $c'$ when computing for input $x$ and the class score when computing for input $f_P(x,\epsilon)$, for the networks $F_1$ and $F_2$\Dana{and what do you do with the differences}.
+ We next describe these ideas.
 
-\subsubsection{Number of Variables}
-The calculations for the networks $F_1$ and $F_2$ are largely similar. In particular, all layers perform identical calculations except for the last layer, where one of the weights differs.
-Instead of computing the all intermittent calculations of four networks $F_1(x),F_2(x),F_1(f_P(x,\epsilon)),F_2(f_P(x,\epsilon))$, we observe that $F'_1(x)=F'_2(x)$,$F'_1(f_P(x,\epsilon))=F'_2(f_P(x,\epsilon))$ where $F'_1$ and $F'_2$ are the identical to $F_1$ and $F_2$ except for the last layer. Consequently, we can avoid from encoding all of those networks. As an alternative, we only encode and calculate the outcomes of $F'_1$ and ${F^{p}_1}'$ for $x$ and $f_P(x,\epsilon)$ accordingly, and then encode and compute the last layer outcome for each network ($F_1,F_2$) and for each input ($x,f_P(x,\epsilon)$). We compute the last layer separately from the rest of the network. This approach reduces the number of variables for each network during encoding and optimization by half. It simplifies the complexity of the problem and decreases the execution time. 
+\paragraph{Reducing the Number of Booleans}
+Our first idea is to identify respective neurons that compute the same computations (i.e., they have the same parameters and inputs). 
+Such neurons can be encoded by a single boolean variable instead of two. 
+We identify such neurons both over the encoding of the networks propagating the input $x$ and over their copies propagating the perturbed input $f(x,\epsilon)$. 
+In particular, in our preliminary research, we focused on two networks that differ only in a single neuron in the last layer, in which case the number of booleans required is the same number as Vhagar plus two\Dana{correct?}. This substantially reduces the problem's complexity. 
+%The calculations for the networks $F_1$ and $F_2$ are largely similar. In particular, all layers perform identical calculations except for the last layer, where one of the weights differs.
+%Technically, our encoding can be viewed as having a joint encoding of all layers but the last one, where each network continues this encoding with its own last layer.
+%Instead of computing the all intermittent calculations of four networks $F_1(x),F_2(x),F_1(f_P(x,\epsilon)),F_2(f_P(x,\epsilon))$, we observe that $F'_1(x)=F'_2(x)$,$F'_1(f_P(x,\epsilon))=F'_2(f_P(x,\epsilon))$ where $F'_1$ and $F'_2$ are the identical to $F_1$ and $F_2$ except for the last layer. Consequently, we can avoid from encoding all of those networks. As an alternative, we only encode and calculate the outcomes of $F'_1$ and ${F^{p}_1}'$ for $x$ and $f_P(x,\epsilon)$ accordingly, and then encode and compute the last layer outcome for each network ($F_1,F_2$) and for each input ($x,f_P(x,\epsilon)$). We compute the last layer separately from the rest of the network. This approach reduces the number of variables for each network during encoding and optimization by half. It simplifies the complexity of the problem and decreases the execution time. 
 
-\subsubsection{Suboptimal Lower Bound}
-One of the main obstacles to scaling the problem and reducing execution time is the search space. Therefore, pruning it before the optimization process starts is essential.
-~\cite{DEEPXPLORE} proposes an algorithm for finding an input $x$ such that some networks classify it correctly, while others do not. In our setting, we seek a correct classification for $x$ and misclassification for  $f_P(x,\epsilon)$ in both networks $F_1,F_2$. We aim to extend this approach by finding $x$ and $\epsilon$ that enhances the gaps between $F_1(x),F_2(x)$ and $F_1(f_P(x,\epsilon)),F_2(f_P(x,\epsilon))$.
-
-~\cite{VHAGAR} presented the idea of hyper-adversarial attacks that generalize existing adversarial attacks to unknown inputs, and utilized it to find a suboptimal lower bound, using . A hyper adversarial attack looks for inputs that have perturbations that cause misclassification.
-A set of $M$ (hyper parameter) inputs that $F_1$ and $F_2$ classify as $c'$ with a wide range of class confidence for network $F_1$ is noted as $X$. The hyper adversarial attack is noted as a set of variables $X'=(x_1',x_2',...,x_M')$ and perturbation variables $\mathcal{E}'=(\epsilon'_1,\epsilon'_2,...\epsilon'_M)$. We aim to leverage hyper-adversarial attacks to search for $X'$ such that when added to $X$ it leads to inputs where the gap between $F_1(x),F_2(x)$ and $F_1(f_P(x,\epsilon)),F_2(f_P(x,\epsilon))$ increases.
-The corresponding optimization problem:
+\paragraph{Lower bound}
+Our second idea is to compute a lower bound on the maximal non-robust global bound to prune the search space. 
+This computation relies on numerical optimization and it builds on the hyper-adversarial attack, introduced in Vhagar, and DeepXplore~\cite{DEEPXPLORE}. %, a testing framework looking for inputs that are classified differently by one network out of a group of networks performing the same task. %We next describe the hyper-adversarial attack, deepXplore, and our combination.
+%One of the main obstacles to scaling the problem and reducing execution time is the search space. Therefore, pruning it before the optimization process starts is essential.
+A hyper-adversarial attack looks for inputs that have perturbations that cause misclassification.
+DeepXplore has a set of networks, trained for the same task, and it looks for inputs that are misclassified by one of these networks. 
+To find a lower bound for our problem, we look for an input $x$ that is correctly classified by the similar networks $F_1$ and $F_2$ but its perturbed input is misclassified by them. %We aim to extend this approach by finding $x$ and $\epsilon$ that enhances the gaps between $F_1(x),F_2(x)$ and $F_1(f_P(x,\epsilon)),F_2(f_P(x,\epsilon))$.
+We combine these approaches as follows. First, like in hyper-adversarial attacks, the variables of our numerical optimization consists of a vector $X'=(x_1',x_2',...,x_M')$ and a vector of perturbation amounts $\mathcal{E}'=(\epsilon'_1,\epsilon'_2,...\epsilon'_M)'$.
+%The hyper adversarial attack is noted as a set of variables $X'=(x_1',x_2',...,x_M')$ and perturbation variables $\mathcal{E}'=(\epsilon'_1,\epsilon'_2,...\epsilon'_M)$. 
+Given a set of inputs $X=(x_1,x_2,...,x_M)$, we look for inputs of the form $x_i+x_i'$ that are classified correctly to a class $c'$ but their perturbed input is misclassified: 
+%We aim to leverage hyper-adversarial attacks to search for $X'$ such that when added to $X$ it leads to inputs where the gap between $F_1(x),F_2(x)$ and $F_1(f_P(x,\epsilon)),F_2(f_P(x,\epsilon))$ increases.
+The corresponding optimization problem is:
 $$max_{X',\epsilon'} (F_1(x_i+x_i')[c']+F_2(x_i+x_i')[c'])-(F_1(f_P(x_i+x_i',\epsilon)[c'])+F_2(f_P(x_i+x_i',\epsilon))[c'])$$
-
+We solve it similarly to the algorithm presented in Vhagar.
+\begin{comment}
+\Dana{the below text is identical to Vhagar, right?}
 We begin by expending the dataset, $DS$, with $|DS|$ random inputs (uniformly sampled), and extracting the inputs that $F_1$ and $F_2$ classify as $c'$. Then we and sort them by class confidence of $c'$ for $F_1$. Then we construct M candidates (M is set to 1000) uniformly selected from the sorted inputs. The optimization process is done using projected gradient decent and it has three main objectives:
 \begin{itemize}
     \item Finding $X'$ that $X+X'$ are classified as $c'$ by $F_1$ and $F_2$.
@@ -108,3 +133,4 @@ We begin by expending the dataset, $DS$, with $|DS|$ random inputs (uniformly sa
     \item maximizing the equation: $(F_1(x_i+x_i')[c']+F_2(x_i+x_i')[c'])-(F_1(f_P(x_i+x_i',\epsilon))[c']+F_2(f_P(x_i+x_i',\epsilon)[c']))$
 \end{itemize}
 Intuitively, $X+X'$ leads to a larger class confidence of $c'$ for $F_1$ and $F_2$, while maintaining a larger gap between the scores of $c'$ for the input and the perturbation across all examined networks. Therefore, after solving the optimization problem, we calculate the class confidence of $c'$ for network $F_1$, and choose the highest one as a suboptimal lower bound for $\delta$. 
+\end{comment}
