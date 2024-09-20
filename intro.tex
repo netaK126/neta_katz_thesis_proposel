@@ -2,7 +2,7 @@
 %! Date = 01/05/2023
 
 \section{Introduction}
-Deep neural networks have been proven successful in various applications, in particular as image classifiers.
+Deep neural networks have been proven successful in various applications,  particularly in image classifiers.
 To make them reliable, many verifiers have been developed to verify various kinds of properties, such as adhering to constraints~\cite{Reluplex,COMPLETE,PLANET} or being locally robust to attacks ~\cite{Reluplex,ABSTRACTINTER,NEURIPS2021_fac7fead,COMPLETE}. However, similarly to classical software, neural networks are often evolving to increase their accuracy or extend their function to new kinds of inputs ~\cite{SURVEY_ROBUSTNESS,INTPROP}. While it is possible to run from scratch the existing verifiers, this introduces high overhead. This gave rise to incremental verification ~\cite{IVAN,INC_SEMIDEFINIT,INC_SMOOTH}. Still, to date all existing approaches focus on local properties, which do not enable to fully understand the differences of the two networks.
 
 \paragraph{Goal: Differential analysis of neural networks}
@@ -17,14 +17,14 @@ making this problem highly complex. Further, although there are many verifiers f
 
 %\paragraph{Robustness of Several Classifiers}
 %Today many classifiers aim to classify correctly the same inputs. Although there are many studies regarding how to evaluate the robustness property of each of those classifiers individually, there is a lack of research on the relationship between the robustness of different classifiers. We can identify two main challenges in this research: (1) choosing the robustness property, and (2) constructing the evaluation algorithm that would capture the relationships between classifiers while maintaining low running time and scalability at a certain level. In this thesis, we would like to construct an algorithm that would cover all possible input regions. Therefore, the main focus is on the property of global robustness in the notion of several classifiers.
-%
+
 
 \paragraph{Key idea}
 Our main idea is to leverage the similarity of the networks to reduce the complexity of the analysis. In particular, our idea is to identify identical computations over the neurons to reduce the problem's complexity and rely on numerical optimization to prune the search space. % express the dependencies as linear constraints in order to reduce the analysis complexity to be as low as the complexity of analyzing the global robustness of a single network. 
 %The challenge is to automatically identify these identical neurons and capture them via linear constraints that approximate the true similarities as close as possible.
 
 \paragraph{Preliminary results}
-We extended a global robustness verifier for a single network ~\cite{VHAGAR} to reason about the similarity of two very similar networks (differing in a single weight in the last layer). 
+We extended a global robustness verifier for a single network ~\cite{VHAGAR,MEASURENNROBCON,GLOBALPROPERTY} to reason about the similarity of two very similar networks (differing in a single weight in the last layer). 
 %We evaluated it on classifiers that were trained on the MNIST database, whose architectures are fully connected or convolutional. More specifically, we evaluated our basic version on two classifiers that are almost identical in terms of architectures and weights, where the only difference between them is a small addition to one of the entries of the vector of the last layer of the network.
 Experimental results indicate that integrating similarity constraints reduces the verifier’s running time by an average of 58.43\% for the perturbation we examine, compared to the naive approach (as explained in the section ‘Our Approach’).
 

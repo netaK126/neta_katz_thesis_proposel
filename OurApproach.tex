@@ -105,7 +105,7 @@ Second, similarly to Vhagar, we employ numerical optimization to obtain a lower 
 Our first idea is to identify respective neurons that compute the same computations (i.e., they have the same parameters and inputs). 
 Such neurons can be encoded by a single boolean variable instead of two. 
 We identify such neurons both over the encoding of the networks propagating the input $x$ and over their copies propagating the perturbed input $f(x,\epsilon)$. 
-In particular, in our preliminary research, we focused on two networks that differ only in a single neuron in the last layer, in which case the number of booleans required is the same number as Vhagar plus two\Dana{correct?}. This substantially reduces the problem's complexity. 
+In particular, in our preliminary research, we focused on two networks that differ only in a single neuron in the last layer, in which case the number of booleans required is the same number as Vhagar plus two. This substantially reduces the problem's complexity.
 %The calculations for the networks $F_1$ and $F_2$ are largely similar. In particular, all layers perform identical calculations except for the last layer, where one of the weights differs.
 %Technically, our encoding can be viewed as having a joint encoding of all layers but the last one, where each network continues this encoding with its own last layer.
 %Instead of computing the all intermittent calculations of four networks $F_1(x),F_2(x),F_1(f_P(x,\epsilon)),F_2(f_P(x,\epsilon))$, we observe that $F'_1(x)=F'_2(x)$,$F'_1(f_P(x,\epsilon))=F'_2(f_P(x,\epsilon))$ where $F'_1$ and $F'_2$ are the identical to $F_1$ and $F_2$ except for the last layer. Consequently, we can avoid from encoding all of those networks. As an alternative, we only encode and calculate the outcomes of $F'_1$ and ${F^{p}_1}'$ for $x$ and $f_P(x,\epsilon)$ accordingly, and then encode and compute the last layer outcome for each network ($F_1,F_2$) and for each input ($x,f_P(x,\epsilon)$). We compute the last layer separately from the rest of the network. This approach reduces the number of variables for each network during encoding and optimization by half. It simplifies the complexity of the problem and decreases the execution time. 
@@ -133,4 +133,4 @@ We begin by expending the dataset, $DS$, with $|DS|$ random inputs (uniformly sa
     \item maximizing the equation: $(F_1(x_i+x_i')[c']+F_2(x_i+x_i')[c'])-(F_1(f_P(x_i+x_i',\epsilon))[c']+F_2(f_P(x_i+x_i',\epsilon)[c']))$
 \end{itemize}
 Intuitively, $X+X'$ leads to a larger class confidence of $c'$ for $F_1$ and $F_2$, while maintaining a larger gap between the scores of $c'$ for the input and the perturbation across all examined networks. Therefore, after solving the optimization problem, we calculate the class confidence of $c'$ for network $F_1$, and choose the highest one as a suboptimal lower bound for $\delta$. 
-\end{comment}
+\end{comment} 
