@@ -9,7 +9,7 @@ We consider two network architectures:
 a fully connected network consisting of three layers, ten neurons in each, denoted \texttt{3x10}, and a convolutional neural network, 
 consisting of two convolutional (stride 4) and two fully-connected layers. Both classifiers were trained for 20 iterations.
 %Table \ref{table_architectures} describes our models. 
-For each model $F$ with $L$ layers, we define $F_1$ as $F$ and $F_2$ as $F$ with a slight change in a single weight in the last layer on $F$. Specifically, the weight between the third neuron in layer $L$ and the first neuron in layer $L-1$, denoted as $w_{L,3,1}$, differs by $w'$, where $w'$ is $0.1$ or $0.05$ in our experiments.
+For each model $F$ with $L$ layers, we define $F_1$ as $F$ and $F_2$ as $F$ with a slight change in a single weight in the last layer on $F$. Specifically, the weight between the third neuron in layer $L$ and the first neuron in layer $L-1$, differs by $w'$, where $w'$ is $0.1$ or $0.05$ in our experiments.
  %e add \Dana{put number} to the weight between neuron $1$ in layer $L-1$ to neuron $3$ in layer $L$. 
  %We evaluate the algorithm across different weight additions. 
 We compare the naive approach, Vhagar's extension, and our approach.
