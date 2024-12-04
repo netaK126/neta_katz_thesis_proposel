@@ -62,7 +62,7 @@ Specifically, we want to utilize the robustness of a single classifier in order 
 Formally, given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
 $$\max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c',F_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',F_1)\leq \frac{\delta_1^{opt}}{10} $$
 after optimizing $\delta_1^{opt}$ we optimize the following:
-$$\max{\delta_2^{opt}}, \texttt{ subject to }  \exists{x}:  \mathcal{C}(x,c',F_2) \geq \delta_2^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',F_1)\leq \delta_1^{opt}$$
+$$\max{\delta_2^{opt}}, \texttt{ subject to }  \exists{x}:  \mathcal{C}(x,c',F_2) \geq \delta_2^{opt} \rightarrow \mathcal{C}(x,c',F_1)\leq \delta_1^{opt}$$
 Which means, we look for input $x$ such that $F_2$ would classify $x$ correctly, but $F_1$ wont be able to guarantee that $f_P(x,\epsilon')$ would be classified correctly, and so is $F_2$. 
 \\
 Note that We demand $\frac{\delta_1}{10}$ as an upper bound instead of $0$ since we want to maximize $\delta_2^{opt}$ for the entire input space so it would apply the global robustness property, while making sure that $\delta_1^{opt} \geq \delta^{vhagar}_1$ and $\delta_2^{opt} \geq \delta^{vhagar}_2$.
@@ -87,4 +87,4 @@ The goal is to maximize the confidence score of classifier $F_1$ for a specific 
 \end{comment}
 
 
-\end{document}
+\end{document} 
