@@ -1,0 +1,73 @@
+\begin{comment}
+\documentclass[11pt]{article}
+\usepackage[a4paper, portrait, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage[labelformat=simple]{subcaption}    %%Adding option to remove parenthesis
+\renewcommand{\thesubfigure}{\normalsize Figure \thefigure. (\alph{subfigure}):}
+% \usepackage{subcaption}
+% \usepackage{subcaption}
+%\usepackage{dirtytalk}
+\usepackage{cjhebrew}
+\usepackage{float}
+\usepackage{eldar_report}
+% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+% \newcommand\norm[1]{\lVert#1\rVert}
+\newcommand\normx[1]{\Vert#1\Vert}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{lifetime}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{comment}
+\usepackage{array}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{float}
+\newcommand{\Dana}[1]{\textcolor{purple}{\bf Dana: #1}}
+\newcommand{\Neta}[1]{\textcolor{purple}{\bf Neta: #1}}
+
+\begin{document}
+\end{comment}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\begin{lemma}\label{lem:functionTheory}
+Every function k(x) has a function g(x) such that $\forall{x}:$ $k(x)>g(x)$.
+\end{lemma}
+
+\begin{lemma}
+$\delta_1^{opt} \geq \delta^{vhagar}_1$
+\end{lemma}
+\begin{proof}
+%To prove it by contradiction try and assume that the statement is false, i.e. $\delta_1^{opt} < \delta^{vhagar}_1$.
+Some new notions:
+$$I^{vhagar} = \{(x,\epsilon)|\delta_1^{vhagar} \geq C(x,c,N_1) > 0 , C(f_P(x,\epsilon),c,N_1)\leq 0 \}$$
+%$$I^{\delta'} = \{(x,\epsilon)|\delta^{max}>\delta' \geq C(x,c,N_1) > 0 , C(f_P(x,\epsilon),c,N_1)\leq 0 \} $$
+$$I = \{(x,\epsilon)|\forall{x,\epsilon}:\ f_P(x,\epsilon)\in{I}\}$$
+Therefore, $\forall{(x,\epsilon)}\in{I^{vhagar}}:$ $(x,\epsilon)\in{I}$.%, and specifically $(x^{vhagar},\epsilon^{vhagar})\in{I^{\delta'}}$, when $\delta'\geq{C(x^{vhagar},c,F_1)}$
+$$I^{\delta'}_g = \{(x,\epsilon)|\delta^{max}> C(x,c,N_1) \geq \delta' > 0 ,\ C(f_P(x,\epsilon),c,N_1)\leq g(\delta',\epsilon), g(\delta',\epsilon)>0 \} $$
+Therefore, $\forall{(x,\epsilon)}\in{I^{\delta'}}:$ $(x,\epsilon)\in{I}$.\\
+We want to prove that $\forall{\delta'}: \delta^{max} > \delta' > \delta^{vhagar}$ we can find $x,\epsilon\in{I^{\delta'}_g}$ that satisfy: $\delta^{vhagar}<\delta'\leq{C(x,c,N_1)}$ and $0<C(f_P(x,\epsilon),c,N_1)<g(\delta',\epsilon)$.\\
+prove by contradiction: Assuming that there is no input $x$ that satisfy $\delta^{vhagar}<\delta'<C(x,c,F_1)$ means that $\delta^{vhagar}=\delta^{max}$ which is a contradiction to $\delta^{vhagar}<\delta'<\delta^{max}$ or it contradicts the fact that we are looking at the entire input space, since otherwise $\delta^{vhagar}=\delta^{max}$ which is (again) a contradiction.\\
+Then, we need to prove that for this $x$ exists such $\epsilon$ that satisfy: $0<C(f_P(x,\epsilon),c,N_1)<g(\delta',\epsilon)$.\\
+First we prove that $0<C(f_P(x,\epsilon),c,N_1)$. If this statement was false, which means $0 \geq C(f_P(x,\epsilon),c,N_1)$, it would contradict Vhagar (since we found $\delta'>\delta^{vhagar}$ that satisfy the proposed problem by vhagar). than we choose a function $g$ that satisfy $C(f_P(x,\epsilon),c,N_1)<g(\delta',\epsilon)$, which must exists according to lemma \ref{lem:functionTheory}.\\
+Specifically, it true for $\delta'=\delta_1^{OPT}$, and $g(\delta',\epsilon)=\frac{\delta_1^{opt}}{10}$ in our OPT problem.\\
+Overall, we proved that $\forall{\delta'>\delta^{vhagar}}$ $\exists{x,\epsilon}$ such that $C(x,c,N_1)\geq{\delta'}$ (otherwise $\delta'=\delta^{max}$ which is a contradiction) and $C(f_P(x,\epsilon),c,N_1)\leq{g(\delta',\epsilon)}$
+
+\end{proof}
+
+\begin{lemma}
+$\delta_2^{opt} \geq \delta^{vhagar}_2$
+\end{lemma}
+\begin{proof}
+%To prove it by contradiction try and assume that the statement is false, i.e. $\delta_1^{opt} < \delta^{vhagar}_1$.
+From previous lemma's proof \Neta{TODO - I want to separate the previous lemma to "sub-lemmas" so it would prove this as well}
+\end{proof}
+
+%\end{document} 
