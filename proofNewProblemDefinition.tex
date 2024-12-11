@@ -67,7 +67,33 @@ $\delta_2^{opt} \geq \delta^{vhagar}_2$
 \end{lemma}
 \begin{proof}
 %To prove it by contradiction try and assume that the statement is false, i.e. $\delta_1^{opt} < \delta^{vhagar}_1$.
-From previous lemma's proof \Neta{TODO - I want to separate the previous lemma to "sub-lemmas" so it would prove this as well}
+Let's examine the following optimization problem:
+$$ max_x{\Delta}:\ 0 \leq |C(x,c,N_2)-C(x,c,N_1)|=\Delta $$
+Which means that $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta$.\\ \\
+If $\Delta=0$ it means that $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)|=0$, and specifically $\delta_1^{opt}=\delta_2^{opt}$. From previous lemma we can say $\delta_1^{opt} \geq \delta^{vhagar}_1$, so in that case, $\delta_2^{opt} \geq \delta^{vhagar}_1$. because of $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)|=0$, we can say $\delta^{vhagar}_1=\delta^{vhagar}_2$ (otherwise it contradicts vaghar or the equality of the confidence-diff to 0). therefore: $\delta_2^{opt} \geq \delta^{vhagar}_2$ when $\Delta=0$.\\
+We shall use the following notion: when $\Delta_{max}=0: \delta'=\delta_2^{opt}$ \\ \\
+If $\Delta>0$: since $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta$ it also happens:  
+$$\forall{x}\in{\{x| C(x,c,N_2)\geq{{\delta_2^{opt}}_{\Delta=0}}\ C(x,c,N_1)\leq{\delta_1^{opt}}\}}: |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta$$
+we can also define:
+$$ I_{\Delta\geq 0}= \{x| C(x,c,N_2)\geq{\delta'},\ C(x,c,N_1)\leq{\delta_1^{opt},\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta,\ 0 \leq \Delta}\}$$
+$$ I_{\Delta > 0}= \{x| C(x,c,N_2)\geq{\delta'},\ C(x,c,N_1)\leq{\delta_1^{opt},\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta,\ 0 < \Delta}\}$$
+$$ I_{\Delta=0}= \{x| C(x,c,N_2)\geq{\delta'},\ C(x,c,N_1)\leq{\delta_1^{opt},\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta=0}\}$$
+We shall notice that $I_{\Delta>0} \ne |I_{\Delta=0}|$ and therefore $I_{\Delta > 0} \ne \emptyset$.\\ \\
+We can say that:
+$$ max_{x\in{I_{\Delta=0}}}{C(x,c,N_2)}\ <\  max_{x'\in{I_{\Delta>0}}}{C(x',c,N_2)}$$
+because  $|C(x',c,N_2)-C(x',c,N_1)|>0$ which implied that the confidence $C(x',c,N_2)$ is bigger: if $C(x',c,N_2)-C(x',c,N_1)>0$ than it is trivial. if $C(x',c,N_2)-C(x',c,N_1)<0$ than it is \Neta{TODO} .\\
+for $x'$ we can say $C(x',c,N_2) \geq {\delta_2^{opt}}_{\Delta>0}$ (othwise it says that ${\delta_2^{opt}}_{\Delta>0}=\delta_2^{max}$). \\
+therefore, ${\delta_2^{opt}}_{\Delta>0} \geq {\delta_2^{opt}}_{\Delta=0}\geq{\delta_2^{vhagar}}$
+
+
+
+
+\begin{comment}
+We can say that  $I_{\Delta}=\{x| C(x,c,N_2)\geq{{\delta_2^{opt}}_{\Delta=0}}\}\ \bigwedge\ \{x| C(x,c,N_1)\leq{\delta_1^{opt}}\}$. \\
+However, the second group ($\{x| C(x,c,N_1)\leq{\delta_1^{opt}}\}$) is the same for $I_{\Delta>0}$ and for $I_{\Delta=0}$. Therefore:
+$$ I_{\Delta\geq 0}^2=\{x| C(x,c,N_2)\geq{{\delta_2^{opt}}_{\Delta=0}}\}_{\Delta>0}  \supset I_{\Delta=0}^2=\{x| C(x,c,N_2)\geq{{\delta_2^{opt}}_{\Delta=0}}\}_{\Delta=0}$$
+Which means that $\forall{x}\in{I_{\Delta\geq 0}^2-I_{\Delta=0}^2}: C(x,c,N_2) \geq C$
+\end{comment}
 \end{proof}
 
 %\end{document} 
