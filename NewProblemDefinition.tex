@@ -30,6 +30,7 @@
 \newcommand{\Neta}[1]{\textcolor{purple}{\bf Neta: #1}}
 \usepackage[english]{babel}
 \usepackage{amsthm}
+\usepackage{cleveref}
 
 \begin{document}
 \section{Problem Definition}
@@ -59,8 +60,38 @@ $$\max{\delta^{vhagar}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I
 
 \paragraph{Problem definition} 
 We study the problem of \emph{proof transfer} between two similar networks. 
-Specifically, we want to utilize the robustness of a single classifier in order to lower bound the minimally globally robust bound of a similar classifier. %By doing so, we would be able to enhance the algorithm's scalability.
-Formally, given two classifiers $N_1,N_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
+Specifically, we want to utilize the robustness of a single classifier in order to lower bound the minimally globally robust bound of a similar classifier. 
+Technically, we upper bound the maximally globally robust bound.
+%By doing so, we would be able to enhance the algorithm's scalability.
+Formally, given two classifiers $N_1,N_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to upper bound $\delta_2^\text{vhagar}$ as tightly as possibly by $\delta_1^\text{vhagar}$. To this end, our goal is to compute:
+\begin{equation}\label{eq:diff}
+\min \delta_\text{diff}\text{ subject to } |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}
+\end{equation}
+Given this value, if we prove that: 
+\begin{equation}\label{eq:vagdiff}
+\max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_\text{diff}
+\end{equation}
+Then, our proof transfer is $\delta_1^{opt}+\delta_\text{diff}$, as an upper bound on $\delta_2^{opt}$. This follows since, assume by contradiction that $\delta_2^{opt}>\delta_1^{opt}+\delta_\text{diff}$ and let $x$ be an input maximizing this value. By~\Cref{eq:diff}, $N_1$ classifies this input with confidence greater than $\delta_1^{opt}$. By~\Cref{eq:vagdiff}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}$. By~\Cref{eq:diff}, we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$.
+If we could compute~\Cref{eq:diff} and then verify properties for $N_1$ (with respect to~\Cref{eq:vagdiff}), this would be easy. However, this defeats the purpose of proof transfer, since first we have $N_1$, we prove properties for it, and only then we generate $N_2$. 
+
+Thus, instead, %we wish to predict a useful upper bound on $\delta_\text{diff}$. While we could pick some large value, this would translate to higher values of $\delta_1^{opt}$, thus lowering the region of provable global robustness. Instead, 
+we change Vhagar's constraint to be \emph{parametric} in $\delta_\text{diff}$. That is, we wish to find the smallest $A$ satisfying the following constraint:
+\begin{equation}\label{eq:func}
+\min A\text { subject to }\forall \delta_\text{diff} \forall{x}\forall{\epsilon'}\in{I_\epsilon}:    \delta_\text{diff}>0\land \mathcal{C}(x,c,N) \geq \delta_\text{diff} + A\rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_2)>\delta_\text{diff}
+\end{equation}
+This problem is feasible since a trivial solution to this constraint is assigning to $A$ the maximal confidence $N_1$ assigns for $c$ for any input. %However, this is not helpful. 
+As usual, to find a value for $A$, we look at the dual problem, looking for the max $A$ violating this constraint
+%can check if it satisfies the constraint by looking for a violation, that is looking for 
+%\begin{equation}\label{eq:viol}
+%\exists \delta_\text{diff} \exists {x}\exists{\epsilon'}\in{I_\epsilon}:   \delta_\text{diff}>0\land  \mathcal{C}(x,c,N) \geq  \delta_\text{diff} + A\land \mathcal{C}(f_P(x,\epsilon'),c',N_2)\leq \delta_\text{diff}
+%\end{equation}
+%We can look for the tightest bound by solving:
+\begin{equation}
+ \max A \text{ subject to } \delta_\text{diff}>0\land \mathcal{C}(x,c,N) \geq \delta_\text{diff} + A\land \mathcal{C}(f_P(x,\epsilon'),c',N_2)\leq \delta_\text{diff}
+ \end{equation}
+  Then, if given a new network, we proved \Cref{eq:diff}, we can infer that $N_2$'s minimal globally robust bound is at most $A$. 
+   
+%compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
 $$\max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \frac{\delta_1^{opt}}{10} $$
 after optimizing $\delta_1^{opt}$ we optimize the following:
 $$\max{\delta_2^{opt}}, \texttt{ subject to }  \exists{x}:  \mathcal{C}(x,c,N_2) \geq \delta_2^{opt} \rightarrow \mathcal{C}(x,c,N_1)\leq \delta_1^{opt}$$
