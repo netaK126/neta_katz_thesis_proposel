@@ -71,13 +71,13 @@ Given this value, if we prove that:
 \begin{equation}\label{eq:vagdiff}
 \max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_\text{diff}
 \end{equation}
-Then, our proof transfer is $\delta_1^{opt}+\delta_\text{diff}$, as an upper bound on $\delta_2^{opt}$. This follows since, assume by contradiction that $\delta_2^{opt}>\delta_1^{opt}+\delta_\text{diff}$ and let $x$ be an input maximizing this value. By~\Cref{eq:diff}, $N_1$ classifies this input with confidence greater than $\delta_1^{opt}$. By~\Cref{eq:vagdiff}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}$. By~\Cref{eq:diff}, we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$.
+Then, our proof transfer is $\delta_1^{opt}+\delta_\text{diff}$, as an upper bound on $\delta_2^{opt}$. This follows since, for every $x$ whose confidence is at least  $\delta_1^{opt}+\delta_\text{diff}$, by~\Cref{eq:diff}, $N_1$ classifies this input with confidence greater than $\delta_1^{opt}$. By~\Cref{eq:vagdiff}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}$. By~\Cref{eq:diff}, we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$.
 If we could compute~\Cref{eq:diff} and then verify properties for $N_1$ (with respect to~\Cref{eq:vagdiff}), this would be easy. However, this defeats the purpose of proof transfer, since first we have $N_1$, we prove properties for it, and only then we generate $N_2$. 
 
 Thus, instead, %we wish to predict a useful upper bound on $\delta_\text{diff}$. While we could pick some large value, this would translate to higher values of $\delta_1^{opt}$, thus lowering the region of provable global robustness. Instead, 
 we change Vhagar's constraint to be \emph{parametric} in $\delta_\text{diff}$. That is, we wish to find the smallest $A$ satisfying the following constraint:
 \begin{equation}\label{eq:func}
-\min A\text { subject to }\forall \delta_\text{diff} \forall{x}\forall{\epsilon'}\in{I_\epsilon}:    \delta_\text{diff}>0\land \mathcal{C}(x,c,N) \geq \delta_\text{diff} + A\rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_2)>\delta_\text{diff}
+\min A\text { subject to }\forall \delta_\text{diff} \forall{x}\forall{\epsilon'}\in{I_\epsilon}:    \delta_\text{diff}>0\land \mathcal{C}(x,c,N_1) \geq \delta_\text{diff} + A\rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}
 \end{equation}
 This problem is feasible since a trivial solution to this constraint is assigning to $A$ the maximal confidence $N_1$ assigns for $c$ for any input. %However, this is not helpful. 
 As usual, to find a value for $A$, we look at the dual problem, looking for the max $A$ violating this constraint
@@ -86,10 +86,16 @@ As usual, to find a value for $A$, we look at the dual problem, looking for the 
 %\exists \delta_\text{diff} \exists {x}\exists{\epsilon'}\in{I_\epsilon}:   \delta_\text{diff}>0\land  \mathcal{C}(x,c,N) \geq  \delta_\text{diff} + A\land \mathcal{C}(f_P(x,\epsilon'),c',N_2)\leq \delta_\text{diff}
 %\end{equation}
 %We can look for the tightest bound by solving:
-\begin{equation}
- \max A \text{ subject to } \delta_\text{diff}>0\land \mathcal{C}(x,c,N) \geq \delta_\text{diff} + A\land \mathcal{C}(f_P(x,\epsilon'),c',N_2)\leq \delta_\text{diff}
+\begin{equation}\label{eq:ourproof}
+ \max A \text{ subject to } \delta_\text{diff}>0\land \mathcal{C}(x,c,N_1) \geq \delta_\text{diff} + A\land \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_\text{diff}
  \end{equation}
-  Then, if given a new network, we proved \Cref{eq:diff}, we can infer that $N_2$'s minimal globally robust bound is at most $A$. 
+  Then, if given a new network, we proved \Cref{eq:diff}, we can infer that:
+  \begin{itemize}
+    \item $ \delta_\text{diff} +A+\Delta$ is an upper bound on the minimally global robust bound of $N_1$ (where $\Delta$ is the computer's precision level). [in other words, $N_1$ is $ \delta_\text{diff} +A+\Delta$ globally robust with respect to the given perturbation].
+    \item $ 2\cdot \delta_\text{diff} +A+\Delta$ is an upper bound on the minimally global robust bound of $N_2$. Proof:
+    For every $x$ whose confidence is at least $2\cdot \delta_\text{diff} +A+\Delta$, by~\Cref{eq:diff}, $N_1$ classifies this input with confidence greater than $\delta_\text{diff} +A+\Delta$. By~\Cref{eq:ourproof}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}$. By~\Cref{eq:diff}, we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$. 
+  \end{itemize}
+   
    
 %compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
 $$\max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \frac{\delta_1^{opt}}{10} $$
