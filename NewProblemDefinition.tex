@@ -65,7 +65,7 @@ Technically, we upper bound the maximally globally robust bound.
 %By doing so, we would be able to enhance the algorithm's scalability.
 Formally, given two classifiers $N_1,N_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to upper bound $\delta_2^\text{vhagar}$ as tightly as possibly by $\delta_1^\text{vhagar}$. To this end, our goal is to compute:
 \begin{equation}\label{eq:diff}
-\min \delta_\text{diff}\text{ subject to } |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}
+\min \delta_\text{diff}\text{ subject to } \forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}
 \end{equation}
 Given this value, if we prove that: 
 \begin{equation}\label{eq:vagdiff}
@@ -95,7 +95,14 @@ As usual, to find a value for $A$, we look at the dual problem, looking for the 
     \item $ 2\cdot \delta_\text{diff} +A+\Delta$ is an upper bound on the minimally global robust bound of $N_2$. Proof:
     For every $x$ whose confidence is at least $2\cdot \delta_\text{diff} +A+\Delta$, by~\Cref{eq:diff}, $N_1$ classifies this input with confidence greater than $\delta_\text{diff} +A+\Delta$. By~\Cref{eq:ourproof}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}$. By~\Cref{eq:diff}, we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$. 
   \end{itemize}
-   
+  % In fact, we can even lower the value of $\delta_\text{diff}$ by the following observation. Our proof for $N_2$ is transferred only for inputs whose confidence is at least $ 2\cdot \delta_\text{diff} +A+\Delta> A$
+   %and it is with respect to inputs that $N_1$ classifies with confidence at least $ \delta_\text{diff} +A+\Delta> A$.
+   %Thus, after we compute $A$, we can bound the difference only for inputs with high enough confidence, i.e.,:
+   %\begin{equation}\label{eq:diffa}
+%\min \delta_\text{diff}\text{ subject to } \mathcal{C}(x,c,N_2)\geq A \land \mathcal{C}(x,c,N_1)\geq A 
+%\rightarrow
+%|\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}
+%\end{equation}
    \Dana{old text below:}
    
 %compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
