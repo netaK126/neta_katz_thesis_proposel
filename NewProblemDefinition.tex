@@ -31,6 +31,8 @@
 \usepackage[english]{babel}
 \usepackage{amsthm}
 \usepackage{cleveref}
+\usepackage{amsthm}
+\newtheorem{definition}{Definition}
 
 \begin{document}
 \section{Problem Definition}
@@ -56,24 +58,33 @@ $$\mathcal{C}(x,c,N)=N(x)_{c}-max_{c'\ne c}(N(x)_{c'})$$
 Given a classifier $N$, an input $x$, a class $c\in{C}$, a perturbation $P$, a range $I_\epsilon$ and a class confidence $\delta>0$, the classifier $N$ is $\delta$-globally robust for $c$ under $(P,I_\epsilon)$ if:\\
 $$\forall{x}\forall{\epsilon'}\in{I_\epsilon}:    \mathcal{C}(x,c,N) \geq \delta \rightarrow argmax(N(x)) = argmax(N(f_P(x,\epsilon'))) $$
 Intuitively, the classifier is robust with respect to $P$ for any input classified with confidence higher or equal to the minimal $\delta$. In practice, it is easier to compute the dual bound, i.e., the maximal globally non-robust bound. That is, the maximal class confidence $\delta$ that violates the constraint:
-$$\max{\delta^{vhagar}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N) \geq \delta^{vhagar} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c,N)\leq 0$$ 
-
+\begin{definition}[Maximal Non-Robust Bound (Vhagar)]
+$$\max{\delta^{vhagar}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N) \geq \delta^{vhagar} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c,N)\leq 0$$
+\end{definition}
 \paragraph{Problem definition} 
 We study the problem of \emph{proof transfer} between two similar networks. 
-Specifically, we want to utilize the robustness of a single classifier in order to lower bound the minimally globally robust bound of a similar classifier. 
+Specifically, we want to utilize the robustness of a single classifier in order to upper bound the minimally globally robust bound of a similar classifier. 
 Technically, we upper bound the maximally globally robust bound.
 %By doing so, we would be able to enhance the algorithm's scalability.
 Formally, given two classifiers $N_1,N_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to upper bound $\delta_2^\text{vhagar}$ as tightly as possibly by $\delta_1^\text{vhagar}$. To this end, our goal is to compute:
+\begin{definition}[Maximal Network Difference]
 \begin{equation}\label{eq:diff}
 \min \delta_\text{diff}\text{ subject to } \forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}
 \end{equation}
+\end{definition}
 Given this value, if we prove that: 
+\begin{definition}[Maximal Non-Robust Bound for Difference]
 \begin{equation}\label{eq:vagdiff}
-\max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_\text{diff}
+\max{\delta^\text{max\_diff}_1}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta^\text{max\_diff}_1 \land \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_\text{diff}
 \end{equation}
-Then, our proof transfer is $\delta_1^{opt}+\delta_\text{diff}$, as an upper bound on $\delta_2^{opt}$. This follows since, for every $x$ whose confidence is at least  $\delta_1^{opt}+\delta_\text{diff}$, by~\Cref{eq:diff}, $N_1$ classifies this input with confidence greater than $\delta_1^{opt}$. By~\Cref{eq:vagdiff}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}$. By~\Cref{eq:diff}, we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$.
-If we could compute~\Cref{eq:diff} and then verify properties for $N_1$ (with respect to~\Cref{eq:vagdiff}), this would be easy. However, this defeats the purpose of proof transfer, since first we have $N_1$, we prove properties for it, and only then we generate $N_2$. 
+\end{definition}
+Note that $\delta^\text{max\_diff}_1$ is an upper bound on the maximally globally robust bound of $N_1$, that is: $\delta^\text{max\_diff}_1\geq \delta^\text{vhagar}_1$ (this follows since Vhagar's second constraint is stronger: $\leq 0$). 
+Let $\Delta$ be the computer precision level, then, $\delta^\text{min\_diff}_1 = \delta^\text{max\_diff}_1+\Delta$ is an upper bound on the minimally globally robust bound of $N_1$ (which is $\delta^\text{vhagar}_1+\Delta$).
 
+Our proof transfer determines that $\delta^\text{max\_diff}_1+\delta_\text{diff}+\Delta$ is an upper bound on $\delta^\text{vhagar}_2$. Proof: For every $x$ whose confidence by $N_2$ is at least  $\delta^\text{max\_diff}_1+\delta_\text{diff}+\Delta$, by~\Cref{eq:diff}, $N_1$ classifies this input with confidence at least $\delta^\text{max\_diff}_1+\Delta$. By~\Cref{eq:vagdiff}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}$. By~\Cref{eq:diff}, we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$.
+
+\paragraph{Determining $\delta_\text{diff}$ for~\Cref{eq:vagdiff}:}
+If we could compute~\Cref{eq:diff} and then verify properties for $N_1$ (with respect to~\Cref{eq:vagdiff}), this would be easy. However, this defeats the purpose of proof transfer, since first we have $N_1$, we prove properties for it, and only then we generate $N_2$. 
 Thus, instead, %we wish to predict a useful upper bound on $\delta_\text{diff}$. While we could pick some large value, this would translate to higher values of $\delta_1^{opt}$, thus lowering the region of provable global robustness. Instead, 
 we change Vhagar's constraint to be \emph{parametric} in $\delta_\text{diff}$. That is, we wish to find the smallest $A$ satisfying the following constraint:
 \begin{equation}\label{eq:func}
@@ -91,7 +102,7 @@ As usual, to find a value for $A$, we look at the dual problem, looking for the 
  \end{equation}
   Then, if given a new network, we proved \Cref{eq:diff}, we can infer that:
   \begin{itemize}
-    \item $ \delta_\text{diff} +A+\Delta$ is an upper bound on the minimally global robust bound of $N_1$ (where $\Delta$ is the computer's precision level). [in other words, $N_1$ is $ \delta_\text{diff} +A+\Delta$ globally robust with respect to the given perturbation].
+    \item $ \delta_\text{diff} +A+\Delta$ is an upper bound on the minimally global robust bound of $N_1$ [in other words, $N_1$ is $ \delta_\text{diff} +A+\Delta$ globally robust with respect to the given perturbation].
     \item $ 2\cdot \delta_\text{diff} +A+\Delta$ is an upper bound on the minimally global robust bound of $N_2$. Proof:
     For every $x$ whose confidence is at least $2\cdot \delta_\text{diff} +A+\Delta$, by~\Cref{eq:diff}, $N_1$ classifies this input with confidence greater than $\delta_\text{diff} +A+\Delta$. By~\Cref{eq:ourproof}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}$. By~\Cref{eq:diff}, we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$. 
   \end{itemize}
