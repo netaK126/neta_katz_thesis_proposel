@@ -106,6 +106,10 @@ As usual, to find a value for $A$, we look at the dual problem, looking for the 
     \item $ 2\cdot \delta_\text{diff} +A+\Delta$ is an upper bound on the minimally global robust bound of $N_2$. Proof:
     For every $x$ whose confidence is at least $2\cdot \delta_\text{diff} +A+\Delta$, by~\Cref{eq:diff}, $N_1$ classifies this input with confidence greater than $\delta_\text{diff} +A+\Delta$. By~\Cref{eq:ourproof}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>\delta_\text{diff}$. By~\Cref{eq:diff}, we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$. 
   \end{itemize}
+  To tighten $A$ for a smaller range of $\delta_\text{diff}$, we can add an upper bound on $\delta_\text{diff}$ denoted $u$ (a hyper-parameter):
+  \begin{equation}\label{eq:ourproof}
+ \max A \text{ subject to } \delta_\text{diff}>0\land \delta_\text{diff}<u\land \mathcal{C}(x,c,N_1) \geq \delta_\text{diff} + A\land \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_\text{diff}
+ \end{equation}
   % In fact, we can even lower the value of $\delta_\text{diff}$ by the following observation. Our proof for $N_2$ is transferred only for inputs whose confidence is at least $ 2\cdot \delta_\text{diff} +A+\Delta> A$
    %and it is with respect to inputs that $N_1$ classifies with confidence at least $ \delta_\text{diff} +A+\Delta> A$.
    %Thus, after we compute $A$, we can bound the difference only for inputs with high enough confidence, i.e.,:
