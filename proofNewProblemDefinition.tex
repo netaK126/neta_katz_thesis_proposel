@@ -50,16 +50,11 @@ Some new notions:
 $$I^{vhagar} = \{(x,\epsilon)|\delta_1^{vhagar} \geq C(x,c,N_1) > 0 , C(f_P(x,\epsilon),c,N_1)\leq 0 \}$$
 %$$I^{\delta'} = \{(x,\epsilon)|\delta^{max}>\delta' \geq C(x,c,N_1) > 0 , C(f_P(x,\epsilon),c,N_1)\leq 0 \} $$
 $$I = \{(x,\epsilon)|\forall{x,\epsilon}:\ f_P(x,\epsilon)\in{I}\}$$
-Therefore, $\forall{(x,\epsilon)}\in{I^{vhagar}}:$ $(x,\epsilon)\in{I}$.%, and specifically $(x^{vhagar},\epsilon^{vhagar})\in{I^{\delta'}}$, when $\delta'\geq{C(x^{vhagar},c,F_1)}$
-$$I^{\delta'}_g = \{(x,\epsilon)|\delta^{max}> C(x,c,N_1) \geq \delta' > 0 ,\ C(f_P(x,\epsilon),c,N_1)\leq g(\delta',\epsilon), g(\delta',\epsilon)>0 \} $$
-Therefore, $\forall{(x,\epsilon)}\in{I^{\delta'}}:$ $(x,\epsilon)\in{I}$.\\
-We want to prove that $\forall{\delta'}: \delta^{max} > \delta' > \delta^{vhagar}$ we can find $x,\epsilon\in{I^{\delta'}_g}$ that satisfy: $\delta^{vhagar}<\delta'\leq{C(x,c,N_1)}$ and $0<C(f_P(x,\epsilon),c,N_1)<g(\delta',\epsilon)$.\\
-prove by contradiction: Assuming that there is no input $x$ that satisfy $\delta^{vhagar}<\delta'<C(x,c,F_1)$ means that $\delta^{vhagar}=\delta^{max}$ which is a contradiction to $\delta^{vhagar}<\delta'<\delta^{max}$ or it contradicts the fact that we are looking at the entire input space, since otherwise $\delta^{vhagar}=\delta^{max}$ which is (again) a contradiction.\\
-Then, we need to prove that for this $x$ exists such $\epsilon$ that satisfy: $0<C(f_P(x,\epsilon),c,N_1)<g(\delta',\epsilon)$.\\
-First we prove that $0<C(f_P(x,\epsilon),c,N_1)$. If this statement was false, which means $0 \geq C(f_P(x,\epsilon),c,N_1)$, it would contradict Vhagar (since we found $\delta'>\delta^{vhagar}$ that satisfy the proposed problem by vhagar). than we choose a function $g$ that satisfy $C(f_P(x,\epsilon),c,N_1)<g(\delta',\epsilon)$, which must exists according to lemma \ref{lem:functionTheory}.\\
-Specifically, it true for $\delta'=\delta_1^{OPT}$, and $g(\delta',\epsilon)=\frac{\delta_1^{opt}}{10}$ in our OPT problem.\\
-Overall, we proved that $\forall{\delta'>\delta^{vhagar}}$ $\exists{x,\epsilon}$ such that $C(x,c,N_1)\geq{\delta'}$ (otherwise $\delta'=\delta^{max}$ which is a contradiction) and $C(f_P(x,\epsilon),c,N_1)\leq{g(\delta',\epsilon)}$
 
+Therefore, $\forall{(x,\epsilon)}\in{I^{vhagar}}:$ $(x,\epsilon)\in{I}$.%, and specifically $(x^{vhagar},\epsilon^{vhagar})\in{I^{\delta'}}$, when $\delta'\geq{C(x^{vhagar},c,F_1)}$
+$$I^{\delta'}_g = \{(x,\epsilon)|\delta^{max}> C(x,c,N_1) \geq \delta' > 0 ,\ C(f_P(x,\epsilon),c,N_1)\leq g(\delta',\epsilon), \forall{\delta',\epsilon}:\ g(\delta',\epsilon)>0 \} $$
+Therefore, $I^{vaghar}\subseteq{I^{\delta'}_g}$, which means:
+$$ \delta_1^{opt}=max_{x\in{I^{\delta'}_g}}{C(x,c,N_1)} \geq max_{x\in{I^{vaghar}}}{C(x,c,N_1)}=\delta_1^{vhagar}$$
 \end{proof}
 
 \begin{lemma}
@@ -67,23 +62,73 @@ $\delta_2^{opt} \geq \delta^{vhagar}_2$
 \end{lemma}
 \begin{proof}
 %To prove it by contradiction try and assume that the statement is false, i.e. $\delta_1^{opt} < \delta^{vhagar}_1$.
+Previously we proved that $\delta_2^{\text{vhagar}} \leq \delta_1^{opt}+\delta_{\text{diff}}+\Delta$.\\
+\begin{enumerate}[nosep,nolistsep]
+    \item If $\delta_1^{opt}+\delta_{\text{diff}}+\Delta \leq \delta_2^{max}$:
+    $$\exists{x}:\ C(x,c,N_2) \geq \delta_1^{opt}+\delta_{\text{diff}}+\Delta$$
+    we want to prove that $C(x,c,N_1) \geq \delta_1^{opt}$ (if so, we can say $\delta_2^{\text{vhagar}} \leq  \delta_1^{opt}+\delta_{\text{diff}}+\Delta$ and then $\delta_2^{\text{vhagar}} \leq \delta_2^{opt}$). Lets' examine:
+    $$|C(x,c,N_2)-C(x,c,N_1)| \leq \delta_{\text{diff}}$$
+    $$ -\delta_2^{\text{vhagar}} \leq C(x,c,N_2)-C(x,c,N_1) \leq \delta_2^{\text{vhagar}} $$
+    Specifically, we focus on $\delta_1^{opt}+\delta_{diff}+\Delta \leq C(x,c,N_2)$:
+    $$  -\delta_2^{\text{vhagar}} \leq \delta_1^{opt}+\delta_{diff}+\Delta-C(x,c,N_1) \leq \delta_2^{\text{vhagar}} $$
+    $$  0 \leq -\delta_1^{opt}-\Delta+C(x,c,N_1) \leq 2\cdot\delta_2^{\text{vhagar}} $$
+    $$ \delta_1^{opt} \leq \delta_1^{opt} + \Delta \leq C(x,c,N_1) $$
+    Therefore, we can say:
+    $$I\{x| C(x,c,N_1)\geq\delta_1^{opt} + \Delta,\ C(x,c,N_2)\geq \delta_1^{opt}+\delta_{\text{diff}}+\Delta\}\ne\emptyset$$
+    $$\text{max}_{x\in{I}}{C(x,c,N_2)} \geq \delta_2^{vhagar}$$
+    which means that $\delta_2^{opt} \geq \delta_2^{vhagar}$
+    
+    \item If $\delta_1^{opt}+\delta_{\text{diff}}+\Delta > \delta_2^{max}$
+    Again, we examine $\forall{x}:\ \delta_1^{opt} \leq C(x,c,N_1)$. In that case:
+    $$|C(x,c,N_2)-C(x,c,N_1)| \leq \delta_{\text{diff}}$$
+    $$-\delta_{\text{diff}} \leq C(x,c,N_2)-C(x,c,N_1) \leq \delta_{\text{diff}}$$
+    $$-\delta_{\text{diff}}+C(x,c,N_1) \leq C(x,c,N_2) \leq \delta_{\text{diff}}+C(x,c,N_1)$$
+    Applying $\delta_1^{opt} \leq C(x,c,N_1)$:
+    $$\delta_1^{opt}-\delta_{\text{diff}} \leq C(x,c,N_2)$$
+    
+    \begin{enumerate}[nosep,nolistsep]
+    \item If $\delta_2^{max} < \delta_1^{opt} - \delta_\text{diff}$:
+    $$ \delta_2^{max}+\delta_\text{diff} < \delta_1^{opt}$$
+    therefore:
+    $$ \delta_2^{max}+\delta_\text{diff} - \delta_{\text{diff}}< \delta_1^{opt}-\delta_{\text{diff}} \leq C(x,c,N_2) $$
+    $$ \delta_2^{max} < C(x,c,N_2) $$
+    Which is not possible/contradiction.
+    
+    \item we get $\delta_1^{opt}-\delta_{\text{diff}} \leq \delta_2^{max}$ which means:
+    $$ \exists{x}:\in \{C(x,c,N_2) \geq \delta_1^{opt}-\delta_\text{diff},\ C(x,c,N_1) \geq \delta_1^{opt}\} = I $$
+    We can say that:
+    $$\forall{x}:\ C(x,c,N_2)\geq \delta_2^{vhagar}+\Delta,\ C(x,c,N_1) \geq \delta_1^{opt} \rightarrow x\in{I}$$
+    which says:
+    $$ max_{x\in{I}}{C(x,c,N_2)} \geq \delta_2^{vhagar}+\Delta $$
+    Which also means that $\delta_2^{opt} \geq \delta_2^{vhagar}+\Delta \geq \delta_2^{vhagar}$
+    
+    \end{enumerate} 
+    
+\end{enumerate} 
+
+
+
+\begin{comment}
 Let's examine the following optimization problem:
-$$ max_x{\Delta}:\ 0 \leq |C(x,c,N_2)-C(x,c,N_1)|=\Delta $$
-Which means that $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta$.\\ \\
-If $\Delta=0$ it means that $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)|=0$, and specifically $\delta_1^{opt}=\delta_2^{opt}$. From previous lemma we can say $\delta_1^{opt} \geq \delta^{vhagar}_1$, so in that case, $\delta_2^{opt} \geq \delta^{vhagar}_1$. because of $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)|=0$, we can say $\delta^{vhagar}_1=\delta^{vhagar}_2$ (otherwise it contradicts vaghar or the equality of the confidence-diff to 0). therefore: $\delta_2^{opt} \geq \delta^{vhagar}_2$ when $\Delta=0$.\\
-We shall use the following notion: when $\Delta_{max}=0: \delta'=\delta_2^{opt}$ \\ \\
-If $\Delta>0$: since $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta$ it also happens:  
-$$\forall{x}\in{\{x| C(x,c,N_2)\geq{{\delta_2^{opt}}_{\Delta=0}}\ C(x,c,N_1)\leq{\delta_1^{opt}}\}}: |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta$$
+$$ max_x{\delta_\text{diff}}:\ 0 \leq |C(x,c,N_2)-C(x,c,N_1)|=\delta_\text{diff} $$
+Which means that $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)| \leq \delta_\text{diff}$.\\ \\
+If $\delta_\text{diff}=0$ it means that $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)|=0$, and specifically $\delta_1^{opt}=\delta_2^{opt}$. From previous lemma we can say $\delta_1^{opt} \geq \delta^{vhagar}_1$, so in that case, $\delta_2^{opt} \geq \delta^{vhagar}_1$. because of $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)|=0$, we can say $\delta^{vhagar}_1=\delta^{vhagar}_2$ (otherwise it contradicts vaghar or the equality of the confidence-diff to 0). therefore: $\delta_2^{opt} \geq \delta^{vhagar}_2$ when $\delta_\text{diff}=0$.\\
+We shall use the following notion: when $\delta_\text{diff}=0: \delta'=\delta_2^{opt}$ \\ \\
+If $\delta_\text{diff}>0$: since $\forall{x}:\ |C(x,c,N_2)-C(x,c,N_1)| \leq \delta_\text{diff}$ it also happens:  
+$$\forall{x}\in{\{x| C(x,c,N_2)\geq{\delta'},\ C(x,c,N_1)\leq{\delta_1^{opt}}\}}: |C(x,c,N_2)-C(x,c,N_1)| \leq \delta_\text{diff}$$
+
+reminder: $\delta'=\delta_1^{opt}$. \\
+therefore, from looking at $|C(x,c,N_2)-C(x,c,N_1)|\leq \delta_{\text{diff}}$ we can assume $C(x,c,N_2) \geq \delta' \geq \delta_2^{vaghar}$ when $C(x,c,N_2)-C(x,c,N_1) \geq 0$.
+That means: $max_{x\in{I^{\delta'}}}\{C(x,c,N_2)\}\geq \delta'$ which means $\delta_2^{opt} \geq \delta' \geq \delta_2^{vhagar}$. \\
+When $C(x,c,N_2)-C(x,c,N_1) <0$ we get $0<C(x,c,N_1)-C(x,c,N_2) \leq \delta_{\text{diff}}$
 we can also define:
-$$ I_{\Delta\geq 0}= \{x| C(x,c,N_2)\geq{\delta'},\ C(x,c,N_1)\leq{\delta_1^{opt},\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta,\ 0 \leq \Delta}\}$$
-$$ I_{\Delta > 0}= \{x| C(x,c,N_2)\geq{\delta'},\ C(x,c,N_1)\leq{\delta_1^{opt},\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta,\ 0 < \Delta}\}$$
-$$ I_{\Delta=0}= \{x| C(x,c,N_2)\geq{\delta'},\ C(x,c,N_1)\leq{\delta_1^{opt},\ |C(x,c,N_2)-C(x,c,N_1)| \leq \Delta=0}\}$$
-We shall notice that $I_{\Delta>0} \ne |I_{\Delta=0}|$ and therefore $I_{\Delta > 0} \ne \emptyset$.\\ \\
-We can say that:
-$$ max_{x\in{I_{\Delta=0}}}{C(x,c,N_2)}\ <\  max_{x'\in{I_{\Delta>0}}}{C(x',c,N_2)}$$
-because  $|C(x',c,N_2)-C(x',c,N_1)|>0$ which implied that the confidence $C(x',c,N_2)$ is bigger: if $C(x',c,N_2)-C(x',c,N_1)>0$ than it is trivial. if $C(x',c,N_2)-C(x',c,N_1)<0$ than it is \Neta{TODO} .\\
-for $x'$ we can say $C(x',c,N_2) \geq {\delta_2^{opt}}_{\Delta>0}$ (othwise it says that ${\delta_2^{opt}}_{\Delta>0}=\delta_2^{max}$). \\
-therefore, ${\delta_2^{opt}}_{\Delta>0} \geq {\delta_2^{opt}}_{\Delta=0}\geq{\delta_2^{vhagar}}$
+$$ I^{\delta'}=\{ x|C(x,c,N_2) \geq \delta'+\Delta,\ C(x,c,N_1) \geq \delta_1^{opt}+\Delta= \delta'+\Delta\} $$
+when $x\in{I^{\delta'}}$ this case supposed to hold. therefore when $x\in{I^{\delta'}}$ we get $C(x,c,N_1) \geq \delta'+\Delta$.
+Overall:
+$$0 < \delta'+\Delta-C(x,c,N_2) \leq C(x,c,N_1)-C(x,c,N_2) \leq \delta_{\text{diff}}$$
+Notice: $0 < \delta'+\Delta-C(x,c,N_2)$ is because otherwise we are in the first scenario.\\
+this means $C(x,c,N_2) <\delta'+\Delta$ so $x\notin{I^{\delta'}}$ which is a contradiction. \\
+this 
 
 
 

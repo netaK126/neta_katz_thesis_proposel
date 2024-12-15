@@ -121,13 +121,14 @@ As usual, to find a value for $A$, we look at the dual problem, looking for the 
    \Dana{old text below:}
    
 %compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
+%\begin{comment}
 $$\max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \frac{\delta_1^{opt}}{10} $$
 after optimizing $\delta_1^{opt}$ we optimize the following:
 $$\max{\delta_2^{opt}}, \texttt{ subject to }  \exists{x}:  \mathcal{C}(x,c,N_2) \geq \delta_2^{opt} \rightarrow \mathcal{C}(x,c,N_1)\leq \delta_1^{opt}$$
 Which means, we look for input $x$ such that $N_2$ would classify $x$ correctly, but $N_1$ wont be able to guarantee that $f_P(x,\epsilon')$ would be classified correctly, and so is $N_2$. 
 \\
 Note that We demand $\frac{\delta_1}{10}$ as an upper bound instead of $0$ since we want to maximize $\delta_2^{opt}$ for networks with larger confidence difference in the future while maintaining the global robustness property, by making sure that $\delta_1^{opt} \geq \delta^{vhagar}_1$ and $\delta_2^{opt} \geq \delta^{vhagar}_2$.
-
+%\end{comment}
 \input{proofNewProblemDefinition.tex}
 \begin{comment}
 Formally, given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to compute the minimal class confidence $\delta$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
