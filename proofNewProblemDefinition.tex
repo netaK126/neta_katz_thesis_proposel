@@ -59,13 +59,16 @@ $\delta_2^{opt} \geq \delta^{vhagar}_2$
 \end{lemma}
 \begin{proof}
 %To prove it by contradiction try and assume that the statement is false, i.e. $\delta_1^{opt} < \delta^{vhagar}_1$.
-Previously we proved that $\delta_2^{\text{vhagar}} \leq \delta_1^{opt}+\delta_{\text{diff}}+\Delta$.\\
+Previously we proved that $\delta_2^{\text{vhagar}} \leq \delta_1^{opt}+\delta_{\text{diff}}+\Delta$.\Dana{where did we prove it? 
+$\delta^\text{max\_diff}_1$ is different than $\delta_1^{opt}$ -- maybe the proof is correct also for $\delta_1^{opt}$, but we need to add it}
+Note that 
+\\
 \begin{enumerate}[nosep,nolistsep]
     \item If $\delta_1^{opt}+\delta_{\text{diff}}+\Delta \leq \delta_2^{max}$:
     $$\exists{x}:\ C(x,c,N_2) \geq \delta_1^{opt}+\delta_{\text{diff}}+\Delta$$
     we want to prove that $C(x,c,N_1) \geq \delta_1^{opt}$ (if so, we can say $\delta_2^{\text{vhagar}} \leq  \delta_1^{opt}+\delta_{\text{diff}}+\Delta$ and then $\delta_2^{\text{vhagar}} \leq \delta_2^{opt}$). Lets' examine:
     $$|C(x,c,N_2)-C(x,c,N_1)| \leq \delta_{\text{diff}}$$
-    $$ -\delta_2^{\text{vhagar}} \leq C(x,c,N_2)-C(x,c,N_1) \leq \delta_2^{\text{vhagar}} $$
+    $$ -\delta_2^{\text{vhagar}} \leq C(x,c,N_2)-C(x,c,N_1) \leq \delta_2^{\text{vhagar}} $$\Dana{I guess should be $\delta_\text{diff}$?}
     Specifically, we focus on $\delta_1^{opt}+\delta_{diff}+\Delta \leq C(x,c,N_2)$:
     $$  -\delta_2^{\text{vhagar}} \leq \delta_1^{opt}+\delta_{diff}+\Delta-C(x,c,N_1) \leq \delta_2^{\text{vhagar}} $$
     $$  0 \leq -\delta_1^{opt}-\Delta+C(x,c,N_1) \leq 2\cdot\delta_2^{\text{vhagar}} $$
