@@ -33,6 +33,8 @@
 \usepackage{cleveref}
 \usepackage{amsthm}
 \newtheorem{definition}{Definition}
+\newtheorem{claim}{Claim}
+
 
 \begin{document}
 \section{Problem Definition}
@@ -58,7 +60,7 @@ $$\mathcal{C}(x,c,N)=N(x)_{c}-max_{c'\ne c}(N(x)_{c'})$$
 Given a classifier $N$, an input $x$, a class $c\in{C}$, a perturbation $P$, a range $I_\epsilon$ and a class confidence $\delta>0$, the classifier $N$ is $\delta$-globally robust for $c$ under $(P,I_\epsilon)$ if:\\
 $$\forall{x}\forall{\epsilon'}\in{I_\epsilon}:    \mathcal{C}(x,c,N) \geq \delta \rightarrow argmax(N(x)) = argmax(N(f_P(x,\epsilon'))) $$
 Intuitively, the classifier is robust with respect to $P$ for any input classified with confidence higher or equal to the minimal $\delta$. In practice, it is easier to compute the dual bound, i.e., the maximal globally non-robust bound. That is, the maximal class confidence $\delta$ that violates the constraint:
-\begin{definition}[Maximal Non-Robust Bound (Vhagar)]
+\begin{definition}[Maximal Non-Robust Bound (Vhagar)]\label{def:vhagar}
 $$\max{\delta^{vhagar}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N) \geq \delta^{vhagar} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c,N)\leq 0$$
 \end{definition}
 \paragraph{Problem definition} 
@@ -110,6 +112,41 @@ As usual, to find a value for $A$, we look at the dual problem, looking for the 
   \begin{equation}\label{eq:ourproof}
  \max A \text{ subject to } \delta_\text{diff}>0\land \delta_\text{diff}<u\land \mathcal{C}(x,c,N_1) \geq \delta_\text{diff} + A\land \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_\text{diff}
  \end{equation}
+ \paragraph{New Idea}
+ In fact, we can compute upper and lower bounds on $\delta^\text{vhagar}_2$ by (1)~computing lower and upper bounds on  $\delta^\text{vhagar}_1$ for different confidence levels of the perturbations and (2)~after computing $\delta_\text{diff}$, looking for the suitable levels to infer bounds for $\delta^\text{vhagar}_2$.
+ \begin{definition}[$\delta_p$-Perturbation Non-Robust Bound]
+ Given a confidence level for the perturbation $\delta_p\in\mathbb{R}$, we define the $\delta_p$-perturbation non-robust bound as:  
+\begin{equation}\label{eq:vagbound}
+\max{\delta^\text{max}_{\delta_p}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta^\text{max\_diff}_1 \land \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_p
+\end{equation}
+\end{definition}
+\begin{claim}\label{claim:n1}
+Given a network $N$, a class $c$, and a perturbation $(P,I_\epsilon)$,
+  for every $\delta_p$, if it is smaller than $0$ then ${\delta^\text{max}_{\delta_p}}$ is a lower bound on $\delta^\text{vhagar}$, and otherwise it is an upper bound on  $\delta^\text{vhagar}$. 
+\end{claim}
+Proof follows since the last condition is stronger than Vhagar's condition is its negative and looser if it is positive.
+ \begin{claim}
+ Given a network $N_1$, a class $c$, and a perturbation $(P,I_\epsilon)$,
+ and an array of $\delta_p$-perturbation non-robust bounds $A=[\delta^1_p,\delta^2_p,\ldots,\delta_p^k]$, for values of $p$ that are negative and positive. Given a network $N_2$ such that  $\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}$. Let $\delta^l_p$ be the maximal value in $A$ that is smaller than $-\delta_\text{diff}$ and $\delta^u_p$ be the minimal value in $A$ that is greater than $\delta_\text{diff}$. Then, ${\delta^\text{max}_{\delta^l_p}}-\delta_\text{diff}$ is a lower bound on  $\delta^\text{vhagar}_2$ and 
+ ${\delta^\text{max}_{\delta^u_p}}+\delta_\text{diff}$ is an upper bound on  $\delta^\text{vhagar}_2$.
+ \end{claim}
+ Proof. \begin{itemize}
+   \item 
+ By~\Cref{claim:n1}, ${\delta^\text{max}_{\delta^l_p}}$ is a lower bound on $\delta^\text{vhagar}_1$.
+ That is, there is $x$ whose confidence is at least ${\delta^\text{max}_{\delta^l_p}}$
+ and $\mathcal{C}(f_P(x,\epsilon'),c',N_2)\leq {\delta^l_p}$.
+ By~\Cref{eq:diff}, $N_2$ classifies this input with confidence at least ${\delta^\text{max}_{\delta^l_p}}-\delta_\text{diff}$
+ and $\mathcal{C}(f_P(x,\epsilon'),c',N_2)\leq {\delta^l_p}+\delta_\text{diff}\leq 0$.
+ By~\Cref{def:vhagar}, ${\delta^\text{max}_{\delta^l_p}}-\delta_\text{diff}$ is a lower bound on $\delta^\text{vhagar}_2$.
+ \item % By~\Cref{claim:n1}, ${\delta^\text{max}_{\delta^u_p}}$ is an upper bound on $\delta^\text{vhagar}_1$.
+ For every $x$ such that $C(x,N_2,c')\geq {\delta^\text{max}_{\delta^u_p}} + \delta_\text{diff} +\Delta$, by~\Cref{eq:diff}, we have
+  $C(x,N_1,c')\geq {\delta^\text{max}_{\delta^u_p}} +\Delta$. By~\Cref{eq:vagbound}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>{\delta^\text{max}_{\delta^u_p}}$. 
+ By \Cref{eq:diff}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>{\delta^\text{max}_{\delta^u_p}}-\delta_\text{diff}$. 
+ Since ${\delta^\text{max}_{\delta^u_p}}>\delta_\text{diff}$, 
+ we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$. Thus, ${\delta^\text{max}_{\delta^u_p}} + \delta_\text{diff} +\Delta$ is an upper bound on the minimally globally robust bound of $N_2$ and ${\delta^\text{max}_{\delta^u_p}} + \delta_\text{diff}$ is an upper bound on  $\delta^\text{vhagar}_2$.
+ \end{itemize}
+ 
+ 
   % In fact, we can even lower the value of $\delta_\text{diff}$ by the following observation. Our proof for $N_2$ is transferred only for inputs whose confidence is at least $ 2\cdot \delta_\text{diff} +A+\Delta> A$
    %and it is with respect to inputs that $N_1$ classifies with confidence at least $ \delta_\text{diff} +A+\Delta> A$.
    %Thus, after we compute $A$, we can bound the difference only for inputs with high enough confidence, i.e.,:
