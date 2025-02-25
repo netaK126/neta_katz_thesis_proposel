@@ -147,6 +147,57 @@ Proof follows since the last condition is stronger than Vhagar's condition is it
  \end{itemize}
  
  
+ \paragraph{Finding $\delta_\text{diff}$:}
+ We define $\delta_\text{diff}$ as :
+ $$\min \delta_\text{diff}\text{ subject to } \forall x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\leq \delta_\text{diff}$$
+ We can also look at the dual problem:
+ $$\max \delta_\text{diff}\text{ subject to } \exists x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|=\delta_\text{diff}$$
+ This problem is still complicates to solve using Gurobi due to the absalute function. therefore we can use the following claim:
+ $\max \delta_\text{diff}\text{ subject to } \exists x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|= \max \{|\max_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|,|\min_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\}=\delta_\text{diff}$. That way we can calculate two simple problems instead, and save time.
+ 
+  \begin{claim}
+   $\delta_\text{diff}= \max \{|\max_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|,|\min_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\}$
+  \end{claim}
+  
+   Proof. \begin{itemize}
+   \item according to the dual problem where $\max \delta_\text{diff}\text{ subject to } \exists x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|=\delta_\text{diff}$, we know that $\exists x=x^*$ such that $|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)|=\delta_\text{diff}$.
+ \item By the rules of absolute function we can say:
+ \[
+|a - b| =
+\begin{cases} 
+    a - b, & \text{if } a \geq b \\
+    b - a, & \text{if } b \geq a
+\end{cases}
+\]
+and specifically in our case:
+ \[
+|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| =
+\begin{cases} 
+    \mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2), & \text{if } \mathcal{C}(x^*,c,N_1) \geq \mathcal{C}(x^*,c,N_2) \\
+    \mathcal{C}(x^*,c,N_2)-\mathcal{C}(x^*,c,N_1), & \text{if } \mathcal{C}(x^*,c,N_2) \geq \mathcal{C}(x^*,c,N_1)
+\end{cases}
+\]
+
+\item We can also look at it the following way:
+ \[
+|a - b| = \max \{a-b, b-a\}
+\]
+and therefore:
+ \[
+|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \max \{\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2),\ \mathcal{C}(x^*,c,N_2)-\mathcal{C}(x^*,c,N_1)\}
+\]
+and overall:
+\[
+\delta_\text{diff}\ =\ \max \{\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2),\ \mathcal{C}(x^*,c,N_2)-\mathcal{C}(x^*,c,N_1)\}
+\]
+\item if $\mathcal{C}(x^*,c,N_1) \geq \mathcal{C}(x^*,c,N_2)$ we can tell:
+$ |\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2) = \max_{x} \{\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)\} = |\max_{x} \{\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)\}|$
+
+\item if $\mathcal{C}(x^*,c,N_2) \geq \mathcal{C}(x^*,c,N_1)$ we can tell:
+$|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_2)-\mathcal{C}(x^*,c,N_1) = \max_{x} \{\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)\} = - \min_{x} \{\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)\} = |\min_{x} \{\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)\}|$
+
+ \end{itemize}
+ 
   % In fact, we can even lower the value of $\delta_\text{diff}$ by the following observation. Our proof for $N_2$ is transferred only for inputs whose confidence is at least $ 2\cdot \delta_\text{diff} +A+\Delta> A$
    %and it is with respect to inputs that $N_1$ classifies with confidence at least $ \delta_\text{diff} +A+\Delta> A$.
    %Thus, after we compute $A$, we can bound the difference only for inputs with high enough confidence, i.e.,:
