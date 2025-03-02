@@ -125,7 +125,7 @@ Given a network $N$, a class $c$, and a perturbation $(P,I_\epsilon)$,
   for every $\delta_p$, if it is smaller than $0$ then ${\delta^\text{max}_{\delta_p}}$ is a lower bound on $\delta^\text{vhagar}$, and otherwise it is an upper bound on  $\delta^\text{vhagar}$. 
 \end{claim}
 Proof follows since the last condition is stronger than Vhagar's condition is its negative and looser if it is positive.
- \begin{claim}
+ \begin{claim}\label{claim:n2}
  Given a network $N_1$, a class $c$, and a perturbation $(P,I_\epsilon)$,
  and an array of $\delta_p$-perturbation non-robust bounds $A=[\delta^1_p,\delta^2_p,\ldots,\delta_p^k]$, for values of $p$ that are negative and positive. Given a network $N_2$ such that  $\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}$. Let $\delta^l_p$ be the maximal value in $A$ that is smaller than $-\delta_\text{diff}$ and $\delta^u_p$ be the minimal value in $A$ that is greater than $\delta_\text{diff}$. Then, ${\delta^\text{max}_{\delta^l_p}}-\delta_\text{diff}$ is a lower bound on  $\delta^\text{vhagar}_2$ and 
  ${\delta^\text{max}_{\delta^u_p}}+\delta_\text{diff}$ is an upper bound on  $\delta^\text{vhagar}_2$.
@@ -152,7 +152,7 @@ Proof follows since the last condition is stronger than Vhagar's condition is it
  $$\min \delta_\text{diff}\text{ subject to } \forall x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\leq \delta_\text{diff}$$
  We can also look at the dual problem:
  $$\max \delta_\text{diff}\text{ subject to } \exists x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|=\delta_\text{diff}$$
- This problem is still complicates to solve using Gurobi due to the absalute function. therefore we can use the following claim:
+ This problem is still complicated to solve using Gurobi due to the absalute function. therefore we can use the following claim:
  $\max \delta_\text{diff}\text{ subject to } \exists x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|= \max \{|\max_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|,|\min_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\}=\delta_\text{diff}$. That way we can calculate two simple problems instead, and save time.
  
   \begin{claim}
@@ -198,6 +198,26 @@ $|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_2)-\mathc
 
  \end{itemize}
  
+ \paragraph{Neta's New Idea (2.3.2025):}
+ Any algorithm that answers the following is good for us:
+ $$ t_{\text{vaghar}_{\delta_1}}+t_{\text{vaghar}_{\delta_2}} \geq t_\text{new algorithm}$$
+ Specifically I offer:
+  $$ t_{\text{vaghar}_{\delta_1}} + t_{\text{vaghar}_{\delta_2}} \geq t_{{\delta_1}_u} + t_{{\delta_1}_l} + t_{\delta_{\text{diff}}}$$
+ where:
+ $$ t_{{\delta_1}_l} \leq \delta_1 \leq t_{{\delta_1}_u} $$
+  $$ t_{{\delta_1}_l}-{\delta_{\text{diff}}} \leq \delta_2 \leq t_{{\delta_1}_u}+t_{\delta_{\text{diff}}} $$
+ 
+ \begin{itemize}
+  \item Finding $\delta_{\text{diff}}$ as described above + adding some more logic so we can work with a variety of networks.
+  \item Finding ${{\delta_1}_u}$ - using ~\Cref{claim:n2} (running vaghar with $\delta_{\text{diff}} \geq 0$)
+  \item Finding ${{\delta_1}_l}$ - using ~\Cref{claim:n2} (running vaghar with $\delta_{\text{diff}} \leq 0$) with one single modification: ${\text{timeout}}=10\ \text{sec}$. When optimizing ${{\delta_1}_l}$ we have lower and upper bound: ${{\delta_1}_l}_l \leq {{\delta_1}_l} \leq {{\delta_1}_l}_u$. after 10 seconds ${{\delta_1}_l}_l$ is tight enough. The main issue when optimizing with gurobi is finding a tight upper bound, and specifically ${{\delta_1}_l}_u$. However, I claim that ${{\delta_1}_l}_l$ is tight enough after 10 seconds. This quality is specially profitable when we are dealing with difficult perturbations (for example: when $L_\infty$ and small $\epsilon$) where the running time is very high.
+  \item This is the motivation:
+  $$ t_{\text{vaghar}_{\delta_1}} \approx t_{{\delta_1}_u} $$
+  $$ t_{{\delta_1}_l} = 10$$ 
+  This leaves us to find an algorithm where:
+  $$t_{\delta_{\text{diff}}} \ll t_{\text{vaghar}_{\delta_2}} $$
+ \end{itemize}
+ 
   % In fact, we can even lower the value of $\delta_\text{diff}$ by the following observation. Our proof for $N_2$ is transferred only for inputs whose confidence is at least $ 2\cdot \delta_\text{diff} +A+\Delta> A$
    %and it is with respect to inputs that $N_1$ classifies with confidence at least $ \delta_\text{diff} +A+\Delta> A$.
    %Thus, after we compute $A$, we can bound the difference only for inputs with high enough confidence, i.e.,:
@@ -206,6 +226,8 @@ $|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_2)-\mathc
 %\rightarrow
 %|\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}
 %\end{equation}
+
+
    \Dana{old text below:}
    
 %compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
@@ -217,8 +239,9 @@ Which means, we look for input $x$ such that $N_2$ would classify $x$ correctly,
 \\
 Note that We demand $\frac{\delta_1}{10}$ as an upper bound instead of $0$ since we want to maximize $\delta_2^{opt}$ for networks with larger confidence difference in the future while maintaining the global robustness property, by making sure that $\delta_1^{opt} \geq \delta^{vhagar}_1$ and $\delta_2^{opt} \geq \delta^{vhagar}_2$.
 %\end{comment}
-\input{proofNewProblemDefinition.tex}
 \begin{comment}
+\input{proofNewProblemDefinition.tex}
+
 Formally, given two classifiers $F_1,F_2: \mathbb{R}^{n \times m} \rightarrow {\mathbb{R}}^{|C|}$, a class $c\in{C}$, a perturbation $P$ and its range $I_\epsilon$, our goal is to compute the minimal class confidence $\delta$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
 \begin{enumerate}[nosep,nolistsep]
     \item $\mathcal{C}(x,c',F_1) \geq \delta$ %\Dana{what is D? should it be $D_1$?} NETA - You are right. there was a mistake. I fixed it.
