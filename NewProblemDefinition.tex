@@ -220,15 +220,15 @@ $|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_2)-\mathc
  
  
   \begin{claim}\label{claim:BoundriesForVhagar}
-Given 2 maximization optimization objectives: $f,g$ (where $\max_x {f(x)}=f_\text{max},\ \max_x {g(x)}=g_\text{max}$) encoded using MIP. We optimize it using gurobi, so we have lower and upper bounds for each: $f^l \leq f_\text{max} \leq f^u\ ,\ g^l \leq g_\text{max} \leq g^u$. In gurobi we have a hyperparameter $MIP_\text{gap}$ where gurobi stops the process successfully iff for any MIP encoded optimization problem $k$ we say $k^u-k^l \leq MIP_\text{gap}$. Therefore we can say: $f^u\leq g^l+2\cdot MIP_\text{gap}$
+Given 2 maximization optimization objectives: $f,g$ (where $\max_x {f(x)}=f_\text{max},\ \max_x {g(x)}=g_\text{max}$) encoded using MIP. We optimize it using gurobi, so we have lower and upper bounds for each: $f^l \leq f_\text{max} \leq f^u\ ,\ g^l \leq g_\text{max} \leq g^u$. In gurobi we have a hyperparameter $MIP_\text{gap}$ where gurobi stops the process successfully iff for any MIP encoded optimization problem $k$ we say $\frac{k^u-k^l}{max\{k^l,\epsilon\}}\leq MIP_\text{gap}$ where $\epsilon$ is a very small number ($10^{-10} for example)$. Therefore we can say: $f^u\leq g^l+ MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
  \end{claim}
  Proof. \begin{itemize}
-   \item  by definition: $f^u-f^l \leq MIP_\text{gap}$ and $g^u-g^l \leq MIP_\text{gap}$
-   \item we can add those two inequalities: $f^u-f^l+g^u-g^l \leq 2\cdot MIP_\text{gap}$
-   \item therefore: $(f^u-g^l)+(g^u-f^l+) \leq 2\cdot MIP_\text{gap}$
+   \item  by definition: $f^u-f^l \leq MIP_\text{gap}\cdot {max\{f^l,\epsilon\}}$ and $g^u-g^l \leq MIP_\text{gap}\cdot {max\{g^l,\epsilon\}}$
+   \item we can add those two inequalities: $f^u-f^l+g^u-g^l \leq  MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
+   \item therefore: $(f^u-g^l)+(g^u-f^l+) \leq  MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
    \item we know $f_\text{max} \leq g_\text{max}$ which means: $f^l \leq f_\text{max} \leq g_\text{max} \leq g^u \rightarrow 0 \leq g^u- f^l$
-   \item which means: $f^u-g^l \leq (f^u-g^l)+(g^u-f^l+) \leq 2\cdot MIP_\text{gap}$
-   \item overall: $f^u\leq g^l+2\cdot MIP_\text{gap}$
+   \item which means: $f^u-g^l \leq (f^u-g^l)+(g^u-f^l+) \leq  MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
+   \item overall: $f^u\leq g^l+ MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
 
  \end{itemize}
  
