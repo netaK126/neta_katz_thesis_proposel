@@ -204,8 +204,8 @@ $|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_2)-\mathc
  Specifically I offer:
   $$ t_{\text{vaghar}_{\delta_1}} + t_{\text{vaghar}_{\delta_2}} \geq t_{{\delta_1}_u} + t_{{\delta_1}_l} + t_{\delta_{\text{diff}}}$$
  where:
- $$ t_{{\delta_1}_l} \leq \delta_1 \leq t_{{\delta_1}_u} $$
-  $$ t_{{\delta_1}_l}-{\delta_{\text{diff}}} \leq \delta_2 \leq t_{{\delta_1}_u}+t_{\delta_{\text{diff}}} $$
+ $$ {{\delta_1}_l} \leq \delta_1 \leq {{\delta_1}_u} $$
+  $$ {{\delta_1}_l}-{\delta_{\text{diff}}} \leq \delta_2 \leq {{\delta_1}_u}+{\delta_{\text{diff}}} $$
  
  \begin{itemize}
   \item Finding $\delta_{\text{diff}}$ as described above + adding some more logic so we can work with a variety of networks.
@@ -217,6 +217,22 @@ $|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_2)-\mathc
   This leaves us to find an algorithm where:
   $$t_{\delta_{\text{diff}}} \ll t_{\text{vaghar}_{\delta_2}} $$
  \end{itemize}
+ 
+ 
+  \begin{claim}\label{claim:BoundriesForVhagar}
+Given 2 maximization optimization objectives: $f,g$ (where $\max_x {f(x)}=f_\text{max},\ \max_x {g(x)}=g_\text{max}$) encoded using MIP. We optimize it using gurobi, so we have lower and upper bounds for each: $f^l \leq f_\text{max} \leq f^u\ ,\ g^l \leq g_\text{max} \leq g^u$. In gurobi we have a hyperparameter $MIP_\text{gap}$ where gurobi stops the process successfully iff for any MIP encoded optimization problem $k$ we say $k^u-k^l \leq MIP_\text{gap}$. Therefore we can say: $f^u\leq g^l+2\cdot MIP_\text{gap}$
+ \end{claim}
+ Proof. \begin{itemize}
+   \item  by definition: $f^u-f^l \leq MIP_\text{gap}$ and $g^u-g^l \leq MIP_\text{gap}$
+   \item we can add those two inequalities: $f^u-f^l+g^u-g^l \leq 2\cdot MIP_\text{gap}$
+   \item therefore: $(f^u-g^l)+(g^u-f^l+) \leq 2\cdot MIP_\text{gap}$
+   \item we know $f_\text{max} \leq g_\text{max}$ which means: $f^l \leq f_\text{max} \leq g_\text{max} \leq g^u \rightarrow 0 \leq g^u- f^l$
+   \item which means: $f^u-g^l \leq (f^u-g^l)+(g^u-f^l+) \leq 2\cdot MIP_\text{gap}$
+   \item overall: $f^u\leq g^l+2\cdot MIP_\text{gap}$
+
+ \end{itemize}
+ 
+ 
  
   % In fact, we can even lower the value of $\delta_\text{diff}$ by the following observation. Our proof for $N_2$ is transferred only for inputs whose confidence is at least $ 2\cdot \delta_\text{diff} +A+\Delta> A$
    %and it is with respect to inputs that $N_1$ classifies with confidence at least $ \delta_\text{diff} +A+\Delta> A$.
@@ -231,14 +247,14 @@ $|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_2)-\mathc
    \Dana{old text below:}
    
 %compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
-%\begin{comment}
+\begin{comment}
 $$\max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \frac{\delta_1^{opt}}{10} $$
 after optimizing $\delta_1^{opt}$ we optimize the following:
 $$\max{\delta_2^{opt}}, \texttt{ subject to }  \exists{x}:  \mathcal{C}(x,c,N_2) \geq \delta_2^{opt} \rightarrow \mathcal{C}(x,c,N_1)\leq \delta_1^{opt}$$
 Which means, we look for input $x$ such that $N_2$ would classify $x$ correctly, but $N_1$ wont be able to guarantee that $f_P(x,\epsilon')$ would be classified correctly, and so is $N_2$. 
 \\
 Note that We demand $\frac{\delta_1}{10}$ as an upper bound instead of $0$ since we want to maximize $\delta_2^{opt}$ for networks with larger confidence difference in the future while maintaining the global robustness property, by making sure that $\delta_1^{opt} \geq \delta^{vhagar}_1$ and $\delta_2^{opt} \geq \delta^{vhagar}_2$.
-%\end{comment}
+\end{comment}
 \begin{comment}
 \input{proofNewProblemDefinition.tex}
 
