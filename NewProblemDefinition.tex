@@ -301,6 +301,17 @@ $$ \delta_2 \leq\ C(x_2,c,N_2) \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{c_t}
 %|\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}
 %\end{equation}
 
+\paragraph{Formulation (15.5.2025):}
+$$ \text{max}\ \delta_{1}^{\delta_{\text{diff}}^{c}}\ \text{subject to} $$
+\begin{align*}
+\tag{a}\quad & x\in{[0,1]^d},\ \forall{k}:\ z_{0,k}^1=x_k,\ {z_{0,k}^{1,p}}=x_k\\
+\tag{b}\quad & \forall{c'\ne{c}}:\ {z_{L,c}^1}-{z_{L,c'}^1}\geq\delta_{1}^{\delta_{\text{diff}}^{c}},\   \forall{c'\ne{c}}:\ {z_{L,c}^{1,p}}-{z_{L,c'}^{1,p}}\leq{\delta_{\text{diff}}^c+M\cdot{(1-\alpha_{c'})}};\ \sum_{c'\ne{c}}{\alpha}\geq{1}\\
+\tag{c}\quad &  \forall{m>0,k}:\ \hat{z}_{m,k}^1=b_{m,k}^1+\sum_{k'=1}^{k_{m-1}}{w_{m,k,k'}^1\cdot{z_{m-1,k'}^1}},\ \hat{z}_{m,k}^{1,p}=b_{m,k}^{1,p}+\sum_{k'=1}^{k_{m-1}}{w_{m,k,k'}^{1,p}\cdot{z_{m-1,k'}^{1,p}}}  \\
+\tag{d}\quad & z_{m,k}^{1}\geq{0},\ z_{m,k}^{1}\geq{\hat{z}_{m,k}^{1}},\ z_{m,k}^{1}\leq{u_{m,k}^{1}\cdot{a_{m,k}^{1}}},\ z_{m,k}^{1}\leq{\hat{z}_{m,k}^{1}-l_{m,k}^{1}\cdot{(1-a_{m,k}^{1})}}\\ 
+\quad & z_{m,k}^{1,p}\geq{0},\ z_{m,k}^{1,p}\geq{\hat{z}_{m,k}^{1,p}},\ z_{m,k}^{1,p}\leq{u_{m,k}^{1,p}\cdot{a_{m,k}^{1,p}}},\ z_{m,k}^{1,p}\leq{\hat{z}_{m,k}^{1,p}-l_{m,k}^{1,p}\cdot{(1-a_{m,k}^{1,p})}} 
+    \\
+\end{align*}
+
 
    \Dana{old text below:}
    
