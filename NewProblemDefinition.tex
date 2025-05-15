@@ -302,6 +302,7 @@ $$ \delta_2 \leq\ C(x_2,c,N_2) \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{c_t}
 %\end{equation}
 
 \paragraph{Formulation (15.5.2025):}
+\subparagraph{delta}
 $$ \text{max}\ \delta_{1}^{\delta_{\text{diff}}^{c}}\ \text{subject to} $$
 \begin{align*}
 \tag{a}\quad & x\in{[0,1]^d},\ \forall{k}:\ z_{0,k}^1=x_k,\ {z_{0,k}^{1,p}}=x_k\\
@@ -312,8 +313,16 @@ $$ \text{max}\ \delta_{1}^{\delta_{\text{diff}}^{c}}\ \text{subject to} $$
     \\
 \end{align*}
 
+\subparagraph{diff}
+we use bound prorogation to find $\delta_\text{diff}^c$:
+$$I_{z_{m,k}^1,z_{m,k}^2}=[\Delta_{m,k}^l,\Delta_{m,k}^u],\ \text{max}\{z_{m,k}^1,z_{m,k}^2\}\leq{\Delta_{m,k}^u},\ \text{min}\{z_{m,k}^1,z_{m,k}^2\}\geq{\Delta_{m,k}^l}$$
+$$
+I_{z_{m,k}^1,z_{m,k}^2}=I_{b_{m,k}^1,b_{m,k}^2}+\sum_{k'=1}^{k_{m-1}}{w_{m,k,k'}\cdot{I_{z_{m-1,k}^1,z_{m-1,k}^2}}+I_{w_{m,k,k'}^1,w_{m,k,k'}^2}\cdot{z_{m-1,k'}^1+I_{z_{m-1,k'}^1,z_{m-1,k'}^2}} }
+$$
+And overall we can say:
 
-   \Dana{old text below:}
+$\delta_{\text{diff}}^c\leq{\text{max}\{|\Delta_{L,c}^u-\text{max}_{c'\ne{c}}{\Delta_{L,k}^l}|,|\Delta_{L,c}^l-\text{max}_{c'\ne{c}}{\Delta_{L,k}^u}\}}$
+   %\Dana{old text below:}
    
 %compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
 \begin{comment}
