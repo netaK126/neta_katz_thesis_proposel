@@ -237,16 +237,26 @@ Given 2 maximization optimization objectives: $f,g$ (where $\max_x {f(x)}=f_\tex
   Notations:
   $$ \forall{x}: |C(x,c,N_1)-C(x,c,N_2)|\leq \delta^c_{\text{diff}} $$
     $$ \forall{x}: |C(x,c_t,N_1)-C(x,c_t,N_2)|\leq \delta^{c_t}_{\text{diff}} $$
+    vaghar:
+    $\exists{x_1^\text{vaghar}}$
     $x_1^{\text{vaghar}}=x_1$ and its perturbation input is $x_1^\epsilon$ (reminder: $C(x_1,c,N_1)\ \geq\ \delta_1^{\text{vaghar}}\ \text{and}\ C(x_1^\epsilon,c_t,N_1)\geq{0}$.
     $x_2^{\text{vaghar}}=x_2$ and its perturbation input is $x_2^\epsilon$ (reminder: $C(x_2,c,N_2)\ \geq\ \delta_2^{\text{vaghar}}\ \text{and}\ C(x_2^\epsilon,c_t,N_2)\geq{0}$.
    \begin{claim}\label{claim:trasferringVagharProofeFromN1toN2}
-If:
+From definition ~\ref{eq:vagdiff}, if:
+\begin{itemize}
+\item $ \delta_1^{\delta^{c_t}_{\text{diff}}}=\delta^\text{max\_diff} $
+\item $ \delta_\text{diff}=\delta^{c_t}_{\text{diff}}$
+\end{itemize}
+which also means:
 \begin{itemize}
 \item $C(x_1^\epsilon,c_t,N_1)\geq{\delta^{c_t}_{\text{diff}}}$
-\item $\delta_1^{\text{vaghar}}\geq{\delta^c_{\text{diff}}}$
+\end{itemize}
+And we demand:
+\begin{itemize}
+\item $\delta_1^{\delta^{c_t}_{\text{diff}}}\geq{\delta^c_{\text{diff}}}$
 \end{itemize}
 Then we can say:
-$$ \delta_2 \leq\ C(x_2,c,N_2) \leq\ \delta^c_\text{diff}+C(x_1,c,N_1) $$
+$$ \delta_2 \leq\ C(x_2,c,N_2) \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{c_t}_{\text{diff}}} $$
  \end{claim}
   Proof. \begin{itemize}
    \item  We start with: $ \forall{x}: |C(x,c_t,N_1)-C(x,c_t,N_2)|\leq \delta^{c_t}_{\text{diff}} $. We look at $x_1^\epsilon$:
@@ -257,21 +267,30 @@ $$ \delta_2 \leq\ C(x_2,c,N_2) \leq\ \delta^c_\text{diff}+C(x_1,c,N_1) $$
    
    \item $ \forall{x}: |C(x,c,N_1)-C(x,c,N_2)|\leq \delta^c_{\text{diff}} $ and specifically we can say it for $x_1$:
    $$ C(x_1,c,N_1)-C(x_1,c,N_2)\leq \delta^c_{\text{diff}} $$
-   $$ \rightarrow \delta_1^{\text{vaghar}} - C(x_1,c,N_2) \leq C(x_1,c,N_1)-C(x_1,c,N_2)\leq \delta^c_{\text{diff}} $$
-   $$ \rightarrow \delta_1^{\text{vaghar}} - \delta^c_{\text{diff}} \leq C(x_1,c,N_2) $$
-   We know that $\delta_1^{\text{vaghar}}\geq{\delta^c_{\text{diff}}}$ so we can say that $0 \leq C(x_1,c,N_2)$
+   $$ \rightarrow \delta_1^{\delta^{c_t}_{\text{diff}}} - C(x_1,c,N_2) \leq C(x_1,c,N_1)-C(x_1,c,N_2)\leq \delta^c_{\text{diff}} $$
+   $$ \rightarrow \delta_1^{\delta^{c_t}_{\text{diff}}} - \delta^c_{\text{diff}} \leq C(x_1,c,N_2) $$
+   We know that $\delta_1^{\delta^{c_t}_{\text{diff}}}\geq{\delta^c_{\text{diff}}}$ so we can say that $0 \leq C(x_1,c,N_2)$
    
    \item By the definition of vaghar we can say that $C(x_1,c,N_2)\leq(x_2,c,N_2)$. 
-   \item For the same reasib, by the definition of vaghar we can say that $C(x_12,c,N_1)\leq(x_1,c,N_1)$. 
+   \item For the same reason, by the definition of vaghar we can say that $C(x_2,c,N_1)\leq(x_1,c,N_1)$. 
    \item $C(x_1^\epsilon,c_t,N_1)\geq{\delta^{c_t}_{\text{diff}}}$ and specifically for $x_2$:
    $$ |C(x_2,c,N_1)-C(x_2,c,N_2)| \leq \delta^c_{\text{diff}} $$
    $$ \rightarrow |C(x_2,c,N_2)-C(x_2,c,N_1)| \leq \delta^c_{\text{diff}} $$
    $$ \rightarrow C(x_2,c,N_2)-C(x_2,c,N_1) \leq \delta^c_{\text{diff}} $$
    $$ \rightarrow \delta_2^\text{vaghar} \leq C(x_2,c,N_2) \leq \delta^c_{\text{diff}}+C(x_2,c,N_1) $$
    $$ \rightarrow \delta_2^\text{vaghar} \leq \delta^c_{\text{diff}}+C(x_1,c,N_1)$$
-   \item So, in order to find the upper bound for $\delta_2^\text{vaghar}$ we need to know: $x_1,x_1^\epsilon, \delta^c_{\text{diff}}, \delta^{c_t}_{\text{diff}}$
 
  \end{itemize}
+ 
+ \begin{claim}\label{claim:EasierToSolveConstraint}
+ $$ \delta_2 \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{-c_t}_{\text{diff}}} $$
+ \end{claim}
+ Proof. \begin{itemize}
+ \item $\delta_1^{\delta^{c_t}_{\text{diff}}} \leq  \delta_1^{\delta^{-c_t}_{\text{diff}}}$ because this is a looser constraint.
+ \item the inequality holds even if $\delta_1^{\delta^{c_t}_{\text{diff}}}\geq{\delta^c_{\text{diff}}}$ and $\delta_1^{\delta^{-c_t}_{\text{diff}}}\geq{\delta^c_{\text{diff}}}$
+ \item from \ref{claim:trasferringVagharProofeFromN1toN2} we know $ \delta_2 \leq\ C(x_2,c,N_2) \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{c_t}_{\text{diff}}} $
+ \item therefore we can say $ \delta_2 \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{c_t}_{\text{diff}}}\leq\ \delta^c_\text{diff}+\delta_1^{\delta^{-c_t}_{\text{diff}}} $
+  \end{itemize}
  
   % In fact, we can even lower the value of $\delta_\text{diff}$ by the following observation. Our proof for $N_2$ is transferred only for inputs whose confidence is at least $ 2\cdot \delta_\text{diff} +A+\Delta> A$
    %and it is with respect to inputs that $N_1$ classifies with confidence at least $ \delta_\text{diff} +A+\Delta> A$.
