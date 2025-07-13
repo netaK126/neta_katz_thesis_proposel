@@ -120,11 +120,24 @@ As usual, to find a value for $A$, we look at the dual problem, looking for the 
 \max{\delta^\text{max}_{\delta_p}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta^\text{max\_diff}_1 \land \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_p
 \end{equation}
 \end{definition}
+
+% neta is making order
+
+\begin{claim}\label{claim:delta_u_is_bigger_delta_v}
+
+\end{claim}
+
+
+
+
+
+ \begin{comment}
 \begin{claim}\label{claim:n1}
 Given a network $N$, a class $c$, and a perturbation $(P,I_\epsilon)$,
   for every $\delta_p$, if it is smaller than $0$ then ${\delta^\text{max}_{\delta_p}}$ is a lower bound on $\delta^\text{vhagar}$, and otherwise it is an upper bound on  $\delta^\text{vhagar}$. 
 \end{claim}
 Proof follows since the last condition is stronger than Vhagar's condition is its negative and looser if it is positive.
+
  \begin{claim}\label{claim:n2}
  Given a network $N_1$, a class $c$, and a perturbation $(P,I_\epsilon)$,
  and an array of $\delta_p$-perturbation non-robust bounds $A=[\delta^1_p,\delta^2_p,\ldots,\delta_p^k]$, for values of $p$ that are negative and positive. Given a network $N_2$ such that  $\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}$. Let $\delta^l_p$ be the maximal value in $A$ that is smaller than $-\delta_\text{diff}$ and $\delta^u_p$ be the minimal value in $A$ that is greater than $\delta_\text{diff}$. Then, ${\delta^\text{max}_{\delta^l_p}}-\delta_\text{diff}$ is a lower bound on  $\delta^\text{vhagar}_2$ and 
@@ -146,7 +159,7 @@ Proof follows since the last condition is stronger than Vhagar's condition is it
  we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$. Thus, ${\delta^\text{max}_{\delta^u_p}} + \delta_\text{diff} +\Delta$ is an upper bound on the minimally globally robust bound of $N_2$ and ${\delta^\text{max}_{\delta^u_p}} + \delta_\text{diff}$ is an upper bound on  $\delta^\text{vhagar}_2$.
  \end{itemize}
  
- 
+ \end{comment}
  \paragraph{Finding $\delta_\text{diff}$:}
  We define $\delta_\text{diff}$ as :
  $$\min \delta_\text{diff}\text{ subject to } \forall x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\leq \delta_\text{diff}$$
@@ -155,48 +168,6 @@ Proof follows since the last condition is stronger than Vhagar's condition is it
  This problem is still complicated to solve using Gurobi due to the absalute function. therefore we can use the following claim:
  $\max \delta_\text{diff}\text{ subject to } \exists x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|= \max \{|\max_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|,|\min_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\}=\delta_\text{diff}$. That way we can calculate two simple problems instead, and save time.
  
-  \begin{claim}
-   $\delta_\text{diff}= \max \{|\max_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|,|\min_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\}$
-  \end{claim}
-  
-   Proof. \begin{itemize}
-   \item according to the dual problem where $\max \delta_\text{diff}\text{ subject to } \exists x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|=\delta_\text{diff}$, we know that $\exists x=x^*$ such that $|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)|=\delta_\text{diff}$.
- \item By the rules of absolute function we can say:
- \[
-|a - b| =
-\begin{cases} 
-    a - b, & \text{if } a \geq b \\
-    b - a, & \text{if } b \geq a
-\end{cases}
-\]
-and specifically in our case:
- \[
-|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| =
-\begin{cases} 
-    \mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2), & \text{if } \mathcal{C}(x^*,c,N_1) \geq \mathcal{C}(x^*,c,N_2) \\
-    \mathcal{C}(x^*,c,N_2)-\mathcal{C}(x^*,c,N_1), & \text{if } \mathcal{C}(x^*,c,N_2) \geq \mathcal{C}(x^*,c,N_1)
-\end{cases}
-\]
-
-\item We can also look at it the following way:
- \[
-|a - b| = \max \{a-b, b-a\}
-\]
-and therefore:
- \[
-|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \max \{\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2),\ \mathcal{C}(x^*,c,N_2)-\mathcal{C}(x^*,c,N_1)\}
-\]
-and overall:
-\[
-\delta_\text{diff}\ =\ \max \{\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2),\ \mathcal{C}(x^*,c,N_2)-\mathcal{C}(x^*,c,N_1)\}
-\]
-\item if $\mathcal{C}(x^*,c,N_1) \geq \mathcal{C}(x^*,c,N_2)$ we can tell:
-$ |\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2) = \max_{x} \{\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)\} = |\max_{x} \{\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)\}|$
-
-\item if $\mathcal{C}(x^*,c,N_2) \geq \mathcal{C}(x^*,c,N_1)$ we can tell:
-$|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_2)-\mathcal{C}(x^*,c,N_1) = \max_{x} \{\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)\} = - \min_{x} \{\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)\} = |\min_{x} \{\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)\}|$
-
- \end{itemize}
  
  \paragraph{Neta's New Idea (2.3.2025):}
  Any algorithm that answers the following is good for us:
@@ -217,89 +188,6 @@ $|\mathcal{C}(x^*,c,N_1)-\mathcal{C}(x^*,c,N_2)| = \mathcal{C}(x^*,c,N_2)-\mathc
   This leaves us to find an algorithm where:
   $$t_{\delta_{\text{diff}}} \ll t_{\text{vaghar}_{\delta_2}} $$
  \end{itemize}
- 
- 
-  \begin{claim}\label{claim:BoundriesForVhagar}
-Given 2 maximization optimization objectives: $f,g$ (where $\max_x {f(x)}=f_\text{max},\ \max_x {g(x)}=g_\text{max}$) encoded using MIP. We optimize it using gurobi, so we have lower and upper bounds for each: $f^l \leq f_\text{max} \leq f^u\ ,\ g^l \leq g_\text{max} \leq g^u$. In gurobi we have a hyperparameter $MIP_\text{gap}$ where gurobi stops the process successfully iff for any MIP encoded optimization problem $k$ we say $\frac{k^u-k^l}{max\{k^l,\epsilon\}}\leq MIP_\text{gap}$ where $\epsilon$ is a very small number ($10^{-10} for example)$. Therefore we can say: $f^u\leq g^l+ MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
- \end{claim}
- Proof. \begin{itemize}
-   \item  by definition: $f^u-f^l \leq MIP_\text{gap}\cdot {max\{f^l,\epsilon\}}$ and $g^u-g^l \leq MIP_\text{gap}\cdot {max\{g^l,\epsilon\}}$
-   \item we can add those two inequalities: $f^u-f^l+g^u-g^l \leq  MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
-   \item therefore: $(f^u-g^l)+(g^u-f^l+) \leq  MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
-   \item we know $f_\text{max} \leq g_\text{max}$ which means: $f^l \leq f_\text{max} \leq g_\text{max} \leq g^u \rightarrow 0 \leq g^u- f^l$
-   \item which means: $f^u-g^l \leq (f^u-g^l)+(g^u-f^l+) \leq  MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
-   \item overall: $f^u\leq g^l+ MIP_\text{gap}\cdot (max\{f^l,\epsilon\}+max\{g^l,\epsilon\})$
-
- \end{itemize}
- 
- 
-  \paragraph{The relation between the two networks (29.4.2025):}
-  Notations:
-  $$ \forall{x}: |C(x,c,N_1)-C(x,c,N_2)|\leq \delta^c_{\text{diff}} $$
-    $$ \forall{x}: |C(x,c_t,N_1)-C(x,c_t,N_2)|\leq \delta^{c_t}_{\text{diff}} $$
-    vaghar:
-    $\exists{x_1^\text{vaghar}}$
-    $x_1^{\text{vaghar}}=x_1$ and its perturbation input is $x_1^\epsilon$ (reminder: $C(x_1,c,N_1)\ \geq\ \delta_1^{\text{vaghar}}\ \text{and}\ C(x_1^\epsilon,c_t,N_1)\geq{0}$.
-    $x_2^{\text{vaghar}}=x_2$ and its perturbation input is $x_2^\epsilon$ (reminder: $C(x_2,c,N_2)\ \geq\ \delta_2^{\text{vaghar}}\ \text{and}\ C(x_2^\epsilon,c_t,N_2)\geq{0}$.
-   \begin{claim}\label{claim:trasferringVagharProofeFromN1toN2}
-From definition ~\ref{eq:vagdiff}, if:
-\begin{itemize}
-\item $ \delta_1^{\delta^{c_t}_{\text{diff}}}=\delta^\text{max\_diff} $
-\item $ \delta_\text{diff}=\delta^{c_t}_{\text{diff}}$
-\end{itemize}
-which also means:
-\begin{itemize}
-\item $C(x_1^\epsilon,c_t,N_1)\geq{\delta^{c_t}_{\text{diff}}}$
-\end{itemize}
-And we demand:
-\begin{itemize}
-\item $\delta_1^{\delta^{c_t}_{\text{diff}}}\geq{\delta^c_{\text{diff}}}$
-\end{itemize}
-Then we can say:
-$$ \delta_2 \leq\ C(x_2,c,N_2) \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{c_t}_{\text{diff}}} $$
- \end{claim}
-  Proof. \begin{itemize}
-   \item  We start with: $ \forall{x}: |C(x,c_t,N_1)-C(x,c_t,N_2)|\leq \delta^{c_t}_{\text{diff}} $. We look at $x_1^\epsilon$:
-   $$ |C(x_1^\epsilon,c_t,N_1)-C(x_1^\epsilon,c_t,N_2)|\leq \delta^{c_t}_{\text{diff}}$$ 
-   $$ \rightarrow  C(x_1^\epsilon,c_t,N_1)-C(x_1^\epsilon,c_t,N_2) \leq \delta^{c_t}_{\text{diff}} $$
-   $$ \rightarrow  C(x_1^\epsilon,c_t,N_1)-\delta^{c_t}_{\text{diff}} \leq C(x_1^\epsilon,c_t,N_2) $$
-   We know that $C(x_1^\epsilon,c_t,N_1)\geq{\delta^{c_t}_{\text{diff}}}$ so we can tell $0 \leq C(x_1^\epsilon,c_t,N_2)$
-   
-   \item $ \forall{x}: |C(x,c,N_1)-C(x,c,N_2)|\leq \delta^c_{\text{diff}} $ and specifically we can say it for $x_1$:
-   $$ C(x_1,c,N_1)-C(x_1,c,N_2)\leq \delta^c_{\text{diff}} $$
-   $$ \rightarrow \delta_1^{\delta^{c_t}_{\text{diff}}} - C(x_1,c,N_2) \leq C(x_1,c,N_1)-C(x_1,c,N_2)\leq \delta^c_{\text{diff}} $$
-   $$ \rightarrow \delta_1^{\delta^{c_t}_{\text{diff}}} - \delta^c_{\text{diff}} \leq C(x_1,c,N_2) $$
-   We know that $\delta_1^{\delta^{c_t}_{\text{diff}}}\geq{\delta^c_{\text{diff}}}$ so we can say that $0 \leq C(x_1,c,N_2)$
-   
-   \item By the definition of vaghar we can say that $C(x_1,c,N_2)\leq(x_2,c,N_2)$. 
-   \item For the same reason, by the definition of vaghar we can say that $C(x_2,c,N_1)\leq(x_1,c,N_1)$. 
-   \item $C(x_1^\epsilon,c_t,N_1)\geq{\delta^{c_t}_{\text{diff}}}$ and specifically for $x_2$:
-   $$ |C(x_2,c,N_1)-C(x_2,c,N_2)| \leq \delta^c_{\text{diff}} $$
-   $$ \rightarrow |C(x_2,c,N_2)-C(x_2,c,N_1)| \leq \delta^c_{\text{diff}} $$
-   $$ \rightarrow C(x_2,c,N_2)-C(x_2,c,N_1) \leq \delta^c_{\text{diff}} $$
-   $$ \rightarrow \delta_2^\text{vaghar} \leq C(x_2,c,N_2) \leq \delta^c_{\text{diff}}+C(x_2,c,N_1) $$
-   $$ \rightarrow \delta_2^\text{vaghar} \leq \delta^c_{\text{diff}}+C(x_1,c,N_1)$$
-
- \end{itemize}
- 
- \begin{claim}\label{claim:EasierToSolveConstraint}
- $$ \delta_2 \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{-c_t}_{\text{diff}}} $$
- \end{claim}
- Proof. \begin{itemize}
- \item $\delta_1^{\delta^{c_t}_{\text{diff}}} \leq  \delta_1^{\delta^{-c_t}_{\text{diff}}}$ because this is a looser constraint.
- \item the inequality holds even if $\delta_1^{\delta^{c_t}_{\text{diff}}}\geq{\delta^c_{\text{diff}}}$ and $\delta_1^{\delta^{-c_t}_{\text{diff}}}\geq{\delta^c_{\text{diff}}}$
- \item from \ref{claim:trasferringVagharProofeFromN1toN2} we know $ \delta_2 \leq\ C(x_2,c,N_2) \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{c_t}_{\text{diff}}} $
- \item therefore we can say $ \delta_2 \leq\ \delta^c_\text{diff}+\delta_1^{\delta^{c_t}_{\text{diff}}}\leq\ \delta^c_\text{diff}+\delta_1^{\delta^{-c_t}_{\text{diff}}} $
-  \end{itemize}
- 
-  % In fact, we can even lower the value of $\delta_\text{diff}$ by the following observation. Our proof for $N_2$ is transferred only for inputs whose confidence is at least $ 2\cdot \delta_\text{diff} +A+\Delta> A$
-   %and it is with respect to inputs that $N_1$ classifies with confidence at least $ \delta_\text{diff} +A+\Delta> A$.
-   %Thus, after we compute $A$, we can bound the difference only for inputs with high enough confidence, i.e.,:
-   %\begin{equation}\label{eq:diffa}
-%\min \delta_\text{diff}\text{ subject to } \mathcal{C}(x,c,N_2)\geq A \land \mathcal{C}(x,c,N_1)\geq A 
-%\rightarrow
-%|\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}
-%\end{equation}
 
 \paragraph{Formulation (15.5.2025):}
 \subparagraph{delta}
