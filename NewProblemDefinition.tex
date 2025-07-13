@@ -114,21 +114,55 @@ As usual, to find a value for $A$, we look at the dual problem, looking for the 
  \end{equation}
  \paragraph{New Idea}
  In fact, we can compute upper and lower bounds on $\delta^\text{vhagar}_2$ by (1)~computing lower and upper bounds on  $\delta^\text{vhagar}_1$ for different confidence levels of the perturbations and (2)~after computing $\delta_\text{diff}$, looking for the suitable levels to infer bounds for $\delta^\text{vhagar}_2$.
- \begin{definition}[$\delta_p$-Perturbation Non-Robust Bound]
+ \begin{definition}[$\delta_p$-Perturbation Non-Robust Bound]\label{def:delta_u}
  Given a confidence level for the perturbation $\delta_p\in\mathbb{R}$, we define the $\delta_p$-perturbation non-robust bound as:  
 \begin{equation}\label{eq:vagbound}
-\max{\delta^\text{max}_{\delta_p}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta^\text{max\_diff}_1 \land \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \delta_p
+\max{\delta^\text{max}_{\delta_p}(N)}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N) \geq \delta^\text{max}_{\delta_p}(N) \land \mathcal{C}(f_P(x,\epsilon'),c,N)\leq \delta_p
 \end{equation}
 \end{definition}
 
 % neta is making order
 
 \begin{claim}\label{claim:delta_u_is_bigger_delta_v}
-
+Given the definitions of $\delta^{vaghar}$ (Definition~\ref{def:vhagar}) and $\delta^\text{max}_{\delta_p}(N)$ (Definition~\ref{def:delta_u}), if $\delta_p \geq 0$, then $\delta^\text{max}_{\delta_p}(N) \geq \delta^{vaghar}$.
 \end{claim}
 
+\begin{proof}
+Proof by construction. The definition of $\delta^{vaghar}$ is more restrictive than that of $\delta^\text{max}_{\delta_p}(N)$. In particular, any input $x$ that satisfies $\mathcal{C}(x, c, N) = \delta^{vaghar}$ also satisfies the constraint for $\delta^\text{max}_{\delta_p}(N)$, since $\mathcal{C}(f_P(x, \epsilon'), c, N) \leq 0 \leq \delta_p$. Therefore, the feasible set for $\delta^{vaghar}$ is a subset of that for $\delta^\text{max}_{\delta_p}(N)$, implying $\delta^\text{max}_{\delta_p}(N) \geq \delta^{vaghar}$.
+\end{proof}
 
+\begin{definition}[Gurobi optimization for vaghar]\label{def:delta_u_delta_l}
+By the gurobi optimization process we have an upper and lower bound for any optimization problem given, including vaghar for a network $N$: $\delta_l^{vaghar}(N) \leq \delta^{vaghar}(N) \leq \delta_u^{vaghar}(N)$
+\end{definition}
 
+\begin{claim}\label{claim:x2_eps_N1}
+for the following notions:
+\begin{itemize}
+    \item By definition ~\ref{def:delta_u} we can say that for $\delta^\text{max}_{\delta_p}(N_1)\ \exists{x^1_{\delta_p},\epsilon^1_{\delta_p}}$ such that
+    $$\mathcal{C}(x^1_{\delta_p},c,N_1) = \delta^\text{max}_{\delta_p}(N_1),\ \mathcal{C}(f_P(x^1_{\delta_p},\epsilon^1_{\delta_p}),c,N_1)\leq \delta_p$$
+    \item By definition ~\ref{def:vhagar} we can say that for $\delta^{vaghar}(N_2)\ \exists{x^2_{vaghar},\epsilon^2_{vaghar}}$ such that
+    $$\mathcal{C}(x^2_{vaghar},c,N_2) = \delta^{vaghar}(N_2),\ \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1)\leq 0$$
+  \end{itemize}
+  we can say:
+  $$ \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1) \leq \delta_p $$
+\end{claim}
+\begin{proof}
+
+For $\delta_p=\delta_{diff}$ we can say:
+$$\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_p$$
+this is also true for $f_P(x^2_{vaghar},\epsilon^2_{vaghar})$:
+$$ |\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1)-\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_2)|\leq \delta_p $$
+$$ \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1)-\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_2)\leq \delta_p $$
+$$ -\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_2)\leq \delta_p - \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1) $$
+By definition ~\ref{def:vhagar} we can say that $ 0 \leq -\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_2) $ so:
+$$ 0 \leq \delta_p - \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1) $$
+$$ \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1) \leq \delta_p $$
+
+\end{proof}
+
+\begin{claim}\label{claim:delta_u1_and_delt2a}
+Given 2 networks $N_1,N_2$ where $\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_{diff}$ we can say $ \delta^\text{max}_{\delta_p}(N_1)+\delta_{diff} \geq \delta_u^{vaghar}(N_2)$
+\end{claim}
 
 
  \begin{comment}
