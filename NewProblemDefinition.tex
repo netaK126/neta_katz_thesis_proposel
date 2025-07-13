@@ -132,38 +132,104 @@ Proof by construction. The definition of $\delta^{vaghar}$ is more restrictive t
 \end{proof}
 
 \begin{definition}[Gurobi optimization for vaghar]\label{def:delta_u_delta_l}
-By the gurobi optimization process we have an upper and lower bound for any optimization problem given, including vaghar for a network $N$: $\delta_l^{vaghar}(N) \leq \delta^{vaghar}(N) \leq \delta_u^{vaghar}(N)$
+By the Gurobi optimization process we have an upper and lower bound for any optimization problem given, including vaghar for a network $N$: $\delta_l^{vaghar}(N) \leq \delta^{vaghar}(N) \leq \delta_u^{vaghar}(N)$ where $\delta_u^{vaghar}(N)-\delta_l^{vaghar}(N)\leq MIP_{Gap}$ where $MIP_{Gap}$ is a hyper parameter of Gurobi.
 \end{definition}
 
 \begin{claim}\label{claim:x2_eps_N1}
-for the following notions:
+Let the following hold:
 \begin{itemize}
-    \item By definition ~\ref{def:delta_u} we can say that for $\delta^\text{max}_{\delta_p}(N_1)\ \exists{x^1_{\delta_p},\epsilon^1_{\delta_p}}$ such that
-    $$\mathcal{C}(x^1_{\delta_p},c,N_1) = \delta^\text{max}_{\delta_p}(N_1),\ \mathcal{C}(f_P(x^1_{\delta_p},\epsilon^1_{\delta_p}),c,N_1)\leq \delta_p$$
-    \item By definition ~\ref{def:vhagar} we can say that for $\delta^{vaghar}(N_2)\ \exists{x^2_{vaghar},\epsilon^2_{vaghar}}$ such that
-    $$\mathcal{C}(x^2_{vaghar},c,N_2) = \delta^{vaghar}(N_2),\ \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1)\leq 0$$
-  \end{itemize}
-  we can say:
-  $$ \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1) \leq \delta_p $$
+    \item By Definition~\ref{def:vhagar}, for $\delta^{vaghar}(N_2)$, there exist $x^2_{vaghar}, \epsilon^2_{vaghar}$ such that
+    \[
+    \mathcal{C}(x^2_{vaghar}, c, N_2) = \delta^{vaghar}(N_2),\quad \mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_2) \leq 0.
+    \]
+\end{itemize}
+Then it follows that
+\[
+\mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_1) \leq \delta_p.
+\]
 \end{claim}
+
 \begin{proof}
-
-For $\delta_p=\delta_{diff}$ we can say:
-$$\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_p$$
-this is also true for $f_P(x^2_{vaghar},\epsilon^2_{vaghar})$:
-$$ |\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1)-\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_2)|\leq \delta_p $$
-$$ \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1)-\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_2)\leq \delta_p $$
-$$ -\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_2)\leq \delta_p - \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1) $$
-By definition ~\ref{def:vhagar} we can say that $ 0 \leq -\mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_2) $ so:
-$$ 0 \leq \delta_p - \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1) $$
-$$ \mathcal{C}(f_P(x^2_{vaghar},\epsilon^2_{vaghar}),c,N_1) \leq \delta_p $$
-
+Assume $\delta_p = \delta_{\text{diff}}$ and that
+\[
+\forall x.\ |\mathcal{C}(x, c, N_2) - \mathcal{C}(x, c, N_1)| \leq \delta_p.
+\]
+This inequality also holds for $f_P(x^2_{vaghar}, \epsilon^2_{vaghar})$, so:
+\[
+|\mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_1) - \mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_2)| \leq \delta_p.
+\]
+Rewriting the above:
+\begin{align*}
+\mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_1) - \mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_2) &\leq \delta_p, \\
+-\mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_2) &\leq \delta_p - \mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_1).
+\end{align*}
+By Definition~\ref{def:vhagar}, we know that
+\[
+\mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_2) \leq 0 \quad \Rightarrow \quad -\mathcal{C}(f_P(\cdot), c, N_2) \geq 0,
+\]
+which implies:
+\[
+0 \leq \delta_p - \mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_1),
+\]
+and therefore:
+\[
+\mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_1) \leq \delta_p.
+\]
 \end{proof}
 
-\begin{claim}\label{claim:delta_u1_and_delt2a}
-Given 2 networks $N_1,N_2$ where $\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_{diff}$ we can say $ \delta^\text{max}_{\delta_p}(N_1)+\delta_{diff} \geq \delta_u^{vaghar}(N_2)$
+
+\begin{claim}\label{claim:x2_x1_delta_p}
+Let the following hold:
+\begin{itemize}
+    \item By Definition~\ref{def:delta_u}, for $\delta^\text{max}_{\delta_p}(N_1)$, there exist $x^1_{\delta_p}, \epsilon^1_{\delta_p}$ such that
+    \[
+    \mathcal{C}(x^1_{\delta_p}, c, N_1) = \delta^\text{max}_{\delta_p}(N_1), \quad \mathcal{C}(f_P(x^1_{\delta_p}, \epsilon^1_{\delta_p}), c, N_1) \leq \delta_p.
+    \]
+    
+    \item By Definition~\ref{def:vhagar}, for $\delta^{vaghar}(N_2)$, there exist $x^2_{vaghar}, \epsilon^2_{vaghar}$ such that
+    \[
+    \mathcal{C}(x^2_{vaghar}, c, N_2) = \delta^{vaghar}(N_2), \quad \mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_2) \leq 0.
+    \]
+\end{itemize}
+Then the following inequality holds:
+\[
+\mathcal{C}(x^2_{vaghar}, c, N_2) \leq \mathcal{C}(x^1_{\delta_p}, c, N_1).
+\]
 \end{claim}
 
+\begin{proof}
+Assume, for the sake of contradiction, that
+\[
+\mathcal{C}(x^2_{vaghar}, c, N_2) > \mathcal{C}(x^1_{\delta_p}, c, N_1).
+\]
+By Claim~\ref{claim:x2_eps_N1}, we know that
+\[
+\mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_1) \leq \delta_p.
+\]
+Therefore, $x^2_{vaghar}$ is a valid candidate for the optimization in Definition~\ref{def:delta_u}. However, its cost in $N_2$ exceeds that of $x^1_{\delta_p}$ in $N_1$, contradicting the optimality of $\delta^\text{max}_{\delta_p}(N_1)$ as the maximal achievable value under the constraint $\mathcal{C}(f_P(\cdot), c, N_1) \leq \delta_p$. This contradiction proves the claim.
+\end{proof}
+
+
+\begin{claim}\label{claim:delta_u1_and_delt2a}
+Given 2 networks $N_1,N_2$ where $\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_p$ we can say $ \delta^\text{max}_{\delta_p}(N_1)+\delta_p \geq \delta_u^{vaghar}(N_2)$
+\end{claim}
+\begin{proof}
+Remider:
+\begin{itemize}
+\item By Definition~\ref{def:vhagar}, for $\delta^{vaghar}(N_2)$, there exist $x^2_{vaghar}, \epsilon^2_{vaghar}$ such that
+    \[
+    \mathcal{C}(x^2_{vaghar}, c, N_2) = \delta^{vaghar}(N_2), \quad \mathcal{C}(f_P(x^2_{vaghar}, \epsilon^2_{vaghar}), c, N_2) \leq 0.
+    \]
+\end{itemize}
+so we can say:
+$$\mathcal{C}(x^2_{vaghar},c,N_2)-\mathcal{C}(x^2_{vaghar},c,N_1)|\leq \delta_p$$
+$$ \rightarrow \mathcal{C}(x^2_{vaghar},c,N_2) \leq \delta_p+\mathcal{C}(x^2_{vaghar},c,N_1)$$
+According to ~\ref{claim:x2_x1_delta_p} we can say:
+$$ \delta^{vaghar}(N_2)=\mathcal{C}(x^2_{vaghar},c,N_2) \leq \delta_p+\mathcal{C}(x^2_{vaghar},c,N_1) \leq \delta_p+ \mathcal{C}(x^1_{\delta_p}, c, N_1)=\delta_p+\delta^\text{max}_{\delta_p}(N_1)$$
+
+According to ~\ref{def:delta_u_delta_l} we know $\delta^{vaghar}(N_2) \leq \delta^{vaghar}_u(N_2) \leq \delta^{vaghar}(N_2) + MIP_{Gap}$ where $MIP_{Gap}$ is a hyper parameter. Therefore we can choose $MIP_{Gap}$ small enough so the inequality $\delta^{vaghar}_u(N_2) \leq \delta_p+\delta^\text{max}_{\delta_p}(N_1)$ holds.
+
+\end{proof}
 
  \begin{comment}
 \begin{claim}\label{claim:n1}
