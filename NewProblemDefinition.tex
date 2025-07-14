@@ -61,7 +61,7 @@ Given a classifier $N$, an input $x$, a class $c\in{C}$, a perturbation $P$, a r
 $$\forall{x}\forall{\epsilon'}\in{I_\epsilon}:    \mathcal{C}(x,c,N) \geq \delta \rightarrow argmax(N(x)) = argmax(N(f_P(x,\epsilon'))) $$
 Intuitively, the classifier is robust with respect to $P$ for any input classified with confidence higher or equal to the minimal $\delta$. In practice, it is easier to compute the dual bound, i.e., the maximal globally non-robust bound. That is, the maximal class confidence $\delta$ that violates the constraint:
 \begin{definition}[Maximal Non-Robust Bound (Vhagar)]\label{def:vhagar}
-$$\max{\delta^{vhagar}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N) \geq \delta^{vhagar} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c,N)\leq 0$$
+$$\max{\delta^{vhagar}(N)}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N) \geq \delta^{vhagar}(N) \rightarrow \mathcal{C}(f_P(x,\epsilon'),c,N)\leq 0$$
 \end{definition}
 \paragraph{Problem definition} 
 We study the problem of \emph{proof transfer} between two similar networks. 
@@ -123,6 +123,7 @@ As usual, to find a value for $A$, we look at the dual problem, looking for the 
 
 % neta is making order
 
+\paragraph{Relations between $\delta^{vaghar}(N_1)$and $\delta^{vaghar}(N_2)$):}
 \begin{claim}\label{claim:delta_u_is_bigger_delta_v}
 Given the definitions of $\delta^{vaghar}$ (Definition~\ref{def:vhagar}) and $\delta^\text{max}_{\delta_p}(N)$ (Definition~\ref{def:delta_u}), if $\delta_p \geq 0$, then $\delta^\text{max}_{\delta_p}(N) \geq \delta^{vaghar}$.
 \end{claim}
@@ -214,7 +215,7 @@ Therefore, $x^2_{vaghar}$ is a valid candidate for the optimization in Definitio
 Given 2 networks $N_1,N_2$ where $\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_p$ we can say $ \delta^\text{max}_{\delta_p}(N_1)+\delta_p \geq \delta_u^{vaghar}(N_2)$
 \end{claim}
 \begin{proof}
-Remider:
+Reminder:
 \begin{itemize}
 \item By Definition~\ref{def:vhagar}, for $\delta^{vaghar}(N_2)$, there exist $x^2_{vaghar}, \epsilon^2_{vaghar}$ such that
     \[
@@ -231,63 +232,31 @@ According to ~\ref{def:delta_u_delta_l} we know $\delta^{vaghar}(N_2) \leq \delt
 
 \end{proof}
 
- \begin{comment}
-\begin{claim}\label{claim:n1}
-Given a network $N$, a class $c$, and a perturbation $(P,I_\epsilon)$,
-  for every $\delta_p$, if it is smaller than $0$ then ${\delta^\text{max}_{\delta_p}}$ is a lower bound on $\delta^\text{vhagar}$, and otherwise it is an upper bound on  $\delta^\text{vhagar}$. 
-\end{claim}
-Proof follows since the last condition is stronger than Vhagar's condition is its negative and looser if it is positive.
+\subparagraph{Finding a lower bound for $\delta^{vaghar}(N)$}
+By applying Claim~\ref{claim:delta_u1_and_delt2a}, we can obtain upper bounds for $\delta_u^{vaghar}(N_1)$ and $\delta_u^{vaghar}(N_2)$ (as defined in Definition~\ref{def:delta_u_delta_l}). Consequently, this also provides upper bounds for $\delta^{vaghar}(N_1)$ and $\delta^{vaghar}(N_2)$, all by solving a single optimization problem as defined in Definition~\ref{def:delta_u} for network $N_1$. However we still need to find the value of $\delta_p=\delta_\text{diff}$ and a lower bound for $\delta_l^{vaghar}(N_1),\delta_l^{vaghar}(N_2)$. we will utilize the properties of anytime optimization process by Gurobi. For the lower bound, Gurobi looks for feasible solutions for our optimization problem, and then iteratively improves it as long there is no violation for the problems constraints. We find that gurobi mainly struggles to find the optimal upper bound, while gurobi finds feasible and close enough lower bound quickly. therefore, to find lower bounds for $\delta_l^{vaghar}(N_1),\delta_l^{vaghar}(N_2)$ can be find by setting a low TimeLimit when optimizing ~\ref{def:vhagar} for $N_1,N_2$.
 
- \begin{claim}\label{claim:n2}
- Given a network $N_1$, a class $c$, and a perturbation $(P,I_\epsilon)$,
- and an array of $\delta_p$-perturbation non-robust bounds $A=[\delta^1_p,\delta^2_p,\ldots,\delta_p^k]$, for values of $p$ that are negative and positive. Given a network $N_2$ such that  $\forall x.\ |\mathcal{C}(x,c,N_2)-\mathcal{C}(x,c,N_1)|\leq \delta_\text{diff}$. Let $\delta^l_p$ be the maximal value in $A$ that is smaller than $-\delta_\text{diff}$ and $\delta^u_p$ be the minimal value in $A$ that is greater than $\delta_\text{diff}$. Then, ${\delta^\text{max}_{\delta^l_p}}-\delta_\text{diff}$ is a lower bound on  $\delta^\text{vhagar}_2$ and 
- ${\delta^\text{max}_{\delta^u_p}}+\delta_\text{diff}$ is an upper bound on  $\delta^\text{vhagar}_2$.
- \end{claim}
- Proof. \begin{itemize}
-   \item 
- By~\Cref{claim:n1}, ${\delta^\text{max}_{\delta^l_p}}$ is a lower bound on $\delta^\text{vhagar}_1$.
- That is, there is $x$ whose confidence is at least ${\delta^\text{max}_{\delta^l_p}}$
- and $\mathcal{C}(f_P(x,\epsilon'),c',N_2)\leq {\delta^l_p}$.
- By~\Cref{eq:diff}, $N_2$ classifies this input with confidence at least ${\delta^\text{max}_{\delta^l_p}}-\delta_\text{diff}$
- and $\mathcal{C}(f_P(x,\epsilon'),c',N_2)\leq {\delta^l_p}+\delta_\text{diff}\leq 0$.
- By~\Cref{def:vhagar}, ${\delta^\text{max}_{\delta^l_p}}-\delta_\text{diff}$ is a lower bound on $\delta^\text{vhagar}_2$.
- \item % By~\Cref{claim:n1}, ${\delta^\text{max}_{\delta^u_p}}$ is an upper bound on $\delta^\text{vhagar}_1$.
- For every $x$ such that $C(x,N_2,c')\geq {\delta^\text{max}_{\delta^u_p}} + \delta_\text{diff} +\Delta$, by~\Cref{eq:diff}, we have
-  $C(x,N_1,c')\geq {\delta^\text{max}_{\delta^u_p}} +\Delta$. By~\Cref{eq:vagbound}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_1)>{\delta^\text{max}_{\delta^u_p}}$. 
- By \Cref{eq:diff}, for every $\epsilon'\in I_\epsilon$, we have $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>{\delta^\text{max}_{\delta^u_p}}-\delta_\text{diff}$. 
- Since ${\delta^\text{max}_{\delta^u_p}}>\delta_\text{diff}$, 
- we can infer, $\mathcal{C}(f_P(x,\epsilon'),c',N_2)>0$. Thus, ${\delta^\text{max}_{\delta^u_p}} + \delta_\text{diff} +\Delta$ is an upper bound on the minimally globally robust bound of $N_2$ and ${\delta^\text{max}_{\delta^u_p}} + \delta_\text{diff}$ is an upper bound on  $\delta^\text{vhagar}_2$.
- \end{itemize}
+\subparagraph{Finding $\delta_p=\delta_\text{diff}$}
+we use bound prorogation to find $\delta_\text{diff}$:
+$$I_{z_{m,k}^1,z_{m,k}^2}=[\Delta_{m,k}^l,\Delta_{m,k}^u],\ \text{max}\{z_{m,k}^1,z_{m,k}^2\}\leq{\Delta_{m,k}^u},\ \text{min}\{z_{m,k}^1,z_{m,k}^2\}\geq{\Delta_{m,k}^l}$$
+$$
+I_{z_{m,k}^1,z_{m,k}^2}=I_{b_{m,k}^1,b_{m,k}^2}+\sum_{k'=1}^{k_{m-1}}{w_{m,k,k'}\cdot{I_{z_{m-1,k}^1,z_{m-1,k}^2}}+I_{w_{m,k,k'}^1,w_{m,k,k'}^2}\cdot{z_{m-1,k'}^1+I_{z_{m-1,k'}^1,z_{m-1,k'}^2}} }
+$$
+And overall we can say:
+
+$$\delta_\text{diff}\leq{\text{max}\{|\Delta_{L,c}^u-\text{max}_{c'\ne{c}}{\Delta_{L,c'}^l}|,|\Delta_{L,c}^l-\text{max}_{c'\ne{c}}{\Delta_{L,c'}^u}|\}}$$
+Due to its efficiency, this process is well-suited for application to larger-scale networks in practice.   
+
  
- \end{comment}
- \paragraph{Finding $\delta_\text{diff}$:}
- We define $\delta_\text{diff}$ as :
- $$\min \delta_\text{diff}\text{ subject to } \forall x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\leq \delta_\text{diff}$$
- We can also look at the dual problem:
- $$\max \delta_\text{diff}\text{ subject to } \exists x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|=\delta_\text{diff}$$
- This problem is still complicated to solve using Gurobi due to the absalute function. therefore we can use the following claim:
- $\max \delta_\text{diff}\text{ subject to } \exists x.\ |\mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|= \max \{|\max_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|,|\min_x \mathcal{C}(x,c,N_1)-\mathcal{C}(x,c,N_2)|\}=\delta_\text{diff}$. That way we can calculate two simple problems instead, and save time.
- 
- 
- \paragraph{Neta's New Idea (2.3.2025):}
- Any algorithm that answers the following is good for us:
- $$ t_{\text{vaghar}_{\delta_1}}+t_{\text{vaghar}_{\delta_2}} \geq t_\text{new algorithm}$$
- Specifically I offer:
-  $$ t_{\text{vaghar}_{\delta_1}} + t_{\text{vaghar}_{\delta_2}} \geq t_{{\delta_1}_u} + t_{{\delta_1}_l} + t_{\delta_{\text{diff}}}$$
+ \paragraph{Combining all of the sub-optimization problems:}
+So far, we have presented several methods for obtaining upper and lower bounds on $\delta^{vaghar}(N_1)$ and $\delta^{vaghar}(N_2)$ (see Claims~\ref{claim:delta_u_is_bigger_delta_v},~\ref{claim:delta_u1_and_delt2a}). While these bounds are generally looser than those obtained by directly optimizing the \texttt{vaghar} formulation for $N_1$ and $N_2$, they offer a more efficient and scalable alternative—particularly suitable for larger neural networks:
+  $$ t_{\delta^{vaghar}(N_1)} + t_{\delta^{vaghar}(N_1)} \geq t_{{\delta_1}_u} + t_{{\delta_1}_l} + t_{{\delta_2}_l} + t_{\delta_{\text{diff}}}$$
  where:
  $$ {{\delta_1}_l} \leq \delta_1 \leq {{\delta_1}_u} $$
-  $$ {{\delta_1}_l}-{\delta_{\text{diff}}} \leq \delta_2 \leq {{\delta_1}_u}+{\delta_{\text{diff}}} $$
+  $$ {{\delta_2}_l} \leq \delta_2 \leq {{\delta_1}_u}+{\delta_{\text{diff}}} $$
  
- \begin{itemize}
-  \item Finding $\delta_{\text{diff}}$ as described above + adding some more logic so we can work with a variety of networks.
-  \item Finding ${{\delta_1}_u}$ - using ~\Cref{claim:n2} (running vaghar with $\delta_{\text{diff}} \geq 0$)
-  \item Finding ${{\delta_1}_l}$ - using ~\Cref{claim:n2} (running vaghar with $\delta_{\text{diff}} \leq 0$) with one single modification: ${\text{timeout}}=10\ \text{sec}$. When optimizing ${{\delta_1}_l}$ we have lower and upper bound: ${{\delta_1}_l}_l \leq {{\delta_1}_l} \leq {{\delta_1}_l}_u$. after 10 seconds ${{\delta_1}_l}_l$ is tight enough. The main issue when optimizing with gurobi is finding a tight upper bound, and specifically ${{\delta_1}_l}_u$. However, I claim that ${{\delta_1}_l}_l$ is tight enough after 10 seconds. This quality is specially profitable when we are dealing with difficult perturbations (for example: when $L_\infty$ and small $\epsilon$) where the running time is very high.
-  \item This is the motivation:
-  $$ t_{\text{vaghar}_{\delta_1}} \approx t_{{\delta_1}_u} $$
-  $$ t_{{\delta_1}_l} = 10$$ 
-  This leaves us to find an algorithm where:
-  $$t_{\delta_{\text{diff}}} \ll t_{\text{vaghar}_{\delta_2}} $$
- \end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 \paragraph{Formulation (15.5.2025):}
 \subparagraph{delta}
@@ -301,17 +270,6 @@ $$ \text{max}\ \delta_{1}^{\delta_{\text{diff}}^{c}}\ \text{subject to} $$
     \\
 \end{align*}
 
-\subparagraph{diff}
-we use bound prorogation to find $\delta_\text{diff}^c$:
-$$I_{z_{m,k}^1,z_{m,k}^2}=[\Delta_{m,k}^l,\Delta_{m,k}^u],\ \text{max}\{z_{m,k}^1,z_{m,k}^2\}\leq{\Delta_{m,k}^u},\ \text{min}\{z_{m,k}^1,z_{m,k}^2\}\geq{\Delta_{m,k}^l}$$
-$$
-I_{z_{m,k}^1,z_{m,k}^2}=I_{b_{m,k}^1,b_{m,k}^2}+\sum_{k'=1}^{k_{m-1}}{w_{m,k,k'}\cdot{I_{z_{m-1,k}^1,z_{m-1,k}^2}}+I_{w_{m,k,k'}^1,w_{m,k,k'}^2}\cdot{z_{m-1,k'}^1+I_{z_{m-1,k'}^1,z_{m-1,k'}^2}} }
-$$
-And overall we can say:
-
-$\delta_{\text{diff}}^c\leq{\text{max}\{|\Delta_{L,c}^u-\text{max}_{c'\ne{c}}{\Delta_{L,c'}^l}|,|\Delta_{L,c}^l-\text{max}_{c'\ne{c}}{\Delta_{L,c'}^u}|\}}$
-   %\Dana{old text below:}
-   
 %compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
 \begin{comment}
 $$\max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \frac{\delta_1^{opt}}{10} $$
