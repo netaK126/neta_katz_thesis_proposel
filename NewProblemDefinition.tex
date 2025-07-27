@@ -306,6 +306,14 @@ $$ \text{max}\ \delta_{\delta_\text{diff}^c}^\text{max}\ \text{subject to} $$
     \\
 \end{align*}
 
+
+\paragraph{Adversarial training - fine tuning idea}
+when calculating the upper bound for classifiers $N_1,N_2,N_3...$ we have a set of inputs $\{x_1,x_2,...\}X$ the satisfy $\forall{i}:\ \mathcal{C}(N_i,x_i,c) \geq \delta_i\ \text{and}\ \mathcal{C}(N_i,x_i,c) \leq \text{diff}$.
+\begin{itemize}
+\item find $x_i^{vaghar}$ using X set (use GD).
+\item try to locate the new set of $X^{vaghar}$ on a grid - see if the are close to one another using some "dist" function. maybe using a certain norm they capture some input space?
+\item then we can take the main model (still need to choose which to consider the main one - maybe create a new model based on the classifiers $\{N_1,N_2,...\}$
+\end{itemize}
 %compute the minimal class confidence $\delta_1$ and $\delta_2$, where $\forall{x}\forall{\epsilon'}\in{I_{\epsilon}}$ it holds that:
 \begin{comment}
 $$\max{\delta_1^{opt}}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N_1) \geq \delta_1^{opt} \rightarrow \mathcal{C}(f_P(x,\epsilon'),c',N_1)\leq \frac{\delta_1^{opt}}{10} $$
