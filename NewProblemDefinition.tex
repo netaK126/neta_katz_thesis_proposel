@@ -50,6 +50,69 @@
 \algrenewcommand\algorithmicensure{\textbf{Output:}}
 
 \begin{document}
+\section{Introduction}
+
+Deep neural networks (DNNs) have become the foundation of modern artificial intelligence,
+powering applications from computer vision to speech recognition and natural language
+understanding. Their success has led to deployment in mobile assistants, autonomous
+vehicles, smart cameras, and IoT devices. In many such applications, low latency,
+high availability, and strong privacy guarantees are critical. For example, 
+\emph{voice assistants} must detect wake words locally to ensure responsiveness,
+while \emph{medical imaging systems} often process data under strict privacy constraints.
+At the same time, cloud-based models remain essential for handling complex queries
+requiring large memory and compute resources.
+
+While large models achieve state-of-the-art accuracy, their resource demands
+make them impractical for direct deployment on mobile or IoT hardware.
+\emph{Quantization} addresses this limitation by reducing the numerical
+precision of weights and activations \cite{gupta2015deep,hubara2017quantized}.
+Quantized neural networks (QNNs) enable efficient inference with smaller
+memory footprints, lower energy consumption, and faster execution.
+Such models allow local devices to run lightweight versions of powerful
+cloud architectures, providing a balance between efficiency and accuracy
+\cite{jacob2018quantization}.
+
+\subsection*{Cloud–Edge Hybrid Frameworks}
+
+While quantization provides a practical path to deploying deep neural
+networks on resource-constrained devices, it also introduces a trade-off:
+compressed models often sacrifice accuracy compared to
+their full-precision counterparts. This tension motivates the design of
+\textbf{cloud–edge hybrid frameworks}, where a quantized model operates
+locally for efficiency, and a large full-precision model resides in the
+cloud to ensure accuracy and scalability.
+
+Several works have explored this idea. Teerapittayanon et
+al.~\cite{teerapittayanon2017distributed} proposed distributed DNNs
+where inference can terminate on-device for simple inputs, while complex
+cases are escalated to the cloud. Kang et al.~\cite{kang2017neurosurgeon}
+introduced \emph{Neurosurgeon}, which partitions models between edge and
+cloud to minimize latency and energy. Yu and Huang~\cite{yu2018slim}
+presented \emph{Slimmable Networks}, whose dynamic capacity scaling
+inspired adaptive edge–cloud switching between quantized and full models.
+Li et al.~\cite{li2018edge} advanced this further by proposing routing
+policies that decide in real time whether to use the local quantized
+model or the cloud model, depending on network and device conditions.
+
+This paradigm is already reflected in practice. Mobile assistants run
+quantized keyword-spotting models locally, sending only confirmed speech
+queries to the cloud for full processing. Smart cameras use local models
+for common object detection, while relying on the cloud for fine-grained
+recognition. In healthcare, wearable devices can detect anomalies using
+lightweight quantized models, with cloud servers handling detailed
+analysis. These examples demonstrate the growing importance of systems
+that intelligently integrate quantized edge inference with cloud
+capabilities.
+
+However, introducing two models—one quantized and one full—also raises
+questions of \textbf{robustness}. Recent studies show that adversarial
+attacks crafted against a quantized edge model may transfer to its
+full-precision cloud counterpart, undermining the security of the entire
+framework. Thus, beyond efficiency, research must also address how to
+design cloud–edge hybrid systems that are resilient to adversarial
+perturbations.
+
+
 \section{Problem Definition}
 In this section, we define the problem we address.
 
