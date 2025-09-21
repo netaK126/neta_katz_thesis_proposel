@@ -132,7 +132,7 @@ The formal verification of Quantized Neural Networks (QNNs) has received growing
 Building upon these foundations, more recent work has sought to improve efficiency and scalability. For example, \cite{huang2023towards} presents an integer linear programming (ILP) framework with soundness and completeness guarantees, enhanced by heuristic strategies.  However, all of those works refer to local robustness of a single QNN network, with no consideration of the larger NN.
 Kabaha and Drachsler-Cohen \cite{kabaha2025quantization} address the challenge of ensuring that the behavior of the QNN remains consistent with the original NN, thus bridging the gap between accuracy and efficiency in safety-critical applications, but did not addressed the challenges of proving robustness of the two.
 
-In this work, we present a novel approach to verifying the robustness of hybrid cloud–edge systems against adversarial attacks, where a full-precision neural network resides in the cloud and its quantized counterpart operates on the edge, with each query being processed by only one of the two models.
+In this work, we present a novel approach to verifying the robustness of hybrid cloud–edge systems against adversarial attacks, where a full-precision neural network resides in the cloud and its quantized counterpart operates on the edge, with each query being processed by only one of the two models. We consider the routing between the cloud and edge to be errorless \Neta{rephase!!}
 
 
 
@@ -165,6 +165,10 @@ Intuitively, the classifier is robust with respect to $P$ for any input classifi
 \begin{definition}[Maximal Non-Robust Bound (Vhagar)]\label{def:vhagar}
 $$\max{\delta^{vhagar}(N)}, \texttt{ subject to } \exists{x}\exists{\epsilon'}\in{I_\epsilon}: \mathcal{C}(x,c,N) \geq \delta^{vhagar}(N) \rightarrow \mathcal{C}(f_P(x,\epsilon'),c,N)\leq 0$$
 \end{definition}
+
+\paragraph{Global robustness of a cloud-edge framework}
+We define the robustness property $\delta_\text{cloud-edge}$ of a cloud-edge framework, with a large network $N_1$ with robustness $\delta^{vhagar}(N_1)$ in the cloud and a smaller network $N_2$ in the edge with robustness $\delta^{vhagar}(N_2)$ as:
+$$\min{\{\delta^{vhagar}(N_1),\delta^{vhagar}(N_2)\}} \leq \delta_\text{cloud-edge} \leq \max{\{\delta^{vhagar}(N_1),\delta^{vhagar}(N_2)\}}$$
 \paragraph{Problem definition} 
 We study the problem of \emph{proof transfer} between two similar networks. 
 Specifically, we want to utilize the robustness of a single classifier in order to upper bound the minimally globally robust bound of a similar classifier. 
